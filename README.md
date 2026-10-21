@@ -106,7 +106,7 @@ scenario are mutually exclusive, so at most one can win.
 
 #### 14 open-weight models
 Qwen 3, Qwen 3.5 and gpt-oss, 0.6B to 122B, with thinking off and on: 26
-model-modes, served locally with pinned weights, templates and sampling.
+model-modes, served with vLLM at pinned weights, chat templates and sampling settings.
 
 </td>
 <td width="33%" valign="top">
@@ -119,7 +119,8 @@ log score against a uniform guess and an empirical reference.
 <td width="33%" valign="top">
 
 #### Checked on held-out scenarios
-Findings from Qwen 3 were fixed in writing before any measure was computed on Qwen 3.5 or gpt-oss,
+Findings from an exploratory analysis of Qwen 3 were fixed in writing before any measure was
+computed on Qwen 3.5 or gpt-oss,
 then tested on those families. Further patterns were found on one random half of the scenarios and
 tested on the other.
 
@@ -328,8 +329,7 @@ task-aware fit; marker on a stem: seats fit (filled: thinking off; open: on).</s
 <img src="assets/claim-thinking-helps-follow-declared-tiers.svg" alt="Thinking helps follow declared tiers.">
 
 **With thinking on, Qwen models follow an explicit priority rule more often, at every Qwen 3 size
-from 4B up (3 of 3) and at
-6 of 7 Qwen 3.5 sizes.**
+from 4B up and every Qwen 3.5 size from 2B up.**
 
 When each line carries a tier from 1 to 6, thinking raises the share of decided replies that follow
 the rule by up to +25.83% on Qwen 3.5, and Qwen3.5-122B-A10B goes from
