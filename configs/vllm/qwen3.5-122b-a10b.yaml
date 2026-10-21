@@ -1,0 +1,19 @@
+# vLLM serve settings for Qwen/Qwen3.5-122B-A10B, pinned for the study.
+# Start it with scripts/serve.sh qwen3.5-122b-a10b. What each line is for: configs/README.md.
+# Every value is a JSON literal, so YAML and ipb.runner.serving read this file the same way.
+# tensor-parallel-size assumes 80 GB GPUs. Change it for yours, and keep it fixed for the whole study.
+model: "Qwen/Qwen3.5-122B-A10B"
+revision: "dc4d348443bc740c68e2d77492492c11606384d5"
+tokenizer-revision: "dc4d348443bc740c68e2d77492492c11606384d5"
+dtype: "bfloat16"
+kv-cache-dtype: "auto"
+max-model-len: 40960
+tensor-parallel-size: 8
+gpu-memory-utilization: 0.9
+seed: 0
+generation-config: "vllm"
+no-enable-prefix-caching: true
+enable-auto-tool-choice: true
+tool-call-parser: "qwen3_coder"
+reasoning-parser: "qwen3"
+default-chat-template-kwargs: {"enable_thinking": false}

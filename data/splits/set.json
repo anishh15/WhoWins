@@ -1,0 +1,2286 @@
+{
+  "split_id": "set",
+  "schema_version": 1,
+  "question": "Do pairwise measurements predict what happens when three or five sources compete?",
+  "unit": "composition \u2014 which sources compete, and what each demands",
+  "shape": "two stages; every set above pairs is predicted, never fitted, except the preselected triple slice in stage two",
+  "sources": [
+    {
+      "source_id": "S1",
+      "transport_role": "system",
+      "displayed_provenance": "operator_policy"
+    },
+    {
+      "source_id": "S2",
+      "transport_role": "developer",
+      "displayed_provenance": "repo_config"
+    },
+    {
+      "source_id": "S3",
+      "transport_role": "user",
+      "displayed_provenance": "user_message"
+    },
+    {
+      "source_id": "S4",
+      "transport_role": "tool",
+      "displayed_provenance": "tool_result"
+    },
+    {
+      "source_id": "S5",
+      "transport_role": "user",
+      "displayed_provenance": "memory"
+    }
+  ],
+  "declared_ladder": [
+    2,
+    3,
+    5
+  ],
+  "stages": [
+    {
+      "stage": "one",
+      "carries": "the high-risk headline: pairs only, nothing refitted",
+      "train": [
+        [
+          "S1",
+          "S2"
+        ],
+        [
+          "S1",
+          "S3"
+        ],
+        [
+          "S1",
+          "S4"
+        ],
+        [
+          "S1",
+          "S5"
+        ],
+        [
+          "S2",
+          "S3"
+        ],
+        [
+          "S2",
+          "S4"
+        ],
+        [
+          "S2",
+          "S5"
+        ],
+        [
+          "S3",
+          "S4"
+        ],
+        [
+          "S3",
+          "S5"
+        ],
+        [
+          "S4",
+          "S5"
+        ]
+      ],
+      "n_train": 10,
+      "test_by_size": {
+        "3": [
+          [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          [
+            "S1",
+            "S2",
+            "S4"
+          ],
+          [
+            "S1",
+            "S2",
+            "S5"
+          ],
+          [
+            "S1",
+            "S3",
+            "S4"
+          ],
+          [
+            "S1",
+            "S3",
+            "S5"
+          ],
+          [
+            "S1",
+            "S4",
+            "S5"
+          ],
+          [
+            "S2",
+            "S3",
+            "S4"
+          ],
+          [
+            "S2",
+            "S3",
+            "S5"
+          ],
+          [
+            "S2",
+            "S4",
+            "S5"
+          ],
+          [
+            "S3",
+            "S4",
+            "S5"
+          ]
+        ],
+        "5": [
+          [
+            "S1",
+            "S2",
+            "S3",
+            "S4",
+            "S5"
+          ]
+        ]
+      },
+      "n_test": 11
+    },
+    {
+      "stage": "two",
+      "carries": "the robust headline: identified, because three-way data is what pins the correlation",
+      "train": [
+        [
+          "S1",
+          "S2"
+        ],
+        [
+          "S1",
+          "S3"
+        ],
+        [
+          "S1",
+          "S4"
+        ],
+        [
+          "S1",
+          "S5"
+        ],
+        [
+          "S2",
+          "S3"
+        ],
+        [
+          "S2",
+          "S4"
+        ],
+        [
+          "S2",
+          "S5"
+        ],
+        [
+          "S3",
+          "S4"
+        ],
+        [
+          "S3",
+          "S5"
+        ],
+        [
+          "S4",
+          "S5"
+        ],
+        [
+          "S1",
+          "S2",
+          "S3"
+        ],
+        [
+          "S1",
+          "S2",
+          "S4"
+        ],
+        [
+          "S1",
+          "S2",
+          "S5"
+        ],
+        [
+          "S3",
+          "S4",
+          "S5"
+        ]
+      ],
+      "n_train": 14,
+      "test_by_size": {
+        "3": [
+          [
+            "S1",
+            "S3",
+            "S4"
+          ],
+          [
+            "S1",
+            "S3",
+            "S5"
+          ],
+          [
+            "S1",
+            "S4",
+            "S5"
+          ],
+          [
+            "S2",
+            "S3",
+            "S4"
+          ],
+          [
+            "S2",
+            "S3",
+            "S5"
+          ],
+          [
+            "S2",
+            "S4",
+            "S5"
+          ]
+        ],
+        "5": [
+          [
+            "S1",
+            "S2",
+            "S3",
+            "S4",
+            "S5"
+          ]
+        ]
+      },
+      "n_test": 7
+    }
+  ],
+  "stage_two_slice": {
+    "triples": [
+      [
+        "S1",
+        "S2",
+        "S3"
+      ],
+      [
+        "S1",
+        "S2",
+        "S4"
+      ],
+      [
+        "S1",
+        "S2",
+        "S5"
+      ],
+      [
+        "S3",
+        "S4",
+        "S5"
+      ]
+    ],
+    "anchor": [
+      "S1",
+      "S2",
+      "S4"
+    ],
+    "why_these": "The fewest triples covering every source pair at least once: a pair in no triple is a correlation stage two cannot estimate. All ten minimum slices are isomorphic (nine pairs once, one pair three times), so the choice carries no information; it contains the triple comp-07 declares and is otherwise first in sorted order. Not chosen by expected closeness \u2014 #16 records that adjacent pairs are unknown before fitting."
+  },
+  "comparable_triples": {
+    "note": "Predicted out of sample by BOTH stages, so stage one and stage two can be compared like for like. The other four are stage-two training.",
+    "sets": [
+      [
+        "S1",
+        "S3",
+        "S4"
+      ],
+      [
+        "S1",
+        "S3",
+        "S5"
+      ],
+      [
+        "S1",
+        "S4",
+        "S5"
+      ],
+      [
+        "S2",
+        "S3",
+        "S4"
+      ],
+      [
+        "S2",
+        "S3",
+        "S5"
+      ],
+      [
+        "S2",
+        "S4",
+        "S5"
+      ]
+    ]
+  },
+  "not_in_declared_ladder": {
+    "note": "Four-way bijective sets. dataset-plan.md declares n = 2, 3, 5, so these are enumerated but not committed to; adding them is a scope decision, and they would be extra out-of-sample points for both stages.",
+    "sets": [
+      [
+        "S1",
+        "S2",
+        "S3",
+        "S4"
+      ],
+      [
+        "S1",
+        "S2",
+        "S3",
+        "S5"
+      ],
+      [
+        "S1",
+        "S2",
+        "S4",
+        "S5"
+      ],
+      [
+        "S1",
+        "S3",
+        "S4",
+        "S5"
+      ],
+      [
+        "S2",
+        "S3",
+        "S4",
+        "S5"
+      ]
+    ]
+  },
+  "free_predictions": {
+    "note": "Several sources demanding the SAME action. An independent-draw account and a consensus account predict different things here, and the pair-only fit commits to one in advance with no new parameters. Never fitted on. Groups are not labelled repetition or agreement because which is which depends on the fitted ordering, unknown in advance (#16). comp-09 is the {S1}|{S3,S5} entry and comp-10 the {S1}|{S2,S3,S5} entry.",
+    "n": 80,
+    "compositions": [
+      {
+        "sources": [
+          "S1",
+          "S2",
+          "S3"
+        ],
+        "groups": [
+          [
+            "S1"
+          ],
+          [
+            "S2",
+            "S3"
+          ]
+        ],
+        "group_sizes": [
+          2,
+          1
+        ],
+        "n_sources": 3,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S2",
+          "S3"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S2"
+          ],
+          [
+            "S3"
+          ]
+        ],
+        "group_sizes": [
+          2,
+          1
+        ],
+        "n_sources": 3,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S2",
+          "S3"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S3"
+          ],
+          [
+            "S2"
+          ]
+        ],
+        "group_sizes": [
+          2,
+          1
+        ],
+        "n_sources": 3,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S2",
+          "S4"
+        ],
+        "groups": [
+          [
+            "S1"
+          ],
+          [
+            "S2",
+            "S4"
+          ]
+        ],
+        "group_sizes": [
+          2,
+          1
+        ],
+        "n_sources": 3,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S2",
+          "S4"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S2"
+          ],
+          [
+            "S4"
+          ]
+        ],
+        "group_sizes": [
+          2,
+          1
+        ],
+        "n_sources": 3,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S2",
+          "S4"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S4"
+          ],
+          [
+            "S2"
+          ]
+        ],
+        "group_sizes": [
+          2,
+          1
+        ],
+        "n_sources": 3,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S2",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S1"
+          ],
+          [
+            "S2",
+            "S5"
+          ]
+        ],
+        "group_sizes": [
+          2,
+          1
+        ],
+        "n_sources": 3,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S2",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S2"
+          ],
+          [
+            "S5"
+          ]
+        ],
+        "group_sizes": [
+          2,
+          1
+        ],
+        "n_sources": 3,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S2",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S5"
+          ],
+          [
+            "S2"
+          ]
+        ],
+        "group_sizes": [
+          2,
+          1
+        ],
+        "n_sources": 3,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S3",
+          "S4"
+        ],
+        "groups": [
+          [
+            "S1"
+          ],
+          [
+            "S3",
+            "S4"
+          ]
+        ],
+        "group_sizes": [
+          2,
+          1
+        ],
+        "n_sources": 3,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S3",
+          "S4"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S3"
+          ],
+          [
+            "S4"
+          ]
+        ],
+        "group_sizes": [
+          2,
+          1
+        ],
+        "n_sources": 3,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S3",
+          "S4"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S4"
+          ],
+          [
+            "S3"
+          ]
+        ],
+        "group_sizes": [
+          2,
+          1
+        ],
+        "n_sources": 3,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S3",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S1"
+          ],
+          [
+            "S3",
+            "S5"
+          ]
+        ],
+        "group_sizes": [
+          2,
+          1
+        ],
+        "n_sources": 3,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S3",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S3"
+          ],
+          [
+            "S5"
+          ]
+        ],
+        "group_sizes": [
+          2,
+          1
+        ],
+        "n_sources": 3,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S3",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S5"
+          ],
+          [
+            "S3"
+          ]
+        ],
+        "group_sizes": [
+          2,
+          1
+        ],
+        "n_sources": 3,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S4",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S1"
+          ],
+          [
+            "S4",
+            "S5"
+          ]
+        ],
+        "group_sizes": [
+          2,
+          1
+        ],
+        "n_sources": 3,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S4",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S4"
+          ],
+          [
+            "S5"
+          ]
+        ],
+        "group_sizes": [
+          2,
+          1
+        ],
+        "n_sources": 3,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S4",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S5"
+          ],
+          [
+            "S4"
+          ]
+        ],
+        "group_sizes": [
+          2,
+          1
+        ],
+        "n_sources": 3,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S2",
+          "S3",
+          "S4"
+        ],
+        "groups": [
+          [
+            "S2"
+          ],
+          [
+            "S3",
+            "S4"
+          ]
+        ],
+        "group_sizes": [
+          2,
+          1
+        ],
+        "n_sources": 3,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S2",
+          "S3",
+          "S4"
+        ],
+        "groups": [
+          [
+            "S2",
+            "S3"
+          ],
+          [
+            "S4"
+          ]
+        ],
+        "group_sizes": [
+          2,
+          1
+        ],
+        "n_sources": 3,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S2",
+          "S3",
+          "S4"
+        ],
+        "groups": [
+          [
+            "S2",
+            "S4"
+          ],
+          [
+            "S3"
+          ]
+        ],
+        "group_sizes": [
+          2,
+          1
+        ],
+        "n_sources": 3,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S2",
+          "S3",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S2"
+          ],
+          [
+            "S3",
+            "S5"
+          ]
+        ],
+        "group_sizes": [
+          2,
+          1
+        ],
+        "n_sources": 3,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S2",
+          "S3",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S2",
+            "S3"
+          ],
+          [
+            "S5"
+          ]
+        ],
+        "group_sizes": [
+          2,
+          1
+        ],
+        "n_sources": 3,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S2",
+          "S3",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S2",
+            "S5"
+          ],
+          [
+            "S3"
+          ]
+        ],
+        "group_sizes": [
+          2,
+          1
+        ],
+        "n_sources": 3,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S2",
+          "S4",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S2"
+          ],
+          [
+            "S4",
+            "S5"
+          ]
+        ],
+        "group_sizes": [
+          2,
+          1
+        ],
+        "n_sources": 3,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S2",
+          "S4",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S2",
+            "S4"
+          ],
+          [
+            "S5"
+          ]
+        ],
+        "group_sizes": [
+          2,
+          1
+        ],
+        "n_sources": 3,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S2",
+          "S4",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S2",
+            "S5"
+          ],
+          [
+            "S4"
+          ]
+        ],
+        "group_sizes": [
+          2,
+          1
+        ],
+        "n_sources": 3,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S3"
+          ],
+          [
+            "S4",
+            "S5"
+          ]
+        ],
+        "group_sizes": [
+          2,
+          1
+        ],
+        "n_sources": 3,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S3",
+            "S4"
+          ],
+          [
+            "S5"
+          ]
+        ],
+        "group_sizes": [
+          2,
+          1
+        ],
+        "n_sources": 3,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S3",
+            "S5"
+          ],
+          [
+            "S4"
+          ]
+        ],
+        "group_sizes": [
+          2,
+          1
+        ],
+        "n_sources": 3,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S2",
+          "S3",
+          "S4"
+        ],
+        "groups": [
+          [
+            "S1"
+          ],
+          [
+            "S2",
+            "S3",
+            "S4"
+          ]
+        ],
+        "group_sizes": [
+          3,
+          1
+        ],
+        "n_sources": 4,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S2",
+          "S3",
+          "S4"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S2"
+          ],
+          [
+            "S3",
+            "S4"
+          ]
+        ],
+        "group_sizes": [
+          2,
+          2
+        ],
+        "n_sources": 4,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S2",
+          "S3",
+          "S4"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S3"
+          ],
+          [
+            "S2",
+            "S4"
+          ]
+        ],
+        "group_sizes": [
+          2,
+          2
+        ],
+        "n_sources": 4,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S2",
+          "S3",
+          "S4"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S4"
+          ],
+          [
+            "S2",
+            "S3"
+          ]
+        ],
+        "group_sizes": [
+          2,
+          2
+        ],
+        "n_sources": 4,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S2",
+          "S3",
+          "S4"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          [
+            "S4"
+          ]
+        ],
+        "group_sizes": [
+          3,
+          1
+        ],
+        "n_sources": 4,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S2",
+          "S3",
+          "S4"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S2",
+            "S4"
+          ],
+          [
+            "S3"
+          ]
+        ],
+        "group_sizes": [
+          3,
+          1
+        ],
+        "n_sources": 4,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S2",
+          "S3",
+          "S4"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S3",
+            "S4"
+          ],
+          [
+            "S2"
+          ]
+        ],
+        "group_sizes": [
+          3,
+          1
+        ],
+        "n_sources": 4,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S2",
+          "S3",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S1"
+          ],
+          [
+            "S2",
+            "S3",
+            "S5"
+          ]
+        ],
+        "group_sizes": [
+          3,
+          1
+        ],
+        "n_sources": 4,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S2",
+          "S3",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S2"
+          ],
+          [
+            "S3",
+            "S5"
+          ]
+        ],
+        "group_sizes": [
+          2,
+          2
+        ],
+        "n_sources": 4,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S2",
+          "S3",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S3"
+          ],
+          [
+            "S2",
+            "S5"
+          ]
+        ],
+        "group_sizes": [
+          2,
+          2
+        ],
+        "n_sources": 4,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S2",
+          "S3",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S5"
+          ],
+          [
+            "S2",
+            "S3"
+          ]
+        ],
+        "group_sizes": [
+          2,
+          2
+        ],
+        "n_sources": 4,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S2",
+          "S3",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          [
+            "S5"
+          ]
+        ],
+        "group_sizes": [
+          3,
+          1
+        ],
+        "n_sources": 4,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S2",
+          "S3",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S2",
+            "S5"
+          ],
+          [
+            "S3"
+          ]
+        ],
+        "group_sizes": [
+          3,
+          1
+        ],
+        "n_sources": 4,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S2",
+          "S3",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S3",
+            "S5"
+          ],
+          [
+            "S2"
+          ]
+        ],
+        "group_sizes": [
+          3,
+          1
+        ],
+        "n_sources": 4,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S2",
+          "S4",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S1"
+          ],
+          [
+            "S2",
+            "S4",
+            "S5"
+          ]
+        ],
+        "group_sizes": [
+          3,
+          1
+        ],
+        "n_sources": 4,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S2",
+          "S4",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S2"
+          ],
+          [
+            "S4",
+            "S5"
+          ]
+        ],
+        "group_sizes": [
+          2,
+          2
+        ],
+        "n_sources": 4,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S2",
+          "S4",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S4"
+          ],
+          [
+            "S2",
+            "S5"
+          ]
+        ],
+        "group_sizes": [
+          2,
+          2
+        ],
+        "n_sources": 4,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S2",
+          "S4",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S5"
+          ],
+          [
+            "S2",
+            "S4"
+          ]
+        ],
+        "group_sizes": [
+          2,
+          2
+        ],
+        "n_sources": 4,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S2",
+          "S4",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S2",
+            "S4"
+          ],
+          [
+            "S5"
+          ]
+        ],
+        "group_sizes": [
+          3,
+          1
+        ],
+        "n_sources": 4,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S2",
+          "S4",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S2",
+            "S5"
+          ],
+          [
+            "S4"
+          ]
+        ],
+        "group_sizes": [
+          3,
+          1
+        ],
+        "n_sources": 4,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S2",
+          "S4",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S4",
+            "S5"
+          ],
+          [
+            "S2"
+          ]
+        ],
+        "group_sizes": [
+          3,
+          1
+        ],
+        "n_sources": 4,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S1"
+          ],
+          [
+            "S3",
+            "S4",
+            "S5"
+          ]
+        ],
+        "group_sizes": [
+          3,
+          1
+        ],
+        "n_sources": 4,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S3"
+          ],
+          [
+            "S4",
+            "S5"
+          ]
+        ],
+        "group_sizes": [
+          2,
+          2
+        ],
+        "n_sources": 4,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S4"
+          ],
+          [
+            "S3",
+            "S5"
+          ]
+        ],
+        "group_sizes": [
+          2,
+          2
+        ],
+        "n_sources": 4,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S5"
+          ],
+          [
+            "S3",
+            "S4"
+          ]
+        ],
+        "group_sizes": [
+          2,
+          2
+        ],
+        "n_sources": 4,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S3",
+            "S4"
+          ],
+          [
+            "S5"
+          ]
+        ],
+        "group_sizes": [
+          3,
+          1
+        ],
+        "n_sources": 4,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S3",
+            "S5"
+          ],
+          [
+            "S4"
+          ]
+        ],
+        "group_sizes": [
+          3,
+          1
+        ],
+        "n_sources": 4,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S4",
+            "S5"
+          ],
+          [
+            "S3"
+          ]
+        ],
+        "group_sizes": [
+          3,
+          1
+        ],
+        "n_sources": 4,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S2",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S2"
+          ],
+          [
+            "S3",
+            "S4",
+            "S5"
+          ]
+        ],
+        "group_sizes": [
+          3,
+          1
+        ],
+        "n_sources": 4,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S2",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S2",
+            "S3"
+          ],
+          [
+            "S4",
+            "S5"
+          ]
+        ],
+        "group_sizes": [
+          2,
+          2
+        ],
+        "n_sources": 4,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S2",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S2",
+            "S4"
+          ],
+          [
+            "S3",
+            "S5"
+          ]
+        ],
+        "group_sizes": [
+          2,
+          2
+        ],
+        "n_sources": 4,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S2",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S2",
+            "S5"
+          ],
+          [
+            "S3",
+            "S4"
+          ]
+        ],
+        "group_sizes": [
+          2,
+          2
+        ],
+        "n_sources": 4,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S2",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S2",
+            "S3",
+            "S4"
+          ],
+          [
+            "S5"
+          ]
+        ],
+        "group_sizes": [
+          3,
+          1
+        ],
+        "n_sources": 4,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S2",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S2",
+            "S3",
+            "S5"
+          ],
+          [
+            "S4"
+          ]
+        ],
+        "group_sizes": [
+          3,
+          1
+        ],
+        "n_sources": 4,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S2",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S2",
+            "S4",
+            "S5"
+          ],
+          [
+            "S3"
+          ]
+        ],
+        "group_sizes": [
+          3,
+          1
+        ],
+        "n_sources": 4,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S1"
+          ],
+          [
+            "S2",
+            "S3",
+            "S4",
+            "S5"
+          ]
+        ],
+        "group_sizes": [
+          4,
+          1
+        ],
+        "n_sources": 5,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S2"
+          ],
+          [
+            "S3",
+            "S4",
+            "S5"
+          ]
+        ],
+        "group_sizes": [
+          3,
+          2
+        ],
+        "n_sources": 5,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S3"
+          ],
+          [
+            "S2",
+            "S4",
+            "S5"
+          ]
+        ],
+        "group_sizes": [
+          3,
+          2
+        ],
+        "n_sources": 5,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S4"
+          ],
+          [
+            "S2",
+            "S3",
+            "S5"
+          ]
+        ],
+        "group_sizes": [
+          3,
+          2
+        ],
+        "n_sources": 5,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S5"
+          ],
+          [
+            "S2",
+            "S3",
+            "S4"
+          ]
+        ],
+        "group_sizes": [
+          3,
+          2
+        ],
+        "n_sources": 5,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          [
+            "S4",
+            "S5"
+          ]
+        ],
+        "group_sizes": [
+          3,
+          2
+        ],
+        "n_sources": 5,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S2",
+            "S4"
+          ],
+          [
+            "S3",
+            "S5"
+          ]
+        ],
+        "group_sizes": [
+          3,
+          2
+        ],
+        "n_sources": 5,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S2",
+            "S5"
+          ],
+          [
+            "S3",
+            "S4"
+          ]
+        ],
+        "group_sizes": [
+          3,
+          2
+        ],
+        "n_sources": 5,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S3",
+            "S4"
+          ],
+          [
+            "S2",
+            "S5"
+          ]
+        ],
+        "group_sizes": [
+          3,
+          2
+        ],
+        "n_sources": 5,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S3",
+            "S5"
+          ],
+          [
+            "S2",
+            "S4"
+          ]
+        ],
+        "group_sizes": [
+          3,
+          2
+        ],
+        "n_sources": 5,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S4",
+            "S5"
+          ],
+          [
+            "S2",
+            "S3"
+          ]
+        ],
+        "group_sizes": [
+          3,
+          2
+        ],
+        "n_sources": 5,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S2",
+            "S3",
+            "S4"
+          ],
+          [
+            "S5"
+          ]
+        ],
+        "group_sizes": [
+          4,
+          1
+        ],
+        "n_sources": 5,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S2",
+            "S3",
+            "S5"
+          ],
+          [
+            "S4"
+          ]
+        ],
+        "group_sizes": [
+          4,
+          1
+        ],
+        "n_sources": 5,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S2",
+            "S4",
+            "S5"
+          ],
+          [
+            "S3"
+          ]
+        ],
+        "group_sizes": [
+          4,
+          1
+        ],
+        "n_sources": 5,
+        "n_distinct_actions": 2
+      },
+      {
+        "sources": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "groups": [
+          [
+            "S1",
+            "S3",
+            "S4",
+            "S5"
+          ],
+          [
+            "S2"
+          ]
+        ],
+        "group_sizes": [
+          4,
+          1
+        ],
+        "n_sources": 5,
+        "n_distinct_actions": 2
+      }
+    ]
+  },
+  "built_utc": "2026-10-12",
+  "builder": "ipb.splits.build",
+  "seed": 20260909,
+  "collection_fingerprint": {
+    "content": "sha256:3e49e7c4b1c2b25e149761a44e31a2378bd1c7f1858734b897b954d8ba1a72b9",
+    "full": "sha256:def95bbde5e3b5fe4ab47a2b1236b35b4d5071487cb87e23a4821fffcc9e83f2",
+    "n_scenarios": 1080
+  },
+  "parameters": {
+    "frame_min_share": 0.25,
+    "task_tau": 0.4,
+    "shared_values_min": 3,
+    "shared_suffix_min": 4,
+    "proportions": {
+      "train": 0.6,
+      "val": 0.15,
+      "test": 0.25
+    },
+    "domain_fold_min": 50,
+    "dry_run_n": 100,
+    "stage_two_slice_anchor": [
+      "S1",
+      "S2",
+      "S4"
+    ],
+    "source_inventory_from": "data/trials/02-composition.json"
+  }
+}

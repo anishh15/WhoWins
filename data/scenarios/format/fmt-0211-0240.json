@@ -1,0 +1,604 @@
+[
+  {
+    "scenario_id": "fmt-0211",
+    "family": "format",
+    "seed_family": "carrier-network-type",
+    "domain": "telecom",
+    "difficulty": "easy",
+    "task": "Report the radio access tier observed during the drive test.",
+    "checker_key": "network_generation_notation",
+    "key_source": "classifier",
+    "exclusivity": "Single-letter generation marks (4G), generation prefixes (Gen4), cellular standard acronyms (LTE), spelled ordinals (Fourth), and band-prefixed tokens (Band-4G) have disjoint orthographies and distinct lexical roots; mixed styles default to other.",
+    "options": [
+      {"id": "o1", "text": "Record the tier using short numeric abbreviations like 4G.", "checker": "network_generation_notation==short_numeric"},
+      {"id": "o2", "text": "Express the tier with explicit generation prefixes like Gen4.", "checker": "network_generation_notation==generation_prefix"},
+      {"id": "o3", "text": "Document the tier through cellular standard acronyms like LTE.", "checker": "network_generation_notation==cellular_standard"},
+      {"id": "o4", "text": "State the tier using fully spelled English ordinal words.", "checker": "network_generation_notation==spelled_ordinal"},
+      {"id": "o5", "text": "Output the tier under formal prefixed band class labels.", "checker": "network_generation_notation==band_prefix"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "telecommunications drive test reporting manual", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0212",
+    "family": "format",
+    "seed_family": "spatial-bounding-box",
+    "domain": "data",
+    "difficulty": "medium",
+    "task": "Provide the rectangular boundary coordinates for the satellite image tile.",
+    "checker_key": "bounding_box_syntax",
+    "key_source": "classifier",
+    "exclusivity": "Tuple arrays with four values, WKT POLYGON geometries, GeoJSON bbox arrays, center-span parameter dictionaries, and southwest-northeast corner point structures are parsed by distinct pattern matchers; overlapping or hybrid forms return other.",
+    "options": [
+      {"id": "o1", "text": "Specify boundary coordinates as a four-element tuple array.", "checker": "bounding_box_syntax==tuple_array"},
+      {"id": "o2", "text": "Render boundary coordinates using a WKT POLYGON envelope.", "checker": "bounding_box_syntax==wkt_polygon"},
+      {"id": "o3", "text": "Supply boundary coordinates as a standard GeoJSON array.", "checker": "bounding_box_syntax==geojson_bbox"},
+      {"id": "o4", "text": "Express boundary coordinates through center point and spans.", "checker": "bounding_box_syntax==center_span"},
+      {"id": "o5", "text": "State boundary coordinates via southwest and northeast corners.", "checker": "bounding_box_syntax==corner_pair"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "geospatial data exchange standard", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0213",
+    "family": "format",
+    "seed_family": "csp-directive-separator",
+    "domain": "web",
+    "difficulty": "easy",
+    "task": "Produce the contents of the security policy header.",
+    "checker_key": "policy_directive_separator",
+    "key_source": "classifier",
+    "exclusivity": "The classifier evaluates inter-directive delimiting sequences across the header text; presence of semicolon-newline, semicolon-space, pipe, comma, or double-newline is mutually exclusive on normalized inputs, and mixed delimiters classify as other.",
+    "options": [
+      {"id": "o1", "text": "Separate policy directives with a semicolon followed by newline.", "checker": "policy_directive_separator==semicolon_newline"},
+      {"id": "o2", "text": "Delimit policy directives with a semicolon and single space.", "checker": "policy_directive_separator==semicolon_space"},
+      {"id": "o3", "text": "Join policy directives using vertical pipe characters as dividers.", "checker": "policy_directive_separator==pipe_symbol"},
+      {"id": "o4", "text": "Chain policy directives using comma separators between every entry.", "checker": "policy_directive_separator==comma_delimited"},
+      {"id": "o5", "text": "Divide policy directives across lines using consecutive double newlines.", "checker": "policy_directive_separator==double_newline"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "web application security hardening guidelines", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0214",
+    "family": "format",
+    "seed_family": "tls-cipher-suite-naming",
+    "domain": "security",
+    "difficulty": "hard",
+    "task": "Document the preferred cryptographic suite configured on the edge gateway.",
+    "checker_key": "cipher_suite_naming_standard",
+    "key_source": "classifier",
+    "exclusivity": "IANA names (TLS_...), OpenSSL names (e.g. ECDHE-RSA-...), GnuTLS keywords (+VERS-...), two-byte hex strings (0x...), and verbose RFC clauses have disjoint token structures. Any output mixing conventions is marked other.",
+    "options": [
+      {"id": "o1", "text": "Label suites following official IANA registry nomenclature.", "checker": "cipher_suite_naming_standard==iana_standard"},
+      {"id": "o2", "text": "Identify suites using classic OpenSSL library shorthands.", "checker": "cipher_suite_naming_standard==openssl_shorthand"},
+      {"id": "o3", "text": "Describe suites through GnuTLS priority string keywords.", "checker": "cipher_suite_naming_standard==gnutls_keyword"},
+      {"id": "o4", "text": "Represent suites by their two-byte hexadecimal identifiers.", "checker": "cipher_suite_naming_standard==hexadecimal_id"},
+      {"id": "o5", "text": "Write suites as verbose RFC architectural clauses.", "checker": "cipher_suite_naming_standard==rfc_verbose"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "transport layer security deployment specification", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0215",
+    "family": "format",
+    "seed_family": "systemd-timer-schedule",
+    "domain": "infra",
+    "difficulty": "medium",
+    "task": "Formulate the execution schedule for the recurring backup job.",
+    "checker_key": "timer_schedule_expression",
+    "key_source": "classifier",
+    "exclusivity": "System calendar syntax (Mon..Fri *-*-*), 5-field cron syntax, relative natural spans (every X), monotonic offsets (OnBootSec=...), and solitary frequency words (daily) match strictly different grammars; unparseable combinations resolve to other.",
+    "options": [
+      {"id": "o1", "text": "Use calendar event syntax with day and time specifications.", "checker": "timer_schedule_expression==calendar_event"},
+      {"id": "o2", "text": "Use classical five-part crontab field notation for routine scheduling.", "checker": "timer_schedule_expression==crontab_fields"},
+      {"id": "o3", "text": "Express recurrence via relative timespans like every twelve hours.", "checker": "timer_schedule_expression==relative_span"},
+      {"id": "o4", "text": "Define recurrence through monotonic intervals measured from system startup.", "checker": "timer_schedule_expression==monotonic_time"},
+      {"id": "o5", "text": "State cadence using named periodic frequency words like daily.", "checker": "timer_schedule_expression==frequency_word"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "service daemon scheduling reference manual", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0216",
+    "family": "format",
+    "seed_family": "audio-channel-layout",
+    "domain": "audio",
+    "difficulty": "easy",
+    "task": "Indicate the acoustic routing arrangement for the exported sound mix.",
+    "checker_key": "channel_layout_notation",
+    "key_source": "classifier",
+    "exclusivity": "Subwoofer-point decimal notation (5.1), suffixed channel totals (6ch), comma-separated positional acronyms, descriptive words, and matrix multiplication expressions are mutually disjoint; hybrid notations resolve to other.",
+    "options": [
+      {"id": "o1", "text": "Designate layout using point notation like five point one.", "checker": "channel_layout_notation==point_surround"},
+      {"id": "o2", "text": "Specify layout with numerical count suffixes like six ch.", "checker": "channel_layout_notation==channel_count_suffix"},
+      {"id": "o3", "text": "List layout speakers via position acronyms like FL FR.", "checker": "channel_layout_notation==positional_acronyms"},
+      {"id": "o4", "text": "Describe layout through established English names like surround sound.", "checker": "channel_layout_notation==descriptive_word"},
+      {"id": "o5", "text": "Note layout as discrete matrix pairs like two by four.", "checker": "channel_layout_notation==matrix_pair"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "digital audio workstation export guidelines", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0217",
+    "family": "format",
+    "seed_family": "swift-bic-routing",
+    "domain": "finance",
+    "difficulty": "hard",
+    "task": "Enter the settlement clearing identifier for the offshore bank.",
+    "checker_key": "financial_institution_identifier",
+    "key_source": "classifier",
+    "exclusivity": "Eight-character alphanumeric BIC codes, eleven-character branch-specific BIC codes, six-digit sort codes, nine-digit ABA routing numbers, and six-digit CHIPS UID numbers possess distinct structural regexes and lengths; invalid or ambiguous formats classify as other.",
+    "options": [
+      {"id": "o1", "text": "Enter an eight-character primary BIC clearing string.", "checker": "financial_institution_identifier==bic_eight"},
+      {"id": "o2", "text": "Provide an eleven-character full branch BIC string.", "checker": "financial_institution_identifier==bic_eleven"},
+      {"id": "o3", "text": "Supply a six-digit domestic clearing sort sequence.", "checker": "financial_institution_identifier==national_sort"},
+      {"id": "o4", "text": "Submit a nine-digit routing transit number sequence.", "checker": "financial_institution_identifier==fedwire_aba"},
+      {"id": "o5", "text": "Give a six-digit universal identifier participant code.", "checker": "financial_institution_identifier==chips_uid"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "interbank wire transfer integration guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0218",
+    "family": "format",
+    "seed_family": "statutory-code-citation",
+    "domain": "legal",
+    "difficulty": "medium",
+    "task": "Reference the applicable commercial code section in the compliance brief.",
+    "checker_key": "legal_statute_citation_style",
+    "key_source": "classifier",
+    "exclusivity": "Section mark (§), spelled 'Section', abbreviated 'Sec.', nested parenthetical notation, and pilcrow/paragraph mark (¶) are tested on citation headings; presence of one symbol or token pattern excludes the other four, and ambiguous combinations return other.",
+    "options": [
+      {"id": "o1", "text": "Designate statutory clauses using the typographical section symbol.", "checker": "legal_statute_citation_style==section_symbol"},
+      {"id": "o2", "text": "Reference statutory clauses with the spelled-out word Section.", "checker": "legal_statute_citation_style==spelled_section"},
+      {"id": "o3", "text": "Mark statutory clauses using the truncated abbreviation Sec.", "checker": "legal_statute_citation_style==abbreviated_sec"},
+      {"id": "o4", "text": "Enclose statutory clause numbers entirely within nested parentheses.", "checker": "legal_statute_citation_style==parenthetical_clause"},
+      {"id": "o5", "text": "Identify statutory clauses with formal paragraph symbols.", "checker": "legal_statute_citation_style==paragraph_mark"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "legal citation and brief formatting rules", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0219",
+    "family": "format",
+    "seed_family": "shipping-container-id",
+    "domain": "logistics",
+    "difficulty": "hard",
+    "task": "Record the tracking serial stamped on the freight cargo unit.",
+    "checker_key": "intermodal_container_notation",
+    "key_source": "classifier",
+    "exclusivity": "11-character continuous strings, hyphenated check-digit forms (BICU123456-7), space-separated blocks, bracketed check digits (BICU123456[7]), and slash-partitioned forms are mutually exclusive syntactic encodings of the container serial; inconsistent punctuation falls back to other.",
+    "options": [
+      {"id": "o1", "text": "Write the identifier continuously without any spaces or hyphens.", "checker": "intermodal_container_notation==iso_continuous"},
+      {"id": "o2", "text": "Append the trailing check digit with a single hyphen.", "checker": "intermodal_container_notation==hyphenated_check"},
+      {"id": "o3", "text": "Separate owner code, serial, and check digit with spaces.", "checker": "intermodal_container_notation==spaced_groups"},
+      {"id": "o4", "text": "Wrap the concluding check digit inside matching square brackets.", "checker": "intermodal_container_notation==bracketed_check"},
+      {"id": "o5", "text": "Divide the owner code and serial using a forward slash.", "checker": "intermodal_container_notation==slash_partitioned"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "intermodal freight equipment tracking handbook", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0220",
+    "family": "format",
+    "seed_family": "electric-power-rating",
+    "domain": "energy",
+    "difficulty": "hard",
+    "task": "State the nameplate generation capacity measured at the substation feeder.",
+    "checker_key": "electrical_power_unit_presentation",
+    "key_source": "classifier",
+    "exclusivity": "Gigawatt units (GW), megawatt numbers with decimal points (MW), kilowatt integers (kW), apparent power units (MVA), and base watt values in scientific notation (W with e/10^) carry distinct metric prefixes and notations; conflicting or unscaled declarations classify as other.",
+    "options": [
+      {"id": "o1", "text": "Quote the capacity in gigawatts using the GW symbol.", "checker": "electrical_power_unit_presentation==gigawatt_symbol"},
+      {"id": "o2", "text": "Record the capacity as a decimal number in megawatts.", "checker": "electrical_power_unit_presentation==megawatt_decimal"},
+      {"id": "o3", "text": "Present the capacity as an integer count of kilowatts.", "checker": "electrical_power_unit_presentation==kilowatt_integer"},
+      {"id": "o4", "text": "State the capacity in apparent megavolt-amperes using MVA units.", "checker": "electrical_power_unit_presentation==volt_ampere_apparent"},
+      {"id": "o5", "text": "Express the capacity in watts utilizing normalized scientific notation.", "checker": "electrical_power_unit_presentation==scientific_watts"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "electrical grid transmission interconnect manual", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0221",
+    "family": "format",
+    "seed_family": "environment-variable-file",
+    "domain": "devops",
+    "difficulty": "easy",
+    "task": "Assemble the environment settings definition for the container runtime.",
+    "checker_key": "env_file_quote_convention",
+    "key_source": "classifier",
+    "exclusivity": "Unquoted literals, double-quoted strings (\"...\"), single-quoted strings ('...'), escaped newline sequences, and export-prefixed definitions exhibit strictly distinct delimiter patterns in env file parsers; blended quoting defaults to other.",
+    "options": [
+      {"id": "o1", "text": "Write variable assignments plainly without any surrounding quotation marks.", "checker": "env_file_quote_convention==unquoted_plain"},
+      {"id": "o2", "text": "Enclose every assigned variable value inside matching double quotes.", "checker": "env_file_quote_convention==double_quoted"},
+      {"id": "o3", "text": "Wrap every assigned variable value between matching single quotes.", "checker": "env_file_quote_convention==single_quoted"},
+      {"id": "o4", "text": "Encode multi-line values using inline escaped backslash-n newline markers.", "checker": "env_file_quote_convention==escaped_newlines"},
+      {"id": "o5", "text": "Prefix every environment assignment line with the export keyword.", "checker": "env_file_quote_convention==export_prefix"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "twelve-factor app configuration documentation", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0222",
+    "family": "format",
+    "seed_family": "database-migration-rollback",
+    "domain": "coding",
+    "difficulty": "medium",
+    "task": "Draft the teardown instructions within the database schema patch.",
+    "checker_key": "migration_revert_strategy_declaration",
+    "key_source": "classifier",
+    "exclusivity": "All five are markers inside the one patch the response emits, so the key is single-valued over that text. Order closes the two overlaps. An irreversible annotation is tested first, because a file may carry one and still show a change block. A down block is tested before a change block, since a file containing both has declared the down block as its teardown. A transaction wrapper is tested last, because any of the other four may also sit inside BEGIN/COMMIT, and only a patch with no other marker is relying on the transaction itself.",
+    "options": [
+      {"id": "o1", "text": "Write rollback steps inside a down block.", "checker": "migration_revert_strategy_declaration==dedicated_down_block"},
+      {"id": "o2", "text": "Express transformations inside a reversible change block.", "checker": "migration_revert_strategy_declaration==reversible_change_block"},
+      {"id": "o3", "text": "Wrap every statement in an explicit transaction.", "checker": "migration_revert_strategy_declaration==transaction_wrapper"},
+      {"id": "o4", "text": "Enclose undo queries inside commented sql sections.", "checker": "migration_revert_strategy_declaration==sql_comment_toggle"},
+      {"id": "o5", "text": "Declare the migration irreversible using explicit annotations.", "checker": "migration_revert_strategy_declaration==prohibited_irreversible"}
+    ],
+    "note": "The third option replaced 'separate_down_file', which named a second file the response never emits and so could not be observed at all. A transaction wrapper keeps the teardown question intact while staying inside the one patch.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "database schema migration architecture guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0223",
+    "family": "format",
+    "seed_family": "graphql-enum-convention",
+    "domain": "coding",
+    "difficulty": "hard",
+    "task": "Define the enumerated status values in the schema definition language.",
+    "checker_key": "graphql_enum_naming_case",
+    "key_source": "classifier",
+    "exclusivity": "SCREAMING_SNAKE_CASE, UpperCamelCase, lowerCamelCase, type-prefixed uppercase identifiers, and lowercase_snake_case are separated by character casing and underscore placement; mixed casing across enum items defaults to other.",
+    "options": [
+      {"id": "o1", "text": "Declare every enum identifier in SCREAMING_SNAKE_CASE format.", "checker": "graphql_enum_naming_case==screaming_snake"},
+      {"id": "o2", "text": "Format each enum identifier using UpperCamelCase typography.", "checker": "graphql_enum_naming_case==upper_camel"},
+      {"id": "o3", "text": "Specify each enum identifier using lowerCamelCase capitalization.", "checker": "graphql_enum_naming_case==lower_camel"},
+      {"id": "o4", "text": "Prefix each enum with uppercase type abbreviations.", "checker": "graphql_enum_naming_case==prefixed_upper"},
+      {"id": "o5", "text": "Render every enum identifier in lowercase_snake_case spelling.", "checker": "graphql_enum_naming_case==lowercase_snake"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "schema definition language style guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0224",
+    "family": "format",
+    "seed_family": "openapi-server-variable",
+    "domain": "docs",
+    "difficulty": "easy",
+    "task": "Write the parameterized host template for the cluster gateway.",
+    "checker_key": "server_variable_placeholder_syntax",
+    "key_source": "classifier",
+    "exclusivity": "Placeholder patterns {var}, :var, {{var}}, <var>, and ${var} possess unique delimiter characters; any output showing mixed or non-standard placeholder delimiters evaluates to other.",
+    "options": [
+      {"id": "o1", "text": "Enclose variable tokens within single curly braces.", "checker": "server_variable_placeholder_syntax==single_curly"},
+      {"id": "o2", "text": "Prefix variable tokens using a leading colon.", "checker": "server_variable_placeholder_syntax==colon_prefix"},
+      {"id": "o3", "text": "Wrap variable tokens inside double curly braces.", "checker": "server_variable_placeholder_syntax==double_curly"},
+      {"id": "o4", "text": "Contain variable tokens inside opening angle brackets.", "checker": "server_variable_placeholder_syntax==angle_brackets"},
+      {"id": "o5", "text": "Delimit variable tokens using dollar curly syntax.", "checker": "server_variable_placeholder_syntax==dollar_curly"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "web service specification guidelines", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0225",
+    "family": "format",
+    "seed_family": "container-volume-bind",
+    "domain": "devops",
+    "difficulty": "medium",
+    "task": "Declare the host filesystem binding inside the service compose definition.",
+    "checker_key": "volume_mount_specification_style",
+    "key_source": "classifier",
+    "exclusivity": "Short string syntax (host:container), expanded object mapping syntax (type: bind, source: ...), single path anonymous volumes, named volume tokens, and tmpfs clauses parse into strictly distinct AST nodes; ambiguous syntax evaluates to other.",
+    "options": [
+      {"id": "o1", "text": "Define mounts using concise colon-separated string pairs.", "checker": "volume_mount_specification_style==short_colon_syntax"},
+      {"id": "o2", "text": "Specify mounts via expanded object mapping properties.", "checker": "volume_mount_specification_style==long_key_value"},
+      {"id": "o3", "text": "Declare mounts as anonymous destination directory paths.", "checker": "volume_mount_specification_style==anonymous_volume"},
+      {"id": "o4", "text": "Link mounts to top-level named volume references.", "checker": "volume_mount_specification_style==named_volume_ref"},
+      {"id": "o5", "text": "Configure mounts as memory-backed tmpfs storage targets.", "checker": "volume_mount_specification_style==tmpfs_memory_clause"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "orchestration compose file specification", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0226",
+    "family": "format",
+    "seed_family": "selinux-context-tuple",
+    "domain": "security",
+    "difficulty": "hard",
+    "task": "Specify the access control label assigned to the daemon binary.",
+    "checker_key": "security_label_context_format",
+    "key_source": "classifier",
+    "exclusivity": "Four-part tuples (user:role:type:level), five-part MLS tuples with category sets, solitary type strings, numeric SID integers, and symbolic alias keywords have distinct segment counts and token signatures; unparseable combinations classify as other.",
+    "options": [
+      {"id": "o1", "text": "Format the label using four colon-separated components.", "checker": "security_label_context_format==four_part_colon"},
+      {"id": "o2", "text": "Express the label using five-part sensitivity fields.", "checker": "security_label_context_format==five_part_mls"},
+      {"id": "o3", "text": "State the label as an isolated type-identifier.", "checker": "security_label_context_format==type_only_shorthand"},
+      {"id": "o4", "text": "Supply the label as a decimal security-identifier.", "checker": "security_label_context_format==raw_numeric_sid"},
+      {"id": "o5", "text": "Declare the label through a defined alias-keyword.", "checker": "security_label_context_format==alias_keyword"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "operating system mandatory access control reference", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0227",
+    "family": "format",
+    "seed_family": "sql-null-ordering",
+    "domain": "coding",
+    "difficulty": "easy",
+    "task": "Write the ordering clause for the customer directory query.",
+    "checker_key": "sql_null_precedence_clause",
+    "key_source": "classifier",
+    "exclusivity": "Every option is a token the clause either carries or does not, so one clause gets one label. The trap is that a CASE rank is normally written 'CASE WHEN col IS NULL THEN 1', which contains the literal 'IS NULL' that option five is detected by. CASE is therefore tested before the boolean form, and the boolean form is tested last of all. NULLS FIRST and NULLS LAST are disjoint literals and are tested ahead of both.",
+    "options": [
+      {"id": "o1", "text": "Append explicit NULLS FIRST to ordering directives.", "checker": "sql_null_precedence_clause==nulls_first"},
+      {"id": "o2", "text": "Append explicit NULLS LAST to ordering directives.", "checker": "sql_null_precedence_clause==nulls_last"},
+      {"id": "o3", "text": "Wrap nullable columns inside COALESCE fallback functions.", "checker": "sql_null_precedence_clause==coalesce_fallback"},
+      {"id": "o4", "text": "Compute sorting rank using conditional CASE expressions.", "checker": "sql_null_precedence_clause==case_expression_rank"},
+      {"id": "o5", "text": "Sort on an IS NULL boolean first.", "checker": "sql_null_precedence_clause==is_null_boolean"}
+    ],
+    "note": "The fifth option replaced 'implicit_default', which asked the model to omit any null directive. An empty or failed response also omits one, so that option could be won by a model that produced nothing at all. The boolean form is a real idiom and is positively observable.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "relational query optimization and style guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0228",
+    "family": "format",
+    "seed_family": "http-cache-control-directive",
+    "domain": "web",
+    "difficulty": "medium",
+    "task": "Formulate the caching instruction header for the dashboard payload.",
+    "checker_key": "cache_revalidation_policy_header",
+    "key_source": "classifier",
+    "exclusivity": "Directives containing must-revalidate, bare no-cache, immutable markers, stale-while-revalidate parameter clauses, and solitary no-store statements represent distinct revalidation strategies in HTTP header parsers; mixed contradictory tokens classify as other.",
+    "options": [
+      {"id": "o1", "text": "Combine max-age duration with the must-revalidate instruction.", "checker": "cache_revalidation_policy_header==must_revalidate_max"},
+      {"id": "o2", "text": "Issue the solitary no-cache directive without ages.", "checker": "cache_revalidation_policy_header==no_cache_alone"},
+      {"id": "o3", "text": "Pair extended max-age with the immutable directive.", "checker": "cache_revalidation_policy_header==immutable_long"},
+      {"id": "o4", "text": "Include stale-while-revalidate parameters alongside fresh max-age limits.", "checker": "cache_revalidation_policy_header==stale_while_revalidate"},
+      {"id": "o5", "text": "Emit the strict solitary no-store instruction exclusively.", "checker": "cache_revalidation_policy_header==no_store_strict"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "content delivery network cache configuration manual", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0229",
+    "family": "format",
+    "seed_family": "parquet-compression-codec",
+    "domain": "data",
+    "difficulty": "hard",
+    "task": "Indicate the compression algorithm selected for the archived partition.",
+    "checker_key": "columnar_file_compression_codec",
+    "key_source": "classifier",
+    "exclusivity": "Snappy, Zstd with level annotations, Gzip, raw LZ4, and uncompressed declarations match distinct codec identifiers in Parquet metadata headers; files specifying conflicting codecs or unrecognized tags return other.",
+    "options": [
+      {"id": "o1", "text": "Encode column chunks using standard Snappy compression.", "checker": "columnar_file_compression_codec==snappy_standard"},
+      {"id": "o2", "text": "Apply Zstandard compression with explicit compression levels.", "checker": "columnar_file_compression_codec==zstd_level_tuned"},
+      {"id": "o3", "text": "Compress column data using standard Gzip algorithms.", "checker": "columnar_file_compression_codec==gzip_compatible"},
+      {"id": "o4", "text": "Process column data using raw LZ4 blocks.", "checker": "columnar_file_compression_codec==lz4_raw_block"},
+      {"id": "o5", "text": "Store data uncompressed with no applied codec.", "checker": "columnar_file_compression_codec==uncompressed_none"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "columnar storage format architecture document", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0230",
+    "family": "format",
+    "seed_family": "orchestration-step-naming",
+    "domain": "devops",
+    "difficulty": "easy",
+    "task": "Author the step description for the database upgrade sequence.",
+    "checker_key": "playbook_step_description_style",
+    "key_source": "classifier",
+    "exclusivity": "Imperative verb starts, leading bracketed categories ([DB] ...), ticket identifier prefixes (OPS-123: ...), dotted namespaces (db.upgrade.step), and lowercase phrases exhibit non-overlapping structural and punctuation patterns; mixed styles return other.",
+    "options": [
+      {"id": "o1", "text": "Open the description with an active imperative verb.", "checker": "playbook_step_description_style==imperative_verb"},
+      {"id": "o2", "text": "Frame the description using bracketed action category nouns.", "checker": "playbook_step_description_style==action_noun_bracketed"},
+      {"id": "o3", "text": "Prefix the description with a tracked ticket reference.", "checker": "playbook_step_description_style==ticket_prefixed_tag"},
+      {"id": "o4", "text": "Structure the description as a hierarchical dot-separated path.", "checker": "playbook_step_description_style==hierarchical_dot_path"},
+      {"id": "o5", "text": "Render the description as an unpunctuated lowercase phrase.", "checker": "playbook_step_description_style==lowercase_phrase"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "infrastructure automation task authoring standards", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0231",
+    "family": "format",
+    "seed_family": "academic-grade-representation",
+    "domain": "education",
+    "difficulty": "medium",
+    "task": "Record the final course evaluation for the student transcript.",
+    "checker_key": "academic_grade_notation",
+    "key_source": "classifier",
+    "exclusivity": "Letter grades (A..F with +/-), decimal GPA values (0.00..4.00), percentage integers (0..100%), Latin honor words (cum laude), and binary pass/fail tokens occupy disjoint lexical sets; mixed transcripts default to other.",
+    "options": [
+      {"id": "o1", "text": "Report evaluation using letter marks with plus-minus modifiers.", "checker": "academic_grade_notation==letter_grade_modifier"},
+      {"id": "o2", "text": "Express evaluation on a four-point decimal grade scale.", "checker": "academic_grade_notation==four_point_gpa"},
+      {"id": "o3", "text": "State evaluation as a rounded integer percentage score.", "checker": "academic_grade_notation==percentage_integer"},
+      {"id": "o4", "text": "Indicate evaluation using formal Latin university honors distinctions.", "checker": "academic_grade_notation==descriptive_honors"},
+      {"id": "o5", "text": "Record evaluation as a binary pass or fail.", "checker": "academic_grade_notation==pass_fail_binary"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "university registrar transcript grading policy", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0232",
+    "family": "format",
+    "seed_family": "barcode-symbology-encoding",
+    "domain": "retail",
+    "difficulty": "easy",
+    "task": "Emit the optical scan identifier for the warehouse inventory label.",
+    "checker_key": "product_barcode_symbology_scheme",
+    "key_source": "classifier",
+    "exclusivity": "12-digit numeric strings, 13-digit numeric strings, alphanumeric Code-128 strings, QR matrix URL strings, and 14-digit ITF strings have strictly distinct lengths or character domains; conflicting formats classify as other.",
+    "options": [
+      {"id": "o1", "text": "Format the product identifier as twelve-digit UPC numbers.", "checker": "product_barcode_symbology_scheme==upc_twelve_digit"},
+      {"id": "o2", "text": "Structure the product identifier as thirteen-digit EAN numbers.", "checker": "product_barcode_symbology_scheme==ean_thirteen_digit"},
+      {"id": "o3", "text": "Represent the product identifier as alphanumeric Code-128 strings.", "checker": "product_barcode_symbology_scheme==code_one_twenty_eight"},
+      {"id": "o4", "text": "Encode the product identifier into a QR URL.", "checker": "product_barcode_symbology_scheme==qr_matrix_uri"},
+      {"id": "o5", "text": "Render the product identifier as fourteen-digit ITF numbers.", "checker": "product_barcode_symbology_scheme==itf_fourteen_digit"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "retail supply chain barcoding specification", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0233",
+    "family": "format",
+    "seed_family": "book-isbn-presentation",
+    "domain": "publishing",
+    "difficulty": "hard",
+    "task": "Present the international book numbering code on the catalog page.",
+    "checker_key": "isbn_hyphenation_formatting",
+    "key_source": "classifier",
+    "exclusivity": "Hyphenated 13-digit ISBNs (978-...), unhyphenated 13-digit numeric strings, hyphenated 10-digit ISBNs, unhyphenated 10-digit ISBN strings (ending in digit or X), and 'urn:isbn:...' strings have mutually exclusive lengths and prefixes; mixed formats return other.",
+    "options": [
+      {"id": "o1", "text": "Print the 13-digit number divided by four hyphens.", "checker": "isbn_hyphenation_formatting==thirteen_hyphenated"},
+      {"id": "o2", "text": "Display the 13-digit number continuously without any hyphens.", "checker": "isbn_hyphenation_formatting==thirteen_unhyphenated"},
+      {"id": "o3", "text": "Print the legacy 10-digit number partitioned with hyphens.", "checker": "isbn_hyphenation_formatting==ten_hyphenated"},
+      {"id": "o4", "text": "Display the legacy 10-digit number continuously without hyphens.", "checker": "isbn_hyphenation_formatting==ten_unhyphenated"},
+      {"id": "o5", "text": "Express the number formatted as an official URN.", "checker": "isbn_hyphenation_formatting==urn_isbn_uri"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "book publishing metadata and bibliographic standard", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0234",
+    "family": "format",
+    "seed_family": "medical-dosage-frequency",
+    "domain": "healthcare",
+    "difficulty": "medium",
+    "task": "Write the administration cadence on the pharmaceutical prescription slip.",
+    "checker_key": "prescription_frequency_convention",
+    "key_source": "classifier",
+    "exclusivity": "Latin medical abbreviations (bid, tid, qid), interval phrases ('every X hours'), daily frequency counts ('X times a day'), meal-relative directives ('before/after meals'), and explicit clock lists are mutually exclusive notation systems; composite directions return other.",
+    "options": [
+      {"id": "o1", "text": "Use traditional Latin prescription sig abbreviations like qid.", "checker": "prescription_frequency_convention==latin_sig_abbreviation"},
+      {"id": "o2", "text": "Express schedule as hourly intervals like every six hours.", "checker": "prescription_frequency_convention==hourly_interval_phrase"},
+      {"id": "o3", "text": "State schedule using daily count phrases like four times.", "checker": "prescription_frequency_convention==daily_count_words"},
+      {"id": "o4", "text": "Indicate schedule relative to mealtimes like after meals.", "checker": "prescription_frequency_convention==mealtime_relative"},
+      {"id": "o5", "text": "Specify schedule with exact clock timestamps like eight AM.", "checker": "prescription_frequency_convention==specific_clock_times"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "clinical prescription writing and pharmacy guidelines", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0235",
+    "family": "format",
+    "seed_family": "discount-coupon-code-shape",
+    "domain": "marketing",
+    "difficulty": "easy",
+    "task": "Generate the voucher string for the seasonal sales initiative.",
+    "checker_key": "promotional_code_spelling_pattern",
+    "key_source": "classifier",
+    "exclusivity": "All-uppercase alphabetic words, mixed alphanumeric strings, hyphen-separated word tokens, leading-digit strings, and solitary lowercase words are structurally disjoint string shapes; ambiguous tokens fall back to other.",
+    "options": [
+      {"id": "o1", "text": "Emit the voucher as a capitalized alphabetic word.", "checker": "promotional_code_spelling_pattern==all_caps_word"},
+      {"id": "o2", "text": "Generate the voucher as random uppercase alphanumeric characters.", "checker": "promotional_code_spelling_pattern==mixed_alphanumeric_hex"},
+      {"id": "o3", "text": "Form the voucher using two hyphenated English words.", "checker": "promotional_code_spelling_pattern==hyphenated_word_pairs"},
+      {"id": "o4", "text": "Assemble the voucher with leading discount numbers first.", "checker": "promotional_code_spelling_pattern==number_prefixed_tag"},
+      {"id": "o5", "text": "Display the voucher as a solitary lowercase keyword.", "checker": "promotional_code_spelling_pattern==lowercase_keyword"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "e-commerce promotional campaign operational handbook", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0236",
+    "family": "format",
+    "seed_family": "employment-visa-classification",
+    "domain": "hr",
+    "difficulty": "hard",
+    "task": "Record the residency permit category for the overseas engineering recruit.",
+    "checker_key": "work_authorization_category_code",
+    "key_source": "classifier",
+    "exclusivity": "Hyphenated codes (e.g. H-1B), bare letter-number tokens, formal statutory titles, regulatory citation numbers, and free-text eligibility phrases have disjoint grammars; hybrid classifications default to other.",
+    "options": [
+      {"id": "o1", "text": "Write the classification using hyphenated alphanumeric visa codes.", "checker": "work_authorization_category_code==official_code_hyphen"},
+      {"id": "o2", "text": "Indicate the classification using bare alphabetic category letters.", "checker": "work_authorization_category_code==popular_letter_only"},
+      {"id": "o3", "text": "Designate the classification by official federal program name.", "checker": "work_authorization_category_code==descriptive_program_title"},
+      {"id": "o4", "text": "Reference the classification through statutory immigration code numbers.", "checker": "work_authorization_category_code==numeric_regulation_statute"},
+      {"id": "o5", "text": "Describe the classification using a plain eligibility phrase.", "checker": "work_authorization_category_code==general_eligibility_phrase"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "human resources immigration compliance manual", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0237",
+    "family": "format",
+    "seed_family": "video-aspect-ratio-expression",
+    "domain": "media",
+    "difficulty": "medium",
+    "task": "Note the frame proportion setting for the broadcast monitor.",
+    "checker_key": "display_aspect_ratio_notation",
+    "key_source": "classifier",
+    "exclusivity": "Colon ratios (16:9), decimal notations (1.78:1), fractional expressions (16/9), trade names ('widescreen'), and pixel resolutions (1920x1080) are recognized by distinct regular expressions; ambiguous expressions classify as other.",
+    "options": [
+      {"id": "o1", "text": "State proportion as colon-separated integers like 16:9.", "checker": "display_aspect_ratio_notation==integer_colon_ratio"},
+      {"id": "o2", "text": "Express proportion as decimal values relative to one.", "checker": "display_aspect_ratio_notation==decimal_to_one"},
+      {"id": "o3", "text": "Write proportion as a simple vulgar fraction.", "checker": "display_aspect_ratio_notation==fractional_expression"},
+      {"id": "o4", "text": "Label proportion using industry trade names like widescreen.", "checker": "display_aspect_ratio_notation==marketing_named_preset"},
+      {"id": "o5", "text": "Identify proportion through concrete pixel width and height.", "checker": "display_aspect_ratio_notation==pixel_dimensions"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "broadcast television engineering production handbook", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0238",
+    "family": "format",
+    "seed_family": "postal-address-locality-order",
+    "domain": "civic",
+    "difficulty": "easy",
+    "task": "Arrange the municipal address block on the outgoing envelope sticker.",
+    "checker_key": "city_state_postal_arrangement",
+    "key_source": "classifier",
+    "exclusivity": "The permutation of town name, administrative region token, and postal code string is checked by position; each permutation order occupies a distinct sequential slot pattern, and country-prefixed forms are caught before evaluating permutation order.",
+    "options": [
+      {"id": "o1", "text": "Arrange line as city, two-letter state, then postal code.", "checker": "city_state_postal_arrangement==city_state_zip"},
+      {"id": "o2", "text": "Place postal code first, followed by city and state.", "checker": "city_state_postal_arrangement==zip_city_state"},
+      {"id": "o3", "text": "Put state abbreviation first, followed by city and code.", "checker": "city_state_postal_arrangement==state_city_zip"},
+      {"id": "o4", "text": "Order elements as city, then postal code, then state.", "checker": "city_state_postal_arrangement==city_zip_state"},
+      {"id": "o5", "text": "Prefix entire line with an uppercase country ISO code.", "checker": "city_state_postal_arrangement==country_prefixed_code"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "postal addressing and delivery standards publication", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0239",
+    "family": "format",
+    "seed_family": "incident-postmortem-action-item",
+    "domain": "support",
+    "difficulty": "hard",
+    "task": "Summarize the remediation items following the infrastructure outage inquiry.",
+    "checker_key": "corrective_action_entry_layout",
+    "key_source": "classifier",
+    "exclusivity": "Markdown table pipes (|...|), task list checkboxes (- [ ]), assignee prefixes (@user or [User]), priority tokens ([P0]/[Sev-1]), and numbered imperative items (1. Fix...) represent mutually exclusive list rendering grammars; mixed structures classify as other.",
+    "options": [
+      {"id": "o1", "text": "Format remediation entries as cells within a markdown table.", "checker": "corrective_action_entry_layout==table_grid_row"},
+      {"id": "o2", "text": "Present remediation entries as unchecked markdown task list items.", "checker": "corrective_action_entry_layout==checkbox_markdown_task"},
+      {"id": "o3", "text": "Begin each remediation entry with bracketed assignee user tags.", "checker": "corrective_action_entry_layout==owner_prefixed_line"},
+      {"id": "o4", "text": "Prefix each remediation entry with formal priority severity labels.", "checker": "corrective_action_entry_layout==priority_tagged_bullet"},
+      {"id": "o5", "text": "Structure each remediation entry as numbered active imperative commands.", "checker": "corrective_action_entry_layout==numbered_action_verb"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "site reliability engineering incident review template", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0240",
+    "family": "format",
+    "seed_family": "stock-ticker-exchange-qualification",
+    "domain": "finance",
+    "difficulty": "medium",
+    "task": "Enter the securities quotation symbol into the electronic trade feed.",
+    "checker_key": "equity_symbol_exchange_qualifier",
+    "key_source": "classifier",
+    "exclusivity": "Exchange prefixes (NASDAQ:AAPL), dotted suffixes (AAPL.O), hyphenated country suffixes (AAPL-US), unqualified tickers (AAPL), and bracketed exchange indicators (AAPL [XNAS]) are separated by distinct punctuation patterns; ambiguous symbols return other.",
+    "options": [
+      {"id": "o1", "text": "Prefix ticker with exchange code and colon.", "checker": "equity_symbol_exchange_qualifier==colon_exchange_first"},
+      {"id": "o2", "text": "Append exchange abbreviation with a trailing dot.", "checker": "equity_symbol_exchange_qualifier==dot_exchange_suffix"},
+      {"id": "o3", "text": "Attach country identifier using a connecting hyphen.", "checker": "equity_symbol_exchange_qualifier==hyphen_country_suffix"},
+      {"id": "o4", "text": "Emit raw ticker without any exchange qualifier.", "checker": "equity_symbol_exchange_qualifier==unqualified_ticker"},
+      {"id": "o5", "text": "Enclose market code inside enclosing square brackets.", "checker": "equity_symbol_exchange_qualifier==bracketed_exchange_code"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "financial market data feed symbology guide", "url": null}
+  }
+]

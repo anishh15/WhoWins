@@ -1,0 +1,158 @@
+[
+  {
+    "_cell_header": {
+      "cell": "load_vs_conflict",
+      "carries": "Does accuracy fall because instructions CONFLICT, or just because there are MANY of them?",
+      "why_this_cell_exists": "The reading that motivated the original project was wrong. ManyIH's six-tier variant contains zero conflicts and models already score only 59–70% on it, a sample passes only if every active instruction is satisfied AND the unit tests pass, and the 99% figure came from a different benchmark. Per-conflict success works out at about 98.5%. There is no resolution collapse. This cell turns that error into a measurement.",
+      "k_means": "k is the number of CONFLICT GROUPS, not the number of conflicting instructions. n=12, k=6 is six separate two-way conflicts. Group size is held at 2 everywhere except load-10, which holds the number of conflicting instructions roughly fixed and widens the groups instead — that is what separates a per-choice failure from a whole-task conjunction failure.",
+      "source_is_held_constant": "Every instruction arrives in one system message. Source is NOT a variable in this cell, and that matches the benchmark this cell is arguing with: all of ManyIH's conflicts sit inside a single chat message. Cross-source conflict is the composition cell's job.",
+      "token_matching": "At each n, the instruction list is the same length in tokens across every k. A conflicting instruction is swapped in for a length-matched filler, so nothing about prompt size changes when conflict does. Measured with the Qwen2.5 tokenizer: 10 tokens at n=2, 25 at n=4, 59 at n=8, 96 at n=12. The two fillers that stand in for a two-way tool conflict, 'Mention atlas-core.' and 'Check before you write.', are five tokens each, as the two tool lines are.",
+      "predictions": {
+        "conflict_account": "accuracy depends on k and on where the conflicting spans sit",
+        "load_account": "accuracy depends on n regardless of k"
+      },
+      "component_scenarios": ["tool-0001", "path-0008", "fmt-0009", "fmt-0003", "fmt-0005", "fmt-0007"],
+      "task": "Run the required repo check for atlas-core, then write the release note file.",
+      "outcome_axes": {
+        "behaviour": ["per_group_choice", "partial_or_multiple", "no_action", "invalid_output"],
+        "communication": ["flagged_conflict", "hedged", "silent"]
+      },
+      "scoring_note": "Every conflict group is scored separately AND the whole task is scored as a conjunction. Reporting only the conjunction is exactly the mistake that produced the original misreading."
+    }
+  },
+  {
+    "trial_id": "load-01", "cell": "load_vs_conflict", "n_instructions": 2, "k_conflict_groups": 0, "group_size": null,
+    "renderer": "plain_chat",
+    "messages": [
+      {"role": "system", "content": "Mention atlas-core.\nCheck before you write."},
+      {"role": "user",   "content": "Task: Run the required repo check for atlas-core, then write the release note file."}
+    ],
+    "conflict_groups": [],
+    "filler_used": ["F13", "F14"],
+    "ground_truth": {"kind": "policy_defined", "intended_winner": "all_instructions_satisfiable", "policy": "Nothing conflicts. Every instruction can be obeyed at once."},
+    "notes": "Floor control. Whatever is lost here is task difficulty, not conflict and not load."
+  },
+  {
+    "trial_id": "load-02", "cell": "load_vs_conflict", "n_instructions": 2, "k_conflict_groups": 1, "group_size": 2,
+    "renderer": "plain_chat",
+    "messages": [
+      {"role": "system", "content": "Call check_style first.\nCall check_types first."},
+      {"role": "user",   "content": "Task: Run the required repo check for atlas-core, then write the release note file."}
+    ],
+    "conflict_groups": [{"group": "G1", "scenario_id": "tool-0001", "members": ["o1", "o2"], "checkers": {"o1": "first_tool_call==check_style", "o2": "first_tool_call==check_types"}}],
+    "filler_used": [],
+    "ground_truth": {"kind": "revealed_only", "intended_winner": null, "policy": "Same source both sides, so no policy picks a winner. We record which one was obeyed."},
+    "notes": "The pure same-channel conflict at minimum load. Compare against load-01 at matched length to isolate conflict from everything else."
+  },
+  {
+    "trial_id": "load-03", "cell": "load_vs_conflict", "n_instructions": 4, "k_conflict_groups": 0, "group_size": null,
+    "renderer": "plain_chat",
+    "messages": [
+      {"role": "system", "content": "Keep the reply under two hundred words.\nMention atlas-core.\nCheck before you write.\nKeep every sentence under forty words."},
+      {"role": "user",   "content": "Task: Run the required repo check for atlas-core, then write the release note file."}
+    ],
+    "conflict_groups": [],
+    "filler_used": ["F1", "F13", "F14", "F15"],
+    "ground_truth": {"kind": "policy_defined", "intended_winner": "all_instructions_satisfiable", "policy": "Nothing conflicts."},
+    "notes": "Load rises, conflict stays at zero."
+  },
+  {
+    "trial_id": "load-04", "cell": "load_vs_conflict", "n_instructions": 4, "k_conflict_groups": 1, "group_size": 2,
+    "renderer": "plain_chat",
+    "messages": [
+      {"role": "system", "content": "Keep the reply under two hundred words.\nCall check_style first.\nCall check_types first.\nKeep every sentence under forty words."},
+      {"role": "user",   "content": "Task: Run the required repo check for atlas-core, then write the release note file."}
+    ],
+    "conflict_groups": [{"group": "G1", "scenario_id": "tool-0001", "members": ["o1", "o2"], "checkers": {"o1": "first_tool_call==check_style", "o2": "first_tool_call==check_types"}}],
+    "filler_used": ["F1", "F15"],
+    "ground_truth": {"kind": "revealed_only", "intended_winner": null, "policy": "None declared for the conflicting pair; the two filler instructions are scored as satisfied or not."},
+    "notes": "Length-matched to load-03. Two of the four instructions were swapped for the conflicting pair, and nothing else moved."
+  },
+  {
+    "trial_id": "load-05", "cell": "load_vs_conflict", "n_instructions": 8, "k_conflict_groups": 0, "group_size": null,
+    "renderer": "plain_chat",
+    "messages": [
+      {"role": "system", "content": "Keep the reply under two hundred words.\nWrite the release note into a file.\nMention atlas-core.\nCheck before you write.\nName the note file after atlas-core.\nKeep the release note under ten lines.\nReport the elapsed time at the end.\nSkip the changelog entry for this run."},
+      {"role": "user",   "content": "Task: Run the required repo check for atlas-core, then write the release note file."}
+    ],
+    "conflict_groups": [],
+    "filler_used": ["F1", "F16", "F13", "F14", "F17", "F18", "F8", "F5"],
+    "ground_truth": {"kind": "policy_defined", "intended_winner": "all_instructions_satisfiable", "policy": "Nothing conflicts."},
+    "notes": "Eight compatible instructions. If accuracy is already falling here, the load account is doing the work and conflict is not the story."
+  },
+  {
+    "trial_id": "load-06", "cell": "load_vs_conflict", "n_instructions": 8, "k_conflict_groups": 1, "group_size": 2,
+    "renderer": "plain_chat",
+    "messages": [
+      {"role": "system", "content": "Keep the reply under two hundred words.\nWrite the release note into a file.\nCall check_style first.\nCall check_types first.\nName the note file after atlas-core.\nKeep the release note under ten lines.\nReport the elapsed time at the end.\nSkip the changelog entry for this run."},
+      {"role": "user",   "content": "Task: Run the required repo check for atlas-core, then write the release note file."}
+    ],
+    "conflict_groups": [{"group": "G1", "scenario_id": "tool-0001", "members": ["o1", "o2"], "checkers": {"o1": "first_tool_call==check_style", "o2": "first_tool_call==check_types"}}],
+    "filler_used": ["F1", "F16", "F17", "F18", "F8", "F5"],
+    "ground_truth": {"kind": "revealed_only", "intended_winner": null, "policy": "None declared for the conflicting pair."},
+    "notes": "One conflict buried in eight instructions. Position of the conflicting span inside the list is itself rotated across the full cell, because the conflict account predicts it matters and the load account says it should not."
+  },
+  {
+    "trial_id": "load-07", "cell": "load_vs_conflict", "n_instructions": 8, "k_conflict_groups": 3, "group_size": 2,
+    "renderer": "plain_chat",
+    "messages": [
+      {"role": "system", "content": "Call check_style first.\nCall check_types first.\nStage them in /scratch/a.\nStage them in /scratch/b.\nStart every item with a hyphen bullet.\nStart every item with an arabic number.\nSkip the changelog entry for this run.\nReport the elapsed time at the end."},
+      {"role": "user",   "content": "Task: Run the required repo check for atlas-core, then write the release note file."}
+    ],
+    "conflict_groups": [
+      {"group": "G1", "scenario_id": "tool-0001", "members": ["o1", "o2"], "checkers": {"o1": "first_tool_call==check_style", "o2": "first_tool_call==check_types"}},
+      {"group": "G2", "scenario_id": "path-0008", "members": ["o1", "o2"], "checkers": {"o1": "write_target==/scratch/a", "o2": "write_target==/scratch/b"}},
+      {"group": "G3", "scenario_id": "fmt-0009", "members": ["o1", "o3"], "checkers": {"o1": "list_marker==hyphen", "o3": "list_marker==arabic"}}
+    ],
+    "filler_used": ["F5", "F8"],
+    "ground_truth": {"kind": "revealed_only", "intended_winner": null, "policy": "None declared. Each group is scored separately; the conjunction is scored too, and reported separately."},
+    "notes": "Three independent conflicts at the same total length as load-05 and load-06. If each group is resolved at roughly the same rate as it is in isolation, precedence composes across INDEPENDENT conflicts — which is a different and weaker claim than composing across competitors inside one conflict."
+  },
+  {
+    "trial_id": "load-08", "cell": "load_vs_conflict", "n_instructions": 12, "k_conflict_groups": 1, "group_size": 2,
+    "renderer": "plain_chat",
+    "messages": [
+      {"role": "system", "content": "Keep the reply under two hundred words.\nWrite the release note into a file.\nSkip the changelog entry for this run.\nKeep every sentence in the release note under forty words.\nName the note file after atlas-core.\nKeep the release note under ten lines.\nCall check_style first.\nCall check_types first.\nReport the elapsed time at the end.\nMention atlas-core by name somewhere in your reply.\nRun the check before writing the note.\nName the check tool you ran."},
+      {"role": "user",   "content": "Task: Run the required repo check for atlas-core, then write the release note file."}
+    ],
+    "conflict_groups": [{"group": "G1", "scenario_id": "tool-0001", "members": ["o1", "o2"], "checkers": {"o1": "first_tool_call==check_style", "o2": "first_tool_call==check_types"}}],
+    "filler_used": ["F1", "F16", "F5", "F19", "F17", "F18", "F8", "F20", "F21", "F22"],
+    "ground_truth": {"kind": "revealed_only", "intended_winner": null, "policy": "None declared for the conflicting pair."},
+    "notes": "One conflict, maximum load. The single most informative cell in the grid: if resolution holds up here, load is the thing that hurts, not conflict."
+  },
+  {
+    "trial_id": "load-09", "cell": "load_vs_conflict", "n_instructions": 12, "k_conflict_groups": 6, "group_size": 2,
+    "renderer": "plain_chat",
+    "messages": [
+      {"role": "system", "content": "Call check_style first.\nCall check_types first.\nStage them in /scratch/a.\nStage them in /scratch/b.\nStart every item with a hyphen bullet.\nStart every item with an arabic number.\nWrite every date in ISO 8601 style.\nWrite every date in US slash style.\nSeparate the columns with commas.\nSeparate the columns with pipes.\nMark every section title as a level-1 heading.\nMark every section title as a bold line."},
+      {"role": "user",   "content": "Task: Run the required repo check for atlas-core, then write the release note file."}
+    ],
+    "conflict_groups": [
+      {"group": "G1", "scenario_id": "tool-0001", "members": ["o1", "o2"], "checkers": {"o1": "first_tool_call==check_style", "o2": "first_tool_call==check_types"}},
+      {"group": "G2", "scenario_id": "path-0008", "members": ["o1", "o2"], "checkers": {"o1": "write_target==/scratch/a", "o2": "write_target==/scratch/b"}},
+      {"group": "G3", "scenario_id": "fmt-0009", "members": ["o1", "o3"], "checkers": {"o1": "list_marker==hyphen", "o3": "list_marker==arabic"}},
+      {"group": "G4", "scenario_id": "fmt-0003", "members": ["o1", "o2"], "checkers": {"o1": "date_encoding==iso_8601", "o2": "date_encoding==us_slash"}},
+      {"group": "G5", "scenario_id": "fmt-0005", "members": ["o1", "o3"], "checkers": {"o1": "delimiter==comma", "o3": "delimiter==pipe"}},
+      {"group": "G6", "scenario_id": "fmt-0007", "members": ["o1", "o4"], "checkers": {"o1": "heading_style==h1", "o4": "heading_style==bold_line"}}
+    ],
+    "filler_used": [],
+    "ground_truth": {"kind": "revealed_only", "intended_winner": null, "policy": "None declared. Six groups, each scored separately, plus the conjunction."},
+    "notes": "Twelve instructions, all of them in conflict. This is roughly the shape people believe collapses. With six groups at 98.5% each, the conjunction alone predicts about 91% even with perfect independence — which is why the conjunction must never be reported as if it were a resolution rate."
+  },
+  {
+    "trial_id": "load-10", "cell": "load_vs_conflict", "n_instructions": 12, "k_conflict_groups": 3, "group_size": 3,
+    "renderer": "plain_chat",
+    "messages": [
+      {"role": "system", "content": "Call check_style first.\nCall check_types first.\nCall check_imports first.\nStage them in /scratch/a.\nStage them in /scratch/b.\nStage them in /scratch/c.\nStart every item with a hyphen bullet.\nStart every item with an arabic number.\nStart every item with a roman numeral.\nMention atlas-core by name somewhere in your reply.\nKeep every sentence in the release note under forty words.\nRun the repository check before you write the release note."},
+      {"role": "user",   "content": "Task: Run the required repo check for atlas-core, then write the release note file."}
+    ],
+    "conflict_groups": [
+      {"group": "G1", "scenario_id": "tool-0001", "members": ["o1", "o2", "o3"], "checkers": {"o1": "first_tool_call==check_style", "o2": "first_tool_call==check_types", "o3": "first_tool_call==check_imports"}},
+      {"group": "G2", "scenario_id": "path-0008", "members": ["o1", "o2", "o3"], "checkers": {"o1": "write_target==/scratch/a", "o2": "write_target==/scratch/b", "o3": "write_target==/scratch/c"}},
+      {"group": "G3", "scenario_id": "fmt-0009", "members": ["o1", "o3", "o4"], "checkers": {"o1": "list_marker==hyphen", "o3": "list_marker==arabic", "o4": "list_marker==roman"}}
+    ],
+    "filler_used": ["F20", "F19", "F23"],
+    "ground_truth": {"kind": "revealed_only", "intended_winner": null, "policy": "None declared."},
+    "notes": "Nine conflicting instructions in three groups of three, against load-09's twelve in six groups of two. Total length is matched. This contrast is the one that separates 'each choice got harder' from 'the task became a longer conjunction' — and it feeds the composition cell too, because the groups here are three-way."
+  }
+]

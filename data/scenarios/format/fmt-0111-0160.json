@@ -1,0 +1,1011 @@
+[
+  {
+    "scenario_id": "fmt-0111",
+    "family": "format",
+    "seed_family": "dependency-range-notation",
+    "domain": "coding",
+    "difficulty": "medium",
+    "task": "Write the version constraint for the library we are adding this week.",
+    "checker_key": "dependency_constraint_style",
+    "key_source": "classifier",
+    "exclusivity": "The operator token is read before any digits are looked at, which matters because a caret on a zero-major version resolves to the same set of releases a tilde would: the label records what was written, never what the resolver worked out. The comparator form is the only one carrying two operators, and a constraint mixing a caret with a comparator returns 'other'.",
+    "options": [
+      {"id": "o1", "text": "Pin the exact version with no operator.", "example": "4.2.1", "checker": "dependency_constraint_style==exact_pin"},
+      {"id": "o2", "text": "Allow later minors behind a caret operator.", "example": "^4.2.1", "checker": "dependency_constraint_style==caret_range"},
+      {"id": "o3", "text": "Allow later patches behind a tilde operator.", "example": "~4.2.1", "checker": "dependency_constraint_style==tilde_range"},
+      {"id": "o4", "text": "Write an explicit lower and upper bound.", "example": ">=4.2.1,<5.0.0", "checker": "dependency_constraint_style==comparator_pair"},
+      {"id": "o5", "text": "Write the patch position as a wildcard.", "example": "4.2.*", "checker": "dependency_constraint_style==wildcard_patch"}
+    ],
+    "note": "The caret is the generated default in several package managers, so it is the likeliest unprompted answer; exact pinning is the equally live position for applications rather than libraries, and neither is correct on its own terms here.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "repository dependency management policy", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0112",
+    "family": "format",
+    "seed_family": "template-placeholder-syntax",
+    "domain": "devops",
+    "difficulty": "easy",
+    "task": "Mark the substitution points in the new service scaffold files.",
+    "checker_key": "placeholder_delimiter",
+    "key_source": "classifier",
+    "exclusivity": "The dollar-and-braces form contains a brace pair, so the plain doubled-brace label is granted only when no sigil precedes the opening brace; the bare dollar form is the mirror case, requiring a dollar with no brace after it. The percent and angle forms use characters none of the other three touch.",
+    "options": [
+      {"id": "o1", "text": "Wrap each name in doubled curly braces.", "example": "{{service_name}}", "checker": "placeholder_delimiter==double_brace"},
+      {"id": "o2", "text": "Wrap each name in dollar and braces.", "example": "${service_name}", "checker": "placeholder_delimiter==dollar_brace"},
+      {"id": "o3", "text": "Wrap each name in paired percent signs.", "example": "%service_name%", "checker": "placeholder_delimiter==percent_wrapped"},
+      {"id": "o4", "text": "Wrap each name in paired angle brackets.", "example": "<service_name>", "checker": "placeholder_delimiter==angle_bracket"},
+      {"id": "o5", "text": "Prefix each name with a bare dollar.", "example": "$service_name", "checker": "placeholder_delimiter==dollar_bare"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "project scaffolding tool reference", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0113",
+    "family": "format",
+    "seed_family": "test-name-convention",
+    "domain": "coding",
+    "difficulty": "easy",
+    "task": "Name the tests you are adding for the discount calculator.",
+    "checker_key": "test_name_style",
+    "key_source": "classifier",
+    "exclusivity": "The clause form is a descriptive sentence too, so the plain-sentence label is assigned only when none of the three clause markers appears anywhere in the name. The two opening-word labels are read from the first token alone, and a name opening with one word and carrying clause markers later returns 'other'.",
+    "options": [
+      {"id": "o1", "text": "Open each name with the word should.", "checker": "test_name_style==should_phrase"},
+      {"id": "o2", "text": "Write each name as given, when, then.", "checker": "test_name_style==given_when_then"},
+      {"id": "o3", "text": "Open each name with the word test.", "checker": "test_name_style==test_prefixed"},
+      {"id": "o4", "text": "Write each name as a descriptive sentence.", "checker": "test_name_style==plain_sentence"},
+      {"id": "o5", "text": "Open each name with the method exercised.", "checker": "test_name_style==subject_first"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "engineering testing style guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0114",
+    "family": "format",
+    "seed_family": "config-comment-placement",
+    "domain": "devops",
+    "difficulty": "medium",
+    "task": "Add the explanatory notes to the worker configuration file.",
+    "checker_key": "config_comment_placement",
+    "key_source": "classifier",
+    "exclusivity": "The trailing form and the above-line form use the same comment marker, so the label reads whether a setting shares the line with its note rather than looking for the marker itself. A file carrying a header block and per-setting notes returns 'other', which is the realistic mixed case here. The header and footer forms use the same block shape and are separated only by whether any setting precedes it, so every option requires a comment to be present somewhere in the file.",
+    "options": [
+      {"id": "o1", "text": "Put a note on the line above each setting.", "checker": "config_comment_placement==above_each_setting"},
+      {"id": "o2", "text": "Put a note at the end of each line.", "checker": "config_comment_placement==trailing_same_line"},
+      {"id": "o3", "text": "Put one explaining block at the top of the file.", "checker": "config_comment_placement==single_file_header"},
+      {"id": "o4", "text": "Put a banner note above each group of settings.", "checker": "config_comment_placement==per_section_banner"},
+      {"id": "o5", "text": "Put one explaining block after all of the settings.", "checker": "config_comment_placement==trailing_file_footer"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "service configuration authoring guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0115",
+    "family": "format",
+    "seed_family": "cli-long-option-spelling",
+    "domain": "coding",
+    "difficulty": "easy",
+    "task": "Spell the multi-word options for the command line tool you are writing.",
+    "checker_key": "cli_option_spelling",
+    "key_source": "classifier",
+    "exclusivity": "The dash count is read before the separator, so the single-dash form is never scored against any of the four two-dash labels even when the letters after the dashes match one of them exactly. The run-together and camel forms differ only in capitalisation and are compared case-sensitively.",
+    "options": [
+      {"id": "o1", "text": "Separate the words with hyphens after two dashes.", "example": "--dry-run", "checker": "cli_option_spelling==double_dash_kebab"},
+      {"id": "o2", "text": "Separate the words with underscores after two dashes.", "example": "--dry_run", "checker": "cli_option_spelling==double_dash_snake"},
+      {"id": "o3", "text": "Join the words in camel case after dashes.", "example": "--dryRun", "checker": "cli_option_spelling==double_dash_camel"},
+      {"id": "o4", "text": "Run the words together, unseparated, after two dashes.", "example": "--dryrun", "checker": "cli_option_spelling==double_dash_joined"},
+      {"id": "o5", "text": "Write the whole option after a single dash.", "example": "-dryrun", "checker": "cli_option_spelling==single_dash_word"}
+    ],
+    "note": "The hyphenated two-dash form is much the most common across command line tools and is the likeliest unprompted answer; the other four all ship in tools people use daily, which is what keeps this a house decision rather than a settled one.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "command line interface design guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0116",
+    "family": "format",
+    "seed_family": "migration-file-naming",
+    "domain": "data",
+    "difficulty": "medium",
+    "task": "Name the file for the schema change you are adding this afternoon.",
+    "checker_key": "migration_filename_style",
+    "key_source": "classifier",
+    "exclusivity": "The full timestamp and the date-plus-counter form both open with the same eight date digits, so the label reads what follows those digits: an uninterrupted time-of-day run against a separator and a short ordinal. The content hash is the only marker that trails the descriptive words rather than leading them.",
+    "options": [
+      {"id": "o1", "text": "Lead the name with the next sequential integer.", "example": "0042_add_refund_column", "checker": "migration_filename_style==sequential_integer"},
+      {"id": "o2", "text": "Lead the name with a full UTC timestamp.", "example": "20260908T114233_add_refund_column", "checker": "migration_filename_style==utc_timestamp"},
+      {"id": "o3", "text": "Lead the name with the date and counter.", "example": "20260908-03_add_refund_column", "checker": "migration_filename_style==date_plus_counter"},
+      {"id": "o4", "text": "Lead the name with the release version number.", "example": "v3.4.0_add_refund_column", "checker": "migration_filename_style==release_version"},
+      {"id": "o5", "text": "Close the name with a short content hash.", "example": "add_refund_column_9f2c1b", "checker": "migration_filename_style==content_hash_suffix"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "database migration tooling handbook", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0117",
+    "family": "format",
+    "seed_family": "env-var-list-packing",
+    "domain": "devops",
+    "difficulty": "easy",
+    "task": "Hand the worker its list of allowed regions through the environment.",
+    "checker_key": "env_list_packing",
+    "key_source": "classifier",
+    "exclusivity": "The JSON string carries commas inside it, so the bracketed form is tested before the comma-joined one and a JSON value is never read as plain comma separation. The numbered form is the only one that sets more than a single variable, which is checked by counting names before any value is parsed.",
+    "options": [
+      {"id": "o1", "text": "Join the values with colons in one variable.", "checker": "env_list_packing==colon_separated"},
+      {"id": "o2", "text": "Join the values with commas in one variable.", "checker": "env_list_packing==comma_separated"},
+      {"id": "o3", "text": "Join the values with spaces in one variable.", "checker": "env_list_packing==space_separated"},
+      {"id": "o4", "text": "Set one numbered variable per value instead.", "checker": "env_list_packing==numbered_variables"},
+      {"id": "o5", "text": "Store the values as a JSON array.", "checker": "env_list_packing==json_array_string"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "container runtime configuration guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0118",
+    "family": "format",
+    "seed_family": "review-diff-rendering",
+    "domain": "finance",
+    "difficulty": "medium",
+    "task": "Show the reviewer what changed in the pricing module this week.",
+    "checker_key": "diff_presentation",
+    "key_source": "classifier",
+    "exclusivity": "Word-level marking sits inside an otherwise ordinary hunk, so the label looks for intra-line markers before it counts context lines; without that ordering a word-marked diff would also satisfy the three-line label. The two unified forms are split on whether unchanged lines outside the hunks appear, and the stat form carries no file content at all.",
+    "options": [
+      {"id": "o1", "text": "Show a unified diff with three context lines.", "checker": "diff_presentation==unified_three_lines"},
+      {"id": "o2", "text": "Show a unified diff of the whole file.", "checker": "diff_presentation==unified_whole_file"},
+      {"id": "o3", "text": "Show the old and new text side by side.", "checker": "diff_presentation==side_by_side"},
+      {"id": "o4", "text": "Show the changed words marked inside each line.", "checker": "diff_presentation==word_level_inline"},
+      {"id": "o5", "text": "Show only the changed line counts per file.", "checker": "diff_presentation==stat_summary_only"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "repository code review handbook", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0119",
+    "family": "format",
+    "seed_family": "secret-reference-notation",
+    "domain": "security",
+    "difficulty": "hard",
+    "task": "Point the deployment config at the database password.",
+    "checker_key": "secret_reference_syntax",
+    "key_source": "classifier",
+    "exclusivity": "The store reference and the file pointer both render as locators, so the label tests for a scheme prefix before the slashes: a bare path is the file form and only a path carrying its own scheme is the store form. The substituted placeholder never survives into the deployed file, so it is read from the checked-in text rather than the running config.",
+    "options": [
+      {"id": "o1", "text": "Name an environment variable the process reads.", "checker": "secret_reference_syntax==env_var_indirection"},
+      {"id": "o2", "text": "Write a store reference carrying its scheme.", "checker": "secret_reference_syntax==uri_scheme_reference"},
+      {"id": "o3", "text": "Point at a file the runtime reads.", "checker": "secret_reference_syntax==file_path_pointer"},
+      {"id": "o4", "text": "Write a placeholder the deploy step substitutes.", "checker": "secret_reference_syntax==deploy_time_placeholder"},
+      {"id": "o5", "text": "Store the encrypted value in place.", "checker": "secret_reference_syntax==inline_encrypted_value"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "secrets handling standard for repositories", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0120",
+    "family": "format",
+    "seed_family": "test-double-naming",
+    "domain": "coding",
+    "difficulty": "easy",
+    "task": "Name the replacement objects the checkout suite uses for the gateway.",
+    "checker_key": "test_double_naming",
+    "key_source": "classifier",
+    "exclusivity": "The three leading words are distinct tokens matched against the first word only, so a class whose body behaves like one kind but is named another is labelled by its name. The trailing word is read from the last token, and a name opening with one of the three and closing with the suffix returns 'other'.",
+    "options": [
+      {"id": "o1", "text": "Open every name with the word mock.", "checker": "test_double_naming==mock_prefix"},
+      {"id": "o2", "text": "Open every name with the word fake.", "checker": "test_double_naming==fake_prefix"},
+      {"id": "o3", "text": "Open every name with the word stub.", "checker": "test_double_naming==stub_prefix"},
+      {"id": "o4", "text": "Close every name with the word double.", "checker": "test_double_naming==double_suffix"},
+      {"id": "o5", "text": "Open every name with the words in memory.", "checker": "test_double_naming==in_memory_prefix"}
+    ],
+    "note": "The three leading words carry different technical meanings in test literature, but the question here is which single word the repository uses for all of its doubles, and teams genuinely settle on each of the five.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "engineering testing style guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0121",
+    "family": "format",
+    "seed_family": "ignore-file-pattern-style",
+    "domain": "devops",
+    "difficulty": "hard",
+    "task": "Tell the tooling to leave the build output tree alone.",
+    "checker_key": "ignore_pattern_style",
+    "key_source": "classifier",
+    "exclusivity": "The leading slash and the trailing slash are independent decorations that a single pattern can legally carry at once, so each label requires exactly one of them and a pattern carrying both returns 'other'. The bare name carries neither, and the globstar form is recognised by the doubled star rather than by any slash.",
+    "options": [
+      {"id": "o1", "text": "Write the bare directory name on its own.", "example": "build", "checker": "ignore_pattern_style==bare_name"},
+      {"id": "o2", "text": "Anchor the pattern with a leading slash.", "example": "/build", "checker": "ignore_pattern_style==anchored_slash"},
+      {"id": "o3", "text": "Close the pattern with a trailing slash.", "example": "build/", "checker": "ignore_pattern_style==trailing_slash_dir"},
+      {"id": "o4", "text": "Write a globstar path down to contents.", "example": "**/build/**", "checker": "ignore_pattern_style==globstar_path"},
+      {"id": "o5", "text": "Ignore everything, then unignore what you keep.", "example": "*\n!src/", "checker": "ignore_pattern_style==negated_allowlist"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "repository contribution guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0122",
+    "family": "format",
+    "seed_family": "changelog-entry-decoration",
+    "domain": "coding",
+    "difficulty": "easy",
+    "task": "Add an entry for the caching fix to the release notes file.",
+    "checker_key": "changelog_entry_shape",
+    "key_source": "classifier",
+    "exclusivity": "Both leading forms occupy the same position, so the opening token is matched against the closed list of change kinds first and read as a component name only when it fails that list. An entry carrying a leading token and a trailing one returns 'other' rather than the more specific of the two.",
+    "options": [
+      {"id": "o1", "text": "Write one plain sentence and nothing else.", "checker": "changelog_entry_shape==plain_sentence"},
+      {"id": "o2", "text": "Open the entry with a category word.", "checker": "changelog_entry_shape==category_prefix"},
+      {"id": "o3", "text": "Open the entry with the component name.", "checker": "changelog_entry_shape==component_prefix"},
+      {"id": "o4", "text": "Close the entry with the ticket key.", "checker": "changelog_entry_shape==ticket_suffix"},
+      {"id": "o5", "text": "Close the entry with the contributor handle.", "checker": "changelog_entry_shape==contributor_suffix"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "release notes authoring convention", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0123",
+    "family": "format",
+    "seed_family": "env-var-nesting",
+    "domain": "devops",
+    "difficulty": "hard",
+    "task": "Expose the nested settings block to the container as environment variables.",
+    "checker_key": "env_var_nesting",
+    "key_source": "classifier",
+    "exclusivity": "A single underscore is a substring of a doubled one, so the separator run is counted exactly rather than merely detected; without that the doubled form would also satisfy the single one on every name. The dotted form is the only lowercase rendering, and the packed form sets one name whose value opens with a brace.",
+    "options": [
+      {"id": "o1", "text": "Flatten each nested key using single underscores.", "example": "DB_POOL_SIZE", "checker": "env_var_nesting==single_underscore"},
+      {"id": "o2", "text": "Flatten each nested key using doubled underscores.", "example": "DB__POOL__SIZE", "checker": "env_var_nesting==double_underscore"},
+      {"id": "o3", "text": "Flatten each nested key into dotted lowercase.", "example": "db.pool.size", "checker": "env_var_nesting==dotted_lower"},
+      {"id": "o4", "text": "Flatten each nested key into joined camel.", "example": "dbPoolSize", "checker": "env_var_nesting==camel_joined"},
+      {"id": "o5", "text": "Pass the whole block as one variable.", "example": "DB={\"pool\":{\"size\":8}}", "checker": "env_var_nesting==json_blob_var"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "deployment configuration reference", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0124",
+    "family": "format",
+    "seed_family": "cli-exit-code-scheme",
+    "domain": "devops",
+    "difficulty": "medium",
+    "task": "Decide what the repository check wrapper returns to the shell.",
+    "checker_key": "exit_code_scheme",
+    "key_source": "classifier",
+    "exclusivity": "A run with exactly one finding returns 1 under both the binary scheme and the counting scheme, so the label is read from the documented mapping rather than from any single observed exit, and the reference run deliberately has three findings. The reserved-range scheme never emits 1 at all.",
+    "options": [
+      {"id": "o1", "text": "Return zero on success and one otherwise.", "checker": "exit_code_scheme==zero_one_binary"},
+      {"id": "o2", "text": "Split findings from tool errors across two codes.", "checker": "exit_code_scheme==findings_versus_errors"},
+      {"id": "o3", "text": "Give each finding category its own code.", "checker": "exit_code_scheme==per_category_codes"},
+      {"id": "o4", "text": "Return the number of findings that were seen.", "checker": "exit_code_scheme==failure_count"},
+      {"id": "o5", "text": "Draw the failure codes from a reserved range.", "checker": "exit_code_scheme==reserved_high_range"}
+    ],
+    "note": "The plain zero-or-one scheme is the most widespread and the likeliest unprompted answer; splitting findings from tool errors is standard in linters, and the other three are all shipped by real checkers.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "internal tooling conventions document", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0125",
+    "family": "format",
+    "seed_family": "assertion-expression-style",
+    "domain": "finance",
+    "difficulty": "hard",
+    "task": "Write the checks inside the new invoice rounding tests.",
+    "checker_key": "assertion_style",
+    "key_source": "classifier",
+    "exclusivity": "The chained form and the property form both read left to right from the value under test, so the label looks at whether the first member after the value is a call or a bare attribute, which is the only thing separating them. The matcher form always passes its comparison in as an argument, so it can never be mistaken for either chain.",
+    "options": [
+      {"id": "o1", "text": "Chain the expectation onto the value tested.", "checker": "assertion_style==fluent_chain"},
+      {"id": "o2", "text": "Call an equality helper with expected and actual.", "checker": "assertion_style==two_argument_helper"},
+      {"id": "o3", "text": "Assert on a bare boolean comparison expression.", "checker": "assertion_style==bare_assert_expression"},
+      {"id": "o4", "text": "Pass a matcher object into one assert call.", "checker": "assertion_style==matcher_argument"},
+      {"id": "o5", "text": "Attach a should property to the value itself.", "checker": "assertion_style==property_should"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "billing service test authoring guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0126",
+    "family": "format",
+    "seed_family": "code-owner-declaration",
+    "domain": "coding",
+    "difficulty": "medium",
+    "task": "Write down who reviews which parts of this repository.",
+    "checker_key": "ownership_declaration",
+    "key_source": "classifier",
+    "exclusivity": "All five are shapes of the one file the response emits. The first two contain exactly the same tokens and are ordered opposites, so the label reads which token opens each record instead of which tokens are present. The catch-all form is tested before them, because its later records are path-then-team lines and would otherwise be read as that form; what marks it is a first record matching everything. The commented-heading form is tested next, since its records may take either order and only the headings distinguish it. The single-owner form is one record naming no path.",
+    "options": [
+      {"id": "o1", "text": "List each path, then the team beside it.", "checker": "ownership_declaration==path_then_team"},
+      {"id": "o2", "text": "List each team, then its paths beneath it.", "checker": "ownership_declaration==team_then_path_block"},
+      {"id": "o3", "text": "Open with a catch-all line, then exceptions.", "checker": "ownership_declaration==default_then_overrides"},
+      {"id": "o4", "text": "Group the paths under commented section headings.", "checker": "ownership_declaration==commented_section_groups"},
+      {"id": "o5", "text": "Name one owning team for the whole repository.", "checker": "ownership_declaration==single_repository_owner"}
+    ],
+    "note": "Two options previously put a file in every directory or a field in every package manifest. Both are statements about a file tree, and no single emitted file can show either. Replaced with two shapes of the same central file.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "repository governance documentation", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0127",
+    "family": "format",
+    "seed_family": "fixture-name-convention",
+    "domain": "finance",
+    "difficulty": "easy",
+    "task": "Name the sample payment records the settlement tests load.",
+    "checker_key": "fixture_naming",
+    "key_source": "classifier",
+    "exclusivity": "A validity word and an article both sit in front of the noun, so the leading token is matched against a short closed article list first and treated as a validity word only when it is not an article. A name carrying a leading decoration and a trailing number returns 'other' rather than either label.",
+    "options": [
+      {"id": "o1", "text": "Name each fixture by its bare noun.", "example": "payment", "checker": "fixture_naming==bare_noun"},
+      {"id": "o2", "text": "Lead each fixture name with its validity.", "example": "valid_payment", "checker": "fixture_naming==validity_prefixed"},
+      {"id": "o3", "text": "Lead each fixture name with an article.", "example": "a_payment", "checker": "fixture_naming==article_prefixed"},
+      {"id": "o4", "text": "Close each fixture name with its purpose.", "example": "payment_for_refund_test", "checker": "fixture_naming==purpose_suffixed"},
+      {"id": "o5", "text": "Number the fixture names within each noun.", "example": "payment_1", "checker": "fixture_naming==numbered_variants"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "payments repository testing conventions", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0128",
+    "family": "format",
+    "seed_family": "commit-metadata-trailer",
+    "domain": "coding",
+    "difficulty": "hard",
+    "task": "Record which ticket the commit you are about to make closes.",
+    "checker_key": "commit_trailer_style",
+    "key_source": "classifier",
+    "exclusivity": "The two final-line forms differ by a single separator character in the same position and are compared literally, since a parser that accepts both would collapse them onto one label. The two subject forms are split on whether brackets surround the key, and a message carrying a subject token and a final-line trailer returns 'other'.",
+    "options": [
+      {"id": "o1", "text": "Add a key and colon trailer line.", "example": "Closes: ABC-412", "checker": "commit_trailer_style==key_colon_trailer"},
+      {"id": "o2", "text": "Put a bracketed token on the subject line.", "example": "[ABC-412] Cache the rate table", "checker": "commit_trailer_style==bracketed_subject_token"},
+      {"id": "o3", "text": "Put the bare key inside the subject text.", "example": "Cache the rate table for ABC-412", "checker": "commit_trailer_style==bare_subject_reference"},
+      {"id": "o4", "text": "End the body with a closing prose sentence.", "example": "This closes ticket ABC-412.", "checker": "commit_trailer_style==closing_body_sentence"},
+      {"id": "o5", "text": "Add a key and equals sign footer line.", "example": "closes=ABC-412", "checker": "commit_trailer_style==key_equals_footer"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "repository commit message convention", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0129",
+    "family": "format",
+    "seed_family": "import-statement-ordering",
+    "domain": "coding",
+    "difficulty": "easy",
+    "task": "Arrange the import statements at the top of the module you refactored.",
+    "checker_key": "import_group_order",
+    "key_source": "classifier",
+    "exclusivity": "Several of these are compatible in principle, since origin groups can each be alphabetical inside themselves, so the label reads the top-level partition first and only falls through to within-block ordering when there is a single unbroken block. The length ordering is checked on characters, not on the paths themselves.",
+    "options": [
+      {"id": "o1", "text": "Group by origin: standard library, third party, local.", "checker": "import_group_order==origin_groups"},
+      {"id": "o2", "text": "Sort every import into a single alphabetical block.", "checker": "import_group_order==single_alphabetical"},
+      {"id": "o3", "text": "Sort the imports by length, shortest line first.", "checker": "import_group_order==line_length_ascending"},
+      {"id": "o4", "text": "Group the imports by how deep they run.", "checker": "import_group_order==depth_grouped"},
+      {"id": "o5", "text": "Keep the type-only imports in a final group.", "checker": "import_group_order==type_imports_last"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "language style guide for the repository", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0130",
+    "family": "format",
+    "seed_family": "license-notice-form",
+    "domain": "web",
+    "difficulty": "easy",
+    "task": "Write the licence notice that heads each front-end source file.",
+    "checker_key": "license_notice_form",
+    "key_source": "classifier",
+    "exclusivity": "All five are forms of the one header the response emits, so the label is read off that header's own text. The full text runs to many lines and is tested first, because a boxed banner or a short notice can appear inside it. The banner is tested next, on its rule characters, since the line it frames may itself be a short notice. The reference form names a file and states no year; the short form states a year and a holder and names no file; the identifier form is a single tagged token carrying neither. A header carrying two of these returns 'other'.",
+    "options": [
+      {"id": "o1", "text": "Use a single identifier line naming the licence.", "checker": "license_notice_form==identifier_line"},
+      {"id": "o2", "text": "Paste the full licence text as a comment.", "checker": "license_notice_form==full_text_block"},
+      {"id": "o3", "text": "Write a short notice with year and holder.", "checker": "license_notice_form==short_notice_year_holder"},
+      {"id": "o4", "text": "Point at the licence file kept at root.", "checker": "license_notice_form==file_reference_line"},
+      {"id": "o5", "text": "Draw a boxed banner around the notice text.", "checker": "license_notice_form==boxed_banner"}
+    ],
+    "note": "Rewritten wholesale. Every option in the old set described where notices sit across a file TREE -- atop every source file, in one root file, per directory -- and a response emits one file, so not one of the five could be observed. The subject is kept and the axis moved to the form of the notice itself, which the emitted header does show.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "open source licensing handbook", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0131",
+    "family": "format",
+    "seed_family": "task-target-naming",
+    "domain": "devops",
+    "difficulty": "easy",
+    "task": "Name the entries in the repository task runner file.",
+    "checker_key": "task_target_naming",
+    "key_source": "classifier",
+    "exclusivity": "The two colon forms use identical punctuation and are separated only by which side of it the verb sits on, so the label reads the roles of the two tokens rather than the character between them. The bare verb has no separator, and the dotted and slashed forms differ in one character that neither colon form emits.",
+    "options": [
+      {"id": "o1", "text": "Name each target with a bare verb.", "example": "build", "checker": "task_target_naming==bare_verb"},
+      {"id": "o2", "text": "Write the verb, a colon, then noun.", "example": "build:docs", "checker": "task_target_naming==verb_noun_colon"},
+      {"id": "o3", "text": "Write the noun, a colon, then verb.", "example": "docs:build", "checker": "task_target_naming==noun_verb_colon"},
+      {"id": "o4", "text": "Join the parts with dots into namespaces.", "example": "docs.build", "checker": "task_target_naming==dotted_namespace"},
+      {"id": "o5", "text": "Join the parts with slashes into paths.", "example": "docs/build", "checker": "task_target_naming==slash_path"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "build tooling reference", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0132",
+    "family": "format",
+    "seed_family": "todo-marker-convention",
+    "domain": "coding",
+    "difficulty": "easy",
+    "task": "Leave a reminder in the code about the retry path you shortcut.",
+    "checker_key": "todo_marker_style",
+    "key_source": "classifier",
+    "exclusivity": "The owner and the ticket decorations differ in bracket character rather than in content, and are compared on that character alone, because a short ticket key can read as a name and a name can read as a key. A marker carrying two decorations returns 'other' rather than whichever comes first. The bare form and the next-line form both carry no decoration and are separated by whether the note shares the marker's line, so all five require the marker word to be present.",
+    "options": [
+      {"id": "o1", "text": "Write the bare marker word and the note.", "checker": "todo_marker_style==bare_marker"},
+      {"id": "o2", "text": "Attach the owner in round brackets afterwards.", "checker": "todo_marker_style==owner_in_parens"},
+      {"id": "o3", "text": "Attach the ticket key in square brackets afterwards.", "checker": "todo_marker_style==ticket_in_brackets"},
+      {"id": "o4", "text": "Attach a review-by date after the marker word.", "checker": "todo_marker_style==review_date_attached"},
+      {"id": "o5", "text": "Put the marker alone above the explaining line.", "checker": "todo_marker_style==note_on_next_line"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "source code annotation policy", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0133",
+    "family": "format",
+    "seed_family": "editor-settings-scoping",
+    "domain": "coding",
+    "difficulty": "medium",
+    "task": "Decide how the shared editor settings apply across this repository.",
+    "checker_key": "editor_settings_scoping",
+    "key_source": "classifier",
+    "exclusivity": "All five are shapes of the one settings file the response emits. Three cut the file into sections and are separated by what the section head is: a path pattern, a language name, or a severity word. The remaining two carry no heads at all, and are told apart by whether any setting name appears more than once -- the ordered form repeats a key so a later entry can win, the flat form states each key exactly once. That is what stops the flat form being read as a degenerate case of any other.",
+    "options": [
+      {"id": "o1", "text": "One root file with glob-headed sections.", "checker": "editor_settings_scoping==root_file_glob_sections"},
+      {"id": "o2", "text": "One root file keyed by language.", "checker": "editor_settings_scoping==language_keyed_map"},
+      {"id": "o3", "text": "One file grouped by rule severity.", "checker": "editor_settings_scoping==severity_keyed_groups"},
+      {"id": "o4", "text": "One flat rule set for everything.", "checker": "editor_settings_scoping==one_flat_rule_set"},
+      {"id": "o5", "text": "One ordered list where later entries win.", "checker": "editor_settings_scoping==ordered_last_wins"}
+    ],
+    "note": "Two options previously placed a settings file in each directory or inside each package's tool config. Both describe a file tree rather than a file, so neither could be observed in one response. Replaced with two further shapes of the single root file.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "developer environment setup guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0134",
+    "family": "format",
+    "seed_family": "workspace-package-naming",
+    "domain": "coding",
+    "difficulty": "medium",
+    "task": "Name the packages as you split the application into a workspace.",
+    "checker_key": "workspace_package_naming",
+    "key_source": "classifier",
+    "exclusivity": "The shared scope and the layer marker both open the name with a common token, so the label checks whether that token is constant across every package or varies with the package's tier. The path-echoing form is derived from the tree, so a name that both matches its directory path and carries a leading token returns 'other'.",
+    "options": [
+      {"id": "o1", "text": "Give every package one shared scope prefix.", "checker": "workspace_package_naming==scoped_prefix"},
+      {"id": "o2", "text": "Name packages with dotted domain style segments.", "checker": "workspace_package_naming==dotted_domain"},
+      {"id": "o3", "text": "Echo the directory path with dashes between.", "checker": "workspace_package_naming==dashed_path_echo"},
+      {"id": "o4", "text": "Give each package a bare short name.", "checker": "workspace_package_naming==bare_short_name"},
+      {"id": "o5", "text": "Open each package name with its layer.", "checker": "workspace_package_naming==layer_prefixed"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "multi-package repository structure guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0135",
+    "family": "format",
+    "seed_family": "vendored-code-marking",
+    "domain": "coding",
+    "difficulty": "hard",
+    "task": "Stamp the third-party source file we copied in last week.",
+    "checker_key": "vendored_code_marking",
+    "key_source": "classifier",
+    "exclusivity": "All five are lines the emitted stamp either carries or does not, so one stamp gets one label. The capitalised warning is tested first, because a stamp that carries it is declaring itself generated whatever else it names. The checksum is a hexadecimal run no other line produces. The version-and-date line carries two values where the name line carries one, so the name line is tested after it -- a stamp naming the project and its version is the version form, not the name form. The patch list is the only line that may be empty and still present, so it is matched on its heading rather than its contents.",
+    "options": [
+      {"id": "o1", "text": "Name the upstream project on its own line.", "checker": "vendored_code_marking==upstream_name_line"},
+      {"id": "o2", "text": "Give the upstream version and the copy date.", "checker": "vendored_code_marking==version_and_date_line"},
+      {"id": "o3", "text": "List any local patches applied since copying.", "checker": "vendored_code_marking==local_patch_list"},
+      {"id": "o4", "text": "Warn in capitals that the file is generated.", "checker": "vendored_code_marking==do_not_edit_banner"},
+      {"id": "o5", "text": "Record a checksum of the copied file.", "checker": "vendored_code_marking==checksum_line"}
+    ],
+    "note": "Rewritten wholesale. The old set chose between a reserved directory, an attributes file entry, a per-file header, a tool exclusion list and a separately linked repository -- four of the five are properties of a tree or of another file, and the fifth kept no copied bytes at all. The axis is now what the stamp on the copied file says, which the response does emit.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "repository contribution guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0136",
+    "family": "format",
+    "seed_family": "cli-help-layout",
+    "domain": "coding",
+    "difficulty": "easy",
+    "task": "Lay out what the tool prints when someone asks for help.",
+    "checker_key": "help_text_layout",
+    "key_source": "classifier",
+    "exclusivity": "A usage line and a worked example are both single lines of sample invocation, so the label reads their position relative to the flag list rather than trying to tell the two apart by content. The table and prose forms are split on whether flag names occupy a column of their own.",
+    "options": [
+      {"id": "o1", "text": "A usage line, then the flag list.", "checker": "help_text_layout==usage_then_flags"},
+      {"id": "o2", "text": "The flag list, then worked examples.", "checker": "help_text_layout==flags_then_examples"},
+      {"id": "o3", "text": "A two column table of flag meanings.", "checker": "help_text_layout==two_column_table"},
+      {"id": "o4", "text": "A few paragraphs of plain prose.", "checker": "help_text_layout==prose_paragraphs"},
+      {"id": "o5", "text": "Numbered sections in the manual page order.", "checker": "help_text_layout==sectioned_man_style"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "command line interface design guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0137",
+    "family": "format",
+    "seed_family": "generated-file-marking",
+    "domain": "data",
+    "difficulty": "medium",
+    "task": "Mark the client code the schema tool writes on every build.",
+    "checker_key": "generated_file_marking",
+    "key_source": "classifier",
+    "exclusivity": "The infix marker and the extra extension both change the file name, so the label reads where the added token sits relative to the final dot rather than merely detecting it. The banner leaves the name untouched, and a file carrying a banner and a marked name returns 'other'.",
+    "options": [
+      {"id": "o1", "text": "Open each file with a do-not-edit banner.", "checker": "generated_file_marking==header_banner"},
+      {"id": "o2", "text": "Put a generated marker inside each file name.", "checker": "generated_file_marking==filename_infix"},
+      {"id": "o3", "text": "Give the files an extra extension segment.", "checker": "generated_file_marking==extension_suffix"},
+      {"id": "o4", "text": "List the files in a sibling manifest.", "checker": "generated_file_marking==sibling_manifest"},
+      {"id": "o5", "text": "Keep the files in their own directory.", "checker": "generated_file_marking==own_directory"}
+    ],
+    "note": "The do-not-edit banner is much the most widespread of the five and is the likeliest unprompted answer; the other four are all in use, and several teams run two of them at once, which is why the exclusivity rule sends that case to 'other'.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "code generation tooling handbook", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0138",
+    "family": "format",
+    "seed_family": "ci-job-naming",
+    "domain": "devops",
+    "difficulty": "easy",
+    "task": "Name the jobs in the pipeline definition you are adding.",
+    "checker_key": "ci_job_naming",
+    "key_source": "classifier",
+    "exclusivity": "A tool name often reads as a verb as well, so the token is matched against the pipeline's declared tool list before the bare-verb label is considered. A name carrying a leading stage word and a trailing platform word returns 'other' rather than either single label.",
+    "options": [
+      {"id": "o1", "text": "Name each job by its verb alone.", "checker": "ci_job_naming==bare_verb"},
+      {"id": "o2", "text": "Open each job name with its stage.", "checker": "ci_job_naming==stage_prefixed"},
+      {"id": "o3", "text": "Close each job name with its platform.", "checker": "ci_job_naming==platform_suffixed"},
+      {"id": "o4", "text": "Name each job after the tool run.", "checker": "ci_job_naming==tool_named"},
+      {"id": "o5", "text": "Number the job names in run order.", "checker": "ci_job_naming==ordinal_numbered"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "continuous integration pipeline standard", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0139",
+    "family": "format",
+    "seed_family": "script-input-convention",
+    "domain": "devops",
+    "difficulty": "easy",
+    "task": "Decide how the release helper script takes what it needs.",
+    "checker_key": "script_argument_style",
+    "key_source": "classifier",
+    "exclusivity": "The subcommand form carries flags too, so the label reads whether the first non-flag word selects behaviour before any flags are counted; otherwise every subcommand invocation would also satisfy the flags label. The config-file form takes exactly one positional path, so argument count separates it from the positional form.",
+    "options": [
+      {"id": "o1", "text": "Take everything as ordered positional arguments.", "checker": "script_argument_style==positional_only"},
+      {"id": "o2", "text": "Take everything as named long flags.", "checker": "script_argument_style==long_flags_only"},
+      {"id": "o3", "text": "Take a subcommand first, then flags.", "checker": "script_argument_style==subcommand_first"},
+      {"id": "o4", "text": "Take everything from the environment instead.", "checker": "script_argument_style==environment_driven"},
+      {"id": "o5", "text": "Take one path to a config.", "checker": "script_argument_style==config_file_argument"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "repository scripting conventions document", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0140",
+    "family": "format",
+    "seed_family": "workspace-member-declaration",
+    "domain": "coding",
+    "difficulty": "hard",
+    "task": "Declare which directories the root manifest treats as members.",
+    "checker_key": "workspace_glob_declaration",
+    "key_source": "classifier",
+    "exclusivity": "The one-star and two-star globs differ by a single character in the same position, so the label counts stars rather than testing that a star is present. The per-layer form is several one-star globs, so it is separated from the single glob by how many entries the list holds, not by their shape. The exclusion form is tested first, because it also contains a glob and would otherwise be read as whichever star count it happens to use. Every option requires at least one member entry to be declared.",
+    "options": [
+      {"id": "o1", "text": "List every member path out in full.", "example": "packages/api, packages/web", "checker": "workspace_glob_declaration==explicit_path_list"},
+      {"id": "o2", "text": "Write one single-star glob for the folder.", "example": "packages/*", "checker": "workspace_glob_declaration==single_star_glob"},
+      {"id": "o3", "text": "Write one double-star glob covering everything nested.", "example": "packages/**", "checker": "workspace_glob_declaration==double_star_glob"},
+      {"id": "o4", "text": "Write one glob per architectural layer folder.", "example": "apps/*, libs/*, tools/*", "checker": "workspace_glob_declaration==per_layer_globs"},
+      {"id": "o5", "text": "Write a broad glob with one exclusion.", "checker": "workspace_glob_declaration==glob_with_exclusion"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "multi-package repository structure guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0141",
+    "family": "format",
+    "seed_family": "manifest-script-naming",
+    "domain": "web",
+    "difficulty": "hard",
+    "task": "Name the commands you are adding to the front-end package manifest.",
+    "checker_key": "manifest_script_naming",
+    "key_source": "classifier",
+    "exclusivity": "A lifecycle prefix is itself joined with a dash in practice, so a dashed name is checked against the closed lifecycle-word list before the plain dashed label is granted. The colon and dash forms are then compared on the separator character alone, and the camel form carries no separator to compare.",
+    "options": [
+      {"id": "o1", "text": "Use bare verbs with nothing appended.", "example": "build", "checker": "manifest_script_naming==bare_verbs"},
+      {"id": "o2", "text": "Scope the names with colons between parts.", "example": "build:css", "checker": "manifest_script_naming==colon_scoped"},
+      {"id": "o3", "text": "Scope the names with dashes between parts.", "example": "build-css", "checker": "manifest_script_naming==dash_scoped"},
+      {"id": "o4", "text": "Open the names with their lifecycle phase.", "example": "pre-build", "checker": "manifest_script_naming==lifecycle_prefixed"},
+      {"id": "o5", "text": "Write the multi-word names in camel case.", "example": "buildCss", "checker": "manifest_script_naming==camel_names"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "front-end repository conventions document", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0142",
+    "family": "format",
+    "seed_family": "ci-matrix-declaration",
+    "domain": "devops",
+    "difficulty": "medium",
+    "task": "Declare the combinations the test pipeline should run across.",
+    "checker_key": "matrix_axis_declaration",
+    "key_source": "classifier",
+    "exclusivity": "The exclusion form and the plain cross product declare identical axes and differ only by a block that may be empty, so the label requires that block to be present and non-empty rather than inferring it from how many jobs actually ran. The explicit list declares no axes at all.",
+    "options": [
+      {"id": "o1", "text": "Declare both axes and take every combination.", "checker": "matrix_axis_declaration==full_cross_product"},
+      {"id": "o2", "text": "List each wanted combination out in full.", "checker": "matrix_axis_declaration==explicit_combination_list"},
+      {"id": "o3", "text": "Declare both axes, then exclude the gaps.", "checker": "matrix_axis_declaration==cross_with_exclusions"},
+      {"id": "o4", "text": "Declare one axis, then add extra combinations.", "checker": "matrix_axis_declaration==primary_axis_plus_extras"},
+      {"id": "o5", "text": "Write separate jobs and skip the matrix.", "checker": "matrix_axis_declaration==separate_jobs_no_matrix"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "continuous integration pipeline standard", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0143",
+    "family": "format",
+    "seed_family": "local-hook-declaration",
+    "domain": "devops",
+    "difficulty": "hard",
+    "task": "Set up the checks that run on this machine before a commit lands.",
+    "checker_key": "hook_declaration_style",
+    "key_source": "classifier",
+    "exclusivity": "The dispatcher and the declarative list both read their work from a tracked file, so the label reads whether a script the team maintains sits between the hook and the tools. The symlinked directory also holds phase scripts, so it is separated from the per-phase form by whether the files live in the hooks directory or are pointed at from it. The inline form is the only one declaring no file at all, and is tested last, since it is a command written where the other four would name a path.",
+    "options": [
+      {"id": "o1", "text": "One executable script per hook phase.", "checker": "hook_declaration_style==script_per_phase"},
+      {"id": "o2", "text": "A declarative list of tools to run.", "checker": "hook_declaration_style==declarative_tool_list"},
+      {"id": "o3", "text": "One dispatcher script reading a registry file.", "checker": "hook_declaration_style==dispatcher_with_registry"},
+      {"id": "o4", "text": "A shared directory symlinked into place.", "checker": "hook_declaration_style==shared_symlinked_directory"},
+      {"id": "o5", "text": "One inline command written in the config.", "checker": "hook_declaration_style==inline_command"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "developer environment setup guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0144",
+    "family": "format",
+    "seed_family": "container-build-stage-naming",
+    "domain": "devops",
+    "difficulty": "easy",
+    "task": "Name the stages in the multi-stage image build file.",
+    "checker_key": "build_stage_naming",
+    "key_source": "classifier",
+    "exclusivity": "The purpose name and the role prefix both describe what the stage does, so the label checks whether a token from the closed role list opens the name before reading the rest as a purpose. Numbered stages are digits only, and unnamed stages carry no token for either test to read.",
+    "options": [
+      {"id": "o1", "text": "Name each stage after its purpose.", "checker": "build_stage_naming==purpose_words"},
+      {"id": "o2", "text": "Number the stages in declaration order.", "checker": "build_stage_naming==ordinal_numbers"},
+      {"id": "o3", "text": "Name each stage after its tool.", "checker": "build_stage_naming==tool_named"},
+      {"id": "o4", "text": "Open each stage name with its role.", "checker": "build_stage_naming==role_prefixed"},
+      {"id": "o5", "text": "Leave the stages unnamed, referencing positions.", "checker": "build_stage_naming==unnamed_positional"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "container image build reference", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0145",
+    "family": "format",
+    "seed_family": "ci-cache-key-composition",
+    "domain": "devops",
+    "difficulty": "hard",
+    "task": "Build the key the pipeline uses to restore its dependency cache.",
+    "checker_key": "cache_key_composition",
+    "key_source": "classifier",
+    "exclusivity": "Two of the five are content digests that render identically, so the label reads which file was hashed and whether a platform token trails it, not the hexadecimal itself. The commit digest is a repository digest rather than a file digest, and a key combining a branch name with a file hash returns 'other'.",
+    "options": [
+      {"id": "o1", "text": "Hash the lockfile and use that alone.", "checker": "cache_key_composition==lockfile_hash"},
+      {"id": "o2", "text": "Hash the manifest and append the platform.", "checker": "cache_key_composition==manifest_hash_plus_platform"},
+      {"id": "o3", "text": "Include the branch name in the key.", "checker": "cache_key_composition==branch_name_segment"},
+      {"id": "o4", "text": "Use a fixed key with prefix fallbacks.", "checker": "cache_key_composition==fixed_key_with_fallback"},
+      {"id": "o5", "text": "Use the exact commit hash instead.", "checker": "cache_key_composition==commit_sha_exact"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "build caching configuration reference", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0146",
+    "family": "format",
+    "seed_family": "source-deprecation-marking",
+    "domain": "mobile",
+    "difficulty": "medium",
+    "task": "Mark the old settings helper so callers move off it.",
+    "checker_key": "deprecation_annotation_style",
+    "key_source": "classifier",
+    "exclusivity": "The attribute and the doc tag both sit immediately above the declaration, so the label reads whether the marker is language syntax the compiler sees or comment text it ignores. The rename changes the symbol itself, so a renamed symbol also carrying an attribute returns 'other' rather than the attribute label.",
+    "options": [
+      {"id": "o1", "text": "Mark it with the language deprecation attribute.", "checker": "deprecation_annotation_style==language_attribute"},
+      {"id": "o2", "text": "Mark it with a doc comment tag.", "checker": "deprecation_annotation_style==doc_comment_tag"},
+      {"id": "o3", "text": "Rename it with a deprecated name suffix.", "checker": "deprecation_annotation_style==name_suffix"},
+      {"id": "o4", "text": "Emit a runtime warning from inside it.", "checker": "deprecation_annotation_style==runtime_warning_call"},
+      {"id": "o5", "text": "Leave a comment naming the removal date.", "checker": "deprecation_annotation_style==dated_removal_comment"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "mobile application source style guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0147",
+    "family": "format",
+    "seed_family": "build-artifact-filename",
+    "domain": "devops",
+    "difficulty": "hard",
+    "task": "Name the archive the release job drops in the output directory.",
+    "checker_key": "artifact_filename_shape",
+    "key_source": "classifier",
+    "exclusivity": "The version and the build number are both digit runs, so the label counts dot-separated fields before reading any of them; a two-field version beside a build number would otherwise read as a three-field version. The short hash is matched on its character class rather than its length, since a build number can be six digits long too.",
+    "options": [
+      {"id": "o1", "text": "Name, version, then the platform triple.", "example": "reporter-3.4.0-linux-amd64.tar.gz", "checker": "artifact_filename_shape==name_version_platform"},
+      {"id": "o2", "text": "Name plus the short commit hash.", "example": "reporter-9f2c1b4.tar.gz", "checker": "artifact_filename_shape==name_short_hash"},
+      {"id": "o3", "text": "Name, version, then the build number.", "example": "reporter-3.4.0-b812.tar.gz", "checker": "artifact_filename_shape==name_version_build"},
+      {"id": "o4", "text": "Name plus the date it built.", "example": "reporter-20260908.tar.gz", "checker": "artifact_filename_shape==name_build_date"},
+      {"id": "o5", "text": "Name alone, with the version inside.", "example": "reporter.tar.gz", "checker": "artifact_filename_shape==name_only"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "release engineering handbook", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0148",
+    "family": "format",
+    "seed_family": "phony-target-declaration",
+    "domain": "coding",
+    "difficulty": "hard",
+    "task": "Declare the targets in the build file that write no file.",
+    "checker_key": "phony_target_declaration",
+    "key_source": "classifier",
+    "exclusivity": "The grouped and the per-target forms use the identical directive and differ only in how many times it appears and where, so the label counts occurrences against the target count rather than matching the directive once. The sentinel and pattern forms use no directive at all and are separated by whether the extra name is a dependency or a rule head. The naming convention is tested last, since a file using any of the other four may also follow it.",
+    "options": [
+      {"id": "o1", "text": "One grouped declaration listing them all together.", "checker": "phony_target_declaration==one_grouped_declaration"},
+      {"id": "o2", "text": "A separate declaration beside each such target.", "checker": "phony_target_declaration==per_target_declaration"},
+      {"id": "o3", "text": "A naming convention the reader recognises instead.", "checker": "phony_target_declaration==naming_convention_only"},
+      {"id": "o4", "text": "A shared always-stale sentinel dependency on each.", "checker": "phony_target_declaration==sentinel_dependency"},
+      {"id": "o5", "text": "A pattern rule covering the whole group.", "checker": "phony_target_declaration==pattern_rule"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "build tooling reference", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0149",
+    "family": "format",
+    "seed_family": "feature-flag-key-naming",
+    "domain": "mobile",
+    "difficulty": "medium",
+    "task": "Name the flag guarding the new checkout screen in the app.",
+    "checker_key": "feature_flag_naming",
+    "key_source": "classifier",
+    "exclusivity": "The removal date and the rollout stage are both trailing tokens on a behaviour name, so the label reads what kind of token trails rather than that one does. A name opening with a team token and closing with a stage token returns 'other' instead of the more specific of the two.",
+    "options": [
+      {"id": "o1", "text": "Name it after the behaviour it controls.", "checker": "feature_flag_naming==behaviour_phrase"},
+      {"id": "o2", "text": "Open it with the owning team name.", "checker": "feature_flag_naming==team_scoped"},
+      {"id": "o3", "text": "Name it after the ticket that introduced it.", "checker": "feature_flag_naming==ticket_keyed"},
+      {"id": "o4", "text": "Close it with the date for removal.", "checker": "feature_flag_naming==removal_dated"},
+      {"id": "o5", "text": "Close it with the stage it occupies.", "checker": "feature_flag_naming==stage_suffixed"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "feature flag governance document", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0150",
+    "family": "format",
+    "seed_family": "review-remark-marking",
+    "domain": "coding",
+    "difficulty": "medium",
+    "task": "Leave your comments on the branch someone opened this morning.",
+    "checker_key": "review_remark_convention",
+    "key_source": "classifier",
+    "exclusivity": "The nit word is itself one member of a severity vocabulary, so the label checks whether every remark carries a word from that list before the severity form is assigned, and treats a single word used only on optional remarks as the narrower label. A review both marking blocking items and prefixing optional ones returns 'other'.",
+    "options": [
+      {"id": "o1", "text": "Open the optional remarks with a nit marker.", "checker": "review_remark_convention==nit_prefix"},
+      {"id": "o2", "text": "Open every remark with a severity word.", "checker": "review_remark_convention==severity_word_prefix"},
+      {"id": "o3", "text": "Phrase the optional remarks as open questions.", "checker": "review_remark_convention==question_phrasing"},
+      {"id": "o4", "text": "Mark the blocking remarks, leaving others bare.", "checker": "review_remark_convention==blocking_marked_instead"},
+      {"id": "o5", "text": "Keep the optional remarks in the summary.", "checker": "review_remark_convention==optional_in_summary"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "repository code review handbook", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0151",
+    "family": "format",
+    "seed_family": "patch-file-naming",
+    "domain": "coding",
+    "difficulty": "hard",
+    "task": "Name the patch we keep against the upstream parser in this tree.",
+    "checker_key": "patch_filename_shape",
+    "key_source": "classifier",
+    "exclusivity": "The sequence prefix and the version prefix both open with digits, so the label tests whether dots separate the digit groups before either is granted. The description and the ticket forms both open with letters and are told apart by matching the leading token against the ticket key shape rather than by meaning.",
+    "options": [
+      {"id": "o1", "text": "Open it with a two digit sequence.", "example": "02-fix-unicode-escapes.patch", "checker": "patch_filename_shape==numbered_prefix"},
+      {"id": "o2", "text": "Open it with the package and version.", "example": "parser-2.9.1-fix-escapes.patch", "checker": "patch_filename_shape==package_version_prefixed"},
+      {"id": "o3", "text": "Name it after the ticket needing it.", "example": "ABC-412.patch", "checker": "patch_filename_shape==ticket_keyed"},
+      {"id": "o4", "text": "Name it after what it changes.", "example": "fix-unicode-escapes.patch", "checker": "patch_filename_shape==description_slug"},
+      {"id": "o5", "text": "Name it after the upstream commit.", "example": "a71f0c9.patch", "checker": "patch_filename_shape==upstream_hash_named"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "dependency patching procedure document", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0152",
+    "family": "format",
+    "seed_family": "cli-error-message-style",
+    "domain": "devops",
+    "difficulty": "hard",
+    "task": "Word the messages the tool prints when something goes wrong.",
+    "checker_key": "cli_error_message_style",
+    "key_source": "classifier",
+    "exclusivity": "Two of the five put a token before the message text, so the leading token is matched against the program name and then the code list, and the capitalisation and terminal punctuation tests run only once neither matches. Otherwise a prefixed message would also satisfy whichever casing label its first letter happened to fit.",
+    "options": [
+      {"id": "o1", "text": "Lowercase, with no full stop anywhere.", "checker": "cli_error_message_style==lowercase_no_period"},
+      {"id": "o2", "text": "Sentence case, closing with a full stop.", "checker": "cli_error_message_style==sentence_case_period"},
+      {"id": "o3", "text": "Opened by the tool name and colon.", "checker": "cli_error_message_style==tool_name_prefixed"},
+      {"id": "o4", "text": "Opened by a stable code, then text.", "checker": "cli_error_message_style==code_then_text"},
+      {"id": "o5", "text": "Closed by a sentence naming the fix.", "checker": "cli_error_message_style==remedy_sentence_appended"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "internal tooling conventions document", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0153",
+    "family": "format",
+    "seed_family": "flag-default-documentation",
+    "domain": "coding",
+    "difficulty": "easy",
+    "task": "Show what each option falls back to when nobody sets it.",
+    "checker_key": "default_value_documentation",
+    "key_source": "classifier",
+    "exclusivity": "Round and square brackets both sit inside the description line, so the label compares the bracket characters themselves rather than looking for a bracketed run. The column and footer forms move the value out of the description entirely and are split on whether it sits beside its option or after all of them. The post-name form places the value between the flag and its description with no bracket at all, so it is separated from the column form by whether the columns line up down the block. Every option requires the default to appear somewhere in the help text.",
+    "options": [
+      {"id": "o1", "text": "In parentheses at the end of each description.", "checker": "default_value_documentation==parenthetical_suffix"},
+      {"id": "o2", "text": "In a separate column beside each option name.", "checker": "default_value_documentation==separate_column"},
+      {"id": "o3", "text": "In square brackets inside the description text itself.", "checker": "default_value_documentation==inline_bracket"},
+      {"id": "o4", "text": "Straight after each flag name, before its description.", "checker": "default_value_documentation==after_flag_name"},
+      {"id": "o5", "text": "In one list at the foot of help.", "checker": "default_value_documentation==footer_list"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "command line interface design guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0154",
+    "family": "format",
+    "seed_family": "config-required-placeholder",
+    "domain": "devops",
+    "difficulty": "medium",
+    "task": "Write the sample config a new joiner copies before filling it in.",
+    "checker_key": "required_config_placeholder",
+    "key_source": "classifier",
+    "exclusivity": "An empty value and a null value both read as unset once the file is parsed, so the label is taken from the file text rather than the parsed tree, which is the only place they still differ. Two forms carry a comment, and are separated by what sits on the key's own line: the empty form leaves the value blank, the example form fills it in and comments the sample out above. Every key is present in every option, so a file that omitted keys entirely satisfies none of them.",
+    "options": [
+      {"id": "o1", "text": "Angle-bracketed tokens naming what belongs there.", "checker": "required_config_placeholder==angle_bracket_token"},
+      {"id": "o2", "text": "Empty values with a comment explaining each.", "checker": "required_config_placeholder==empty_with_comment"},
+      {"id": "o3", "text": "A literal change-me word in every slot.", "checker": "required_config_placeholder==changeme_literal"},
+      {"id": "o4", "text": "A commented-out example value above each key.", "checker": "required_config_placeholder==commented_example_value"},
+      {"id": "o5", "text": "Null values with a required flag beside.", "checker": "required_config_placeholder==null_with_required_flag"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "service configuration authoring guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0155",
+    "family": "format",
+    "seed_family": "disabled-test-marking",
+    "domain": "coding",
+    "difficulty": "hard",
+    "task": "Park the flaky timezone test until someone can look at it.",
+    "checker_key": "skipped_test_marking",
+    "key_source": "classifier",
+    "exclusivity": "The skip annotation and the expected-failure marker are both decorators above the test body, so the label reads how the runner reports a body that now passes: skipped in one case, unexpectedly passing in the other. A commented-out body is never collected, so it can carry neither marker. The guarded form carries no decorator at all and is the only one whose skip lives inside the body, so it is tested after both decorators to keep a decorated test that also returns early from reading as a guard.",
+    "options": [
+      {"id": "o1", "text": "A skip annotation carrying the reason inline.", "checker": "skipped_test_marking==skip_annotation_with_reason"},
+      {"id": "o2", "text": "The whole body commented out for now.", "checker": "skipped_test_marking==commented_out_body"},
+      {"id": "o3", "text": "A marker prefix added to the name.", "checker": "skipped_test_marking==name_prefix_marker"},
+      {"id": "o4", "text": "An early return behind a condition check.", "checker": "skipped_test_marking==conditional_early_return"},
+      {"id": "o5", "text": "An expected-failure marker on the test.", "checker": "skipped_test_marking==expected_failure_marker"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "engineering testing style guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0156",
+    "family": "format",
+    "seed_family": "merge-requirement-expression",
+    "domain": "finance",
+    "difficulty": "medium",
+    "task": "Write down what a change needs before it lands on the main line.",
+    "checker_key": "merge_requirement_expression",
+    "key_source": "classifier",
+    "exclusivity": "The count-plus-owner rule satisfies the plain count rule on every merge it permits, so the label is read from the written policy rather than from any individual merge that happened to satisfy both. A policy stating a global count and then delegating some paths to their own rules returns 'other'.",
+    "options": [
+      {"id": "o1", "text": "A fixed number of approvals from anyone.", "checker": "merge_requirement_expression==fixed_reviewer_count"},
+      {"id": "o2", "text": "One approval from a listed code owner.", "checker": "merge_requirement_expression==owner_approval_only"},
+      {"id": "o3", "text": "A number of approvals including an owner.", "checker": "merge_requirement_expression==count_plus_owner"},
+      {"id": "o4", "text": "Different rules for different paths in tree.", "checker": "merge_requirement_expression==per_path_rules"},
+      {"id": "o5", "text": "Green checks only, with no human approval.", "checker": "merge_requirement_expression==checks_only"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "regulated repository change control policy", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0157",
+    "family": "format",
+    "seed_family": "toolchain-version-pinning",
+    "domain": "devops",
+    "difficulty": "medium",
+    "task": "Fix which toolchain version contributors build this project with.",
+    "checker_key": "toolchain_pin_declaration",
+    "key_source": "classifier",
+    "exclusivity": "The root version file and the manifest field both hold a bare version string, so the label reads which file carries it rather than the string's shape. The setup script states no version of its own, so it is assigned only when the enforced value originates in the script and not in a file the script reads.",
+    "options": [
+      {"id": "o1", "text": "A small version file at the root.", "checker": "toolchain_pin_declaration==root_version_file"},
+      {"id": "o2", "text": "An engines field in the package manifest.", "checker": "toolchain_pin_declaration==manifest_engines_field"},
+      {"id": "o3", "text": "A pinned image the build runs inside.", "checker": "toolchain_pin_declaration==image_reference"},
+      {"id": "o4", "text": "A line of prose in the readme.", "checker": "toolchain_pin_declaration==readme_prose_only"},
+      {"id": "o5", "text": "A setup script that checks and installs.", "checker": "toolchain_pin_declaration==script_enforced"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "developer environment setup guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0158",
+    "family": "format",
+    "seed_family": "long-invocation-wrapping",
+    "domain": "devops",
+    "difficulty": "hard",
+    "task": "Write out the long build invocation inside the repository helper script.",
+    "checker_key": "command_wrapping_style",
+    "key_source": "classifier",
+    "exclusivity": "The array and the variable both hold the flags in a name expanded at the call site, so the label reads whether the value is a list or a single string, which is exactly the distinction that decides whether a flag containing a space survives. The continuation form still writes every flag at the call site, so no expansion appears there.",
+    "options": [
+      {"id": "o1", "text": "One long line, however wide it runs.", "checker": "command_wrapping_style==single_long_line"},
+      {"id": "o2", "text": "Backslash continuations, one flag per line.", "checker": "command_wrapping_style==backslash_continuations"},
+      {"id": "o3", "text": "An arguments array built up, then expanded.", "checker": "command_wrapping_style==argument_array"},
+      {"id": "o4", "text": "The flags moved into a config file.", "checker": "command_wrapping_style==flags_in_config_file"},
+      {"id": "o5", "text": "The flags held in one expanded variable.", "checker": "command_wrapping_style==flags_in_variable"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "repository scripting conventions document", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0159",
+    "family": "format",
+    "seed_family": "optional-dependency-grouping",
+    "domain": "data",
+    "difficulty": "medium",
+    "task": "Decide how the analysis package declares its plotting requirements.",
+    "checker_key": "optional_dependency_grouping",
+    "key_source": "classifier",
+    "exclusivity": "The named group and the development section both sit in one manifest under a heading of their own, so the label reads whether that heading is a team-chosen word or the reserved development key. Three forms declare the dependency in the main list and are separated by what rides on its line: nothing at all for the required form, an optional flag for one, a platform marker for the other. All five are readable from the single manifest the response emits.",
+    "options": [
+      {"id": "o1", "text": "As a named optional group in the manifest.", "checker": "optional_dependency_grouping==named_extra_group"},
+      {"id": "o2", "text": "In the development section of that same manifest.", "checker": "optional_dependency_grouping==dev_section_split"},
+      {"id": "o3", "text": "Flagged optional on each individual dependency line.", "checker": "optional_dependency_grouping==per_line_optional_flag"},
+      {"id": "o4", "text": "As ordinary required dependencies, like the rest.", "checker": "optional_dependency_grouping==all_required"},
+      {"id": "o5", "text": "Behind a platform marker on each line.", "checker": "optional_dependency_grouping==platform_markers"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "data science repository packaging guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0160",
+    "family": "format",
+    "seed_family": "copyright-year-notation",
+    "domain": "web",
+    "difficulty": "easy",
+    "task": "Set the year in the notice at the top of each source file.",
+    "checker_key": "copyright_year_style",
+    "key_source": "classifier",
+    "exclusivity": "The range and the open-ended forms both open with the first year and a dash, so the label reads whether what follows the dash is a digit run or a word. The comma form also carries two years and is separated from the range by the separator character alone, which is why the label compares that character rather than counting years. The two single-year forms carry no separator and are told apart against the file creation date, which the reference tree places several years back. Every option states at least one year.",
+    "options": [
+      {"id": "o1", "text": "The year the file was first written.", "example": "2021", "checker": "copyright_year_style==first_year_only"},
+      {"id": "o2", "text": "A range from the first year onward.", "example": "2021-2026", "checker": "copyright_year_style==year_range"},
+      {"id": "o3", "text": "The first year, then the word present.", "example": "2021-present", "checker": "copyright_year_style==year_present_word"},
+      {"id": "o4", "text": "The current year, refreshed on each edit.", "example": "2026", "checker": "copyright_year_style==current_year_only"},
+      {"id": "o5", "text": "The first and current years, comma separated.", "checker": "copyright_year_style==comma_separated_years"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "open source licensing handbook", "url": null}
+  }
+]

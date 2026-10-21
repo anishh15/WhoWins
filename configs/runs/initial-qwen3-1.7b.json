@@ -1,0 +1,22 @@
+{
+  "_about": [
+    "The first run: Qwen 3 1.7B over every scenario, on the DGX-1, chosen by the owner on 2026-09-12.",
+    "It is a shakedown, not evidence. Every checker meets real replies and every request shape meets the real server before anything is pre-registered. Its results are never used as confirmatory evidence; the main run collects the 1.7B again.",
+    "The 1.7B is also a rung of the Qwen 3 ladder, so two rules follow. No scenario is ever dropped because of how a model did on it: solo ability stays a modelled covariate, as the plan recommends. And the composition sets that test the main claim stay closed on this model: every composition trial with three or more sources, which stage one predicts from pairs alone.",
+    "No thinking, because it is the mode every rung of both ladders can run, and because it is the mode the checkers were written for: a reply with no reasoning block in it. The thinking arm runs later, under study-think.",
+    "design names how the trials are built: ipb.runner.design turns the scenarios into one two-source conflict each, by a rotation that is a Latin square over source pairs and option pairs. Nothing is random, so the list can be rebuilt from this file alone.",
+    "Run it with scripts/run_trials.sh initial-qwen3-1.7b. It appends one JSON line per attempt and skips what is already recorded, so the same command resumes an interrupted run."
+  ],
+  "run_id": "initial-qwen3-1.7b",
+  "status": "exploratory",
+  "confirmatory": false,
+  "model": "qwen3-1.7b",
+  "environment": "v100-vllm085",
+  "decoding": "study-nothink",
+  "base_seed": 20260912,
+  "repeats": 1,
+  "scenarios": "all",
+  "scenario_count": 1080,
+  "composition_max_sources": 2,
+  "design": "pairwise-rotation"
+}

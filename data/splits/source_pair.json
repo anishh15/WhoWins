@@ -1,0 +1,656 @@
+{
+  "split_id": "source_pair",
+  "schema_version": 1,
+  "question": "Does the fitted scale predict a source pair it never saw?",
+  "unit": "source pair",
+  "shape": "leave-one-pair-out, 10 folds",
+  "why_whole_pairs": "A saturated per-pair model has a parameter for each pair and cannot predict one it never saw. Holding out trials instead would compare the two models on repeated observations of known pairs, which is not the claim being tested.",
+  "sources": [
+    {
+      "source_id": "S1",
+      "transport_role": "system",
+      "displayed_provenance": "operator_policy"
+    },
+    {
+      "source_id": "S2",
+      "transport_role": "developer",
+      "displayed_provenance": "repo_config"
+    },
+    {
+      "source_id": "S3",
+      "transport_role": "user",
+      "displayed_provenance": "user_message"
+    },
+    {
+      "source_id": "S4",
+      "transport_role": "tool",
+      "displayed_provenance": "tool_result"
+    },
+    {
+      "source_id": "S5",
+      "transport_role": "user",
+      "displayed_provenance": "memory"
+    }
+  ],
+  "n_pairs": 10,
+  "n_folds": 10,
+  "folds": [
+    {
+      "fold": "S1|S2",
+      "test": [
+        [
+          "S1",
+          "S2"
+        ]
+      ],
+      "n_train_pairs": 9,
+      "identifiability": {
+        "connected": true,
+        "min_degree": 3,
+        "degrees": {
+          "S1": 3,
+          "S2": 3,
+          "S3": 4,
+          "S4": 4,
+          "S5": 4
+        }
+      },
+      "train": [
+        [
+          "S1",
+          "S3"
+        ],
+        [
+          "S1",
+          "S4"
+        ],
+        [
+          "S1",
+          "S5"
+        ],
+        [
+          "S2",
+          "S3"
+        ],
+        [
+          "S2",
+          "S4"
+        ],
+        [
+          "S2",
+          "S5"
+        ],
+        [
+          "S3",
+          "S4"
+        ],
+        [
+          "S3",
+          "S5"
+        ],
+        [
+          "S4",
+          "S5"
+        ]
+      ]
+    },
+    {
+      "fold": "S1|S3",
+      "test": [
+        [
+          "S1",
+          "S3"
+        ]
+      ],
+      "n_train_pairs": 9,
+      "identifiability": {
+        "connected": true,
+        "min_degree": 3,
+        "degrees": {
+          "S1": 3,
+          "S2": 4,
+          "S3": 3,
+          "S4": 4,
+          "S5": 4
+        }
+      },
+      "train": [
+        [
+          "S1",
+          "S2"
+        ],
+        [
+          "S1",
+          "S4"
+        ],
+        [
+          "S1",
+          "S5"
+        ],
+        [
+          "S2",
+          "S3"
+        ],
+        [
+          "S2",
+          "S4"
+        ],
+        [
+          "S2",
+          "S5"
+        ],
+        [
+          "S3",
+          "S4"
+        ],
+        [
+          "S3",
+          "S5"
+        ],
+        [
+          "S4",
+          "S5"
+        ]
+      ]
+    },
+    {
+      "fold": "S1|S4",
+      "test": [
+        [
+          "S1",
+          "S4"
+        ]
+      ],
+      "n_train_pairs": 9,
+      "identifiability": {
+        "connected": true,
+        "min_degree": 3,
+        "degrees": {
+          "S1": 3,
+          "S2": 4,
+          "S3": 4,
+          "S4": 3,
+          "S5": 4
+        }
+      },
+      "train": [
+        [
+          "S1",
+          "S2"
+        ],
+        [
+          "S1",
+          "S3"
+        ],
+        [
+          "S1",
+          "S5"
+        ],
+        [
+          "S2",
+          "S3"
+        ],
+        [
+          "S2",
+          "S4"
+        ],
+        [
+          "S2",
+          "S5"
+        ],
+        [
+          "S3",
+          "S4"
+        ],
+        [
+          "S3",
+          "S5"
+        ],
+        [
+          "S4",
+          "S5"
+        ]
+      ]
+    },
+    {
+      "fold": "S1|S5",
+      "test": [
+        [
+          "S1",
+          "S5"
+        ]
+      ],
+      "n_train_pairs": 9,
+      "identifiability": {
+        "connected": true,
+        "min_degree": 3,
+        "degrees": {
+          "S1": 3,
+          "S2": 4,
+          "S3": 4,
+          "S4": 4,
+          "S5": 3
+        }
+      },
+      "train": [
+        [
+          "S1",
+          "S2"
+        ],
+        [
+          "S1",
+          "S3"
+        ],
+        [
+          "S1",
+          "S4"
+        ],
+        [
+          "S2",
+          "S3"
+        ],
+        [
+          "S2",
+          "S4"
+        ],
+        [
+          "S2",
+          "S5"
+        ],
+        [
+          "S3",
+          "S4"
+        ],
+        [
+          "S3",
+          "S5"
+        ],
+        [
+          "S4",
+          "S5"
+        ]
+      ]
+    },
+    {
+      "fold": "S2|S3",
+      "test": [
+        [
+          "S2",
+          "S3"
+        ]
+      ],
+      "n_train_pairs": 9,
+      "identifiability": {
+        "connected": true,
+        "min_degree": 3,
+        "degrees": {
+          "S1": 4,
+          "S2": 3,
+          "S3": 3,
+          "S4": 4,
+          "S5": 4
+        }
+      },
+      "train": [
+        [
+          "S1",
+          "S2"
+        ],
+        [
+          "S1",
+          "S3"
+        ],
+        [
+          "S1",
+          "S4"
+        ],
+        [
+          "S1",
+          "S5"
+        ],
+        [
+          "S2",
+          "S4"
+        ],
+        [
+          "S2",
+          "S5"
+        ],
+        [
+          "S3",
+          "S4"
+        ],
+        [
+          "S3",
+          "S5"
+        ],
+        [
+          "S4",
+          "S5"
+        ]
+      ]
+    },
+    {
+      "fold": "S2|S4",
+      "test": [
+        [
+          "S2",
+          "S4"
+        ]
+      ],
+      "n_train_pairs": 9,
+      "identifiability": {
+        "connected": true,
+        "min_degree": 3,
+        "degrees": {
+          "S1": 4,
+          "S2": 3,
+          "S3": 4,
+          "S4": 3,
+          "S5": 4
+        }
+      },
+      "train": [
+        [
+          "S1",
+          "S2"
+        ],
+        [
+          "S1",
+          "S3"
+        ],
+        [
+          "S1",
+          "S4"
+        ],
+        [
+          "S1",
+          "S5"
+        ],
+        [
+          "S2",
+          "S3"
+        ],
+        [
+          "S2",
+          "S5"
+        ],
+        [
+          "S3",
+          "S4"
+        ],
+        [
+          "S3",
+          "S5"
+        ],
+        [
+          "S4",
+          "S5"
+        ]
+      ]
+    },
+    {
+      "fold": "S2|S5",
+      "test": [
+        [
+          "S2",
+          "S5"
+        ]
+      ],
+      "n_train_pairs": 9,
+      "identifiability": {
+        "connected": true,
+        "min_degree": 3,
+        "degrees": {
+          "S1": 4,
+          "S2": 3,
+          "S3": 4,
+          "S4": 4,
+          "S5": 3
+        }
+      },
+      "train": [
+        [
+          "S1",
+          "S2"
+        ],
+        [
+          "S1",
+          "S3"
+        ],
+        [
+          "S1",
+          "S4"
+        ],
+        [
+          "S1",
+          "S5"
+        ],
+        [
+          "S2",
+          "S3"
+        ],
+        [
+          "S2",
+          "S4"
+        ],
+        [
+          "S3",
+          "S4"
+        ],
+        [
+          "S3",
+          "S5"
+        ],
+        [
+          "S4",
+          "S5"
+        ]
+      ]
+    },
+    {
+      "fold": "S3|S4",
+      "test": [
+        [
+          "S3",
+          "S4"
+        ]
+      ],
+      "n_train_pairs": 9,
+      "identifiability": {
+        "connected": true,
+        "min_degree": 3,
+        "degrees": {
+          "S1": 4,
+          "S2": 4,
+          "S3": 3,
+          "S4": 3,
+          "S5": 4
+        }
+      },
+      "train": [
+        [
+          "S1",
+          "S2"
+        ],
+        [
+          "S1",
+          "S3"
+        ],
+        [
+          "S1",
+          "S4"
+        ],
+        [
+          "S1",
+          "S5"
+        ],
+        [
+          "S2",
+          "S3"
+        ],
+        [
+          "S2",
+          "S4"
+        ],
+        [
+          "S2",
+          "S5"
+        ],
+        [
+          "S3",
+          "S5"
+        ],
+        [
+          "S4",
+          "S5"
+        ]
+      ]
+    },
+    {
+      "fold": "S3|S5",
+      "test": [
+        [
+          "S3",
+          "S5"
+        ]
+      ],
+      "n_train_pairs": 9,
+      "identifiability": {
+        "connected": true,
+        "min_degree": 3,
+        "degrees": {
+          "S1": 4,
+          "S2": 4,
+          "S3": 3,
+          "S4": 4,
+          "S5": 3
+        }
+      },
+      "train": [
+        [
+          "S1",
+          "S2"
+        ],
+        [
+          "S1",
+          "S3"
+        ],
+        [
+          "S1",
+          "S4"
+        ],
+        [
+          "S1",
+          "S5"
+        ],
+        [
+          "S2",
+          "S3"
+        ],
+        [
+          "S2",
+          "S4"
+        ],
+        [
+          "S2",
+          "S5"
+        ],
+        [
+          "S3",
+          "S4"
+        ],
+        [
+          "S4",
+          "S5"
+        ]
+      ]
+    },
+    {
+      "fold": "S4|S5",
+      "test": [
+        [
+          "S4",
+          "S5"
+        ]
+      ],
+      "n_train_pairs": 9,
+      "identifiability": {
+        "connected": true,
+        "min_degree": 3,
+        "degrees": {
+          "S1": 4,
+          "S2": 4,
+          "S3": 4,
+          "S4": 3,
+          "S5": 3
+        }
+      },
+      "train": [
+        [
+          "S1",
+          "S2"
+        ],
+        [
+          "S1",
+          "S3"
+        ],
+        [
+          "S1",
+          "S4"
+        ],
+        [
+          "S1",
+          "S5"
+        ],
+        [
+          "S2",
+          "S3"
+        ],
+        [
+          "S2",
+          "S4"
+        ],
+        [
+          "S2",
+          "S5"
+        ],
+        [
+          "S3",
+          "S4"
+        ],
+        [
+          "S3",
+          "S5"
+        ]
+      ]
+    }
+  ],
+  "built_utc": "2026-10-12",
+  "builder": "ipb.splits.build",
+  "seed": 20260909,
+  "collection_fingerprint": {
+    "content": "sha256:3e49e7c4b1c2b25e149761a44e31a2378bd1c7f1858734b897b954d8ba1a72b9",
+    "full": "sha256:def95bbde5e3b5fe4ab47a2b1236b35b4d5071487cb87e23a4821fffcc9e83f2",
+    "n_scenarios": 1080
+  },
+  "parameters": {
+    "frame_min_share": 0.25,
+    "task_tau": 0.4,
+    "shared_values_min": 3,
+    "shared_suffix_min": 4,
+    "proportions": {
+      "train": 0.6,
+      "val": 0.15,
+      "test": 0.25
+    },
+    "domain_fold_min": 50,
+    "dry_run_n": 100,
+    "stage_two_slice_anchor": [
+      "S1",
+      "S2",
+      "S4"
+    ],
+    "source_inventory_from": "data/trials/02-composition.json"
+  }
+}

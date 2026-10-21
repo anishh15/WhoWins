@@ -1,0 +1,110 @@
+{
+  "_about": [
+    "Where the models are served. Two machines, run by two people, with two engines.",
+    "An environment is one serving snapshot: an engine at one version, on one class of GPU, at one number format. Change any of those and it is a different environment, with its own key, because published work finds swings of tens of points across configurations of the same weights.",
+    "Every model names the environment it is served in, under `deployments` in models.json, and its serve file must agree with that environment about the number format and the engine's flags. `ipb.runner.serving check` refuses a disagreement.",
+    "engine_profile names the rules in ipb.runner.serving that were read out of that engine's source: which flags it has, and what it does to a conversation it cannot carry. Two environments on the same engine version share a profile.",
+    "reasoning_separation says who splits a model's thinking from its answer. `server` is vLLM's reasoning parser; `client` is ipb.runner.response, for an engine with no parser that can do it safely.",
+    "Facts checked on 2026-09-12 against the source of each engine version. Reasons for every line: README.md in this directory, and docs/decisions/changes.md."
+  ],
+  "verified_on": "2026-09-12",
+  "environments": {
+    "v100-vllm085": {
+      "name": "DGX-1: 8 x Tesla V100-SXM2 32GB, vLLM 0.8.5.post1, float16",
+      "operator": "anish",
+      "engine": "vllm",
+      "engine_version": "0.8.5.post1",
+      "engine_profile": "vllm-0.8",
+      "openai_harmony_version": null,
+      "libraries": {
+        "python": "3.10.18",
+        "torch": "2.6.0+cu124",
+        "transformers": "4.57.1"
+      },
+      "conda": {
+        "env_name": "ipb-v100",
+        "python": "3.10.18",
+        "pip": [
+          "vllm==0.8.5.post1",
+          "torch==2.6.0",
+          "transformers==4.57.1",
+          "pytest>=8.0"
+        ],
+        "why": [
+          "Its own environment, not a share of another project's: this study pins an engine and a transformers version, and an upgrade made for something else would silently become a new serving snapshot here.",
+          "Python 3.10: vLLM 0.8.5.post1 requires >=3.9,<3.13, and 3.10.18 is what this machine already runs.",
+          "vllm==0.8.5.post1 is the newest that installs on RHEL 7.9 (glibc 2.17) and the newest that supports Volta. It pins torch==2.6.0 and xformers==0.0.29.post2 itself; torch is named here as well so a change to that pin fails loudly instead of quietly.",
+          "transformers==4.57.1 is stated because vLLM 0.8.5 asks only for >=4.51.1, and a fresh install would take whatever is newest -- a 5.x that version was never built against. 4.57.1 is the one already proven on this machine. 4.51.3 is its contemporary, if 4.57.1 ever misbehaves.",
+          "pytest so the suite can be run on the server before a run."
+        ]
+      },
+      "gpu": "Tesla V100-SXM2-32GB",
+      "gpu_memory_gib": 32,
+      "compute_capability": "7.0",
+      "gpu_count": 8,
+      "exclusive_gpus": false,
+      "dtype": "float16",
+      "kv_cache_dtype": "auto",
+      "gpu_memory_utilization": 0.9,
+      "engine_core": "v0",
+      "attention_backend": "XFORMERS",
+      "reasoning_separation": "client",
+      "serve_env": {
+        "VLLM_USE_V1": "0"
+      },
+      "why": [
+        "float16, not bfloat16: vLLM 0.8.5 refuses bfloat16 below compute capability 8.0 -- 'Bfloat16 is only supported on GPUs with compute capability of at least 8.0' (vllm/worker/worker.py). The checkpoints are bfloat16 and are cast on load.",
+        "engine_core v0: vLLM's V1 engine needs compute capability 8.0 ('Need at least Ampere for now', vllm/engine/arg_utils.py), so V1 falls back to V0 here. VLLM_USE_V1=0 states the choice rather than leaving it to the fallback.",
+        "attention_backend XFORMERS: FlashAttention-2 does not build for Volta, and vLLM says so and picks XFormers (vllm/platforms/cuda.py).",
+        "reasoning_separation client: vLLM 0.8.5 has no qwen3 reasoning parser, and its deepseek_r1 parser files the whole answer as reasoning whenever the reply has no </think> in it -- which is every reply with thinking off, because the template closes the block in the prompt. Qwen's own documentation says it: 'As of vLLM 0.8.5, enable_thinking=False is not compatible with this feature.' So no reasoning parser is started here, and ipb.runner.response does the split.",
+        "exclusive_gpus false: the machine is shared, so scripts/serve.sh picks free GPUs and refuses to start beside another job. vLLM measures free memory at startup and fails, or takes memory a neighbour needs."
+      ]
+    },
+    "sm80-vllm0280": {
+      "name": "80GB GPUs of compute capability 8.0 or newer, vLLM 0.28.0, bfloat16",
+      "operator": "gaurav",
+      "engine": "vllm",
+      "engine_version": "0.28.0",
+      "engine_profile": "vllm-0.28",
+      "openai_harmony_version": "0.0.8",
+      "libraries": {},
+      "conda": {
+        "env_name": "ipb-sm80",
+        "python": "3.12",
+        "pip": [
+          "vllm==0.28.0",
+          "openai-harmony==0.0.8",
+          "pytest>=8.0"
+        ],
+        "why": [
+          "Its own environment, for the same reason as the other one.",
+          "Python 3.12: vLLM 0.28.0 requires >=3.10,<3.15.",
+          "vllm==0.28.0 pins torch==2.13.0 and asks for transformers>=5.5.3, so neither is named here -- nothing has been verified on that machine yet. Fill `libraries` from pip freeze once it exists, and this file will check the two agree.",
+          "openai-harmony==0.0.8 builds every gpt-oss prompt, so its version is part of the snapshot."
+        ]
+      },
+      "gpu": null,
+      "gpu_memory_gib": 80,
+      "compute_capability": ">=8.0",
+      "gpu_count": null,
+      "exclusive_gpus": true,
+      "dtype": "bfloat16",
+      "kv_cache_dtype": "auto",
+      "gpu_memory_utilization": 0.9,
+      "engine_core": "v1",
+      "attention_backend": null,
+      "reasoning_separation": "server",
+      "serve_env": {
+        "VLLM_USE_RUST_FRONTEND": "0"
+      },
+      "why": [
+        "vLLM 0.28.0: 0.29.0 was two days old when this was pinned and had made a new model runner the default for every model. A study that runs for months is better on a version that has been out for a while.",
+        "bfloat16: what every checkpoint here ships, and what compute capability 8.0 and newer support.",
+        "reasoning_separation server: vLLM 0.28.0's qwen3 reasoning parser reads the request's enable_thinking, so the server can be trusted to split thinking from the answer. gpt-oss has no choice: vLLM parses harmony channels itself.",
+        "attention_backend null: vLLM picks it from the GPU, and the run records what the server reported.",
+        "gpu and gpu_count null: the exact card is not fixed yet. stack_for() takes them from the server at run time and records them; tensor-parallel-size in each serve file assumes 80GB cards.",
+        "libraries empty: this environment is not built yet. Fill in the versions the server reports, the way the V100 environment records them."
+      ]
+    }
+  }
+}

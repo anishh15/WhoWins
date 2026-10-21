@@ -1,0 +1,22 @@
+{
+  "_about": [
+    "MAIN RUN. The free predictions: the 80 sets where several sources demand the same option, each scenario once per size. 3,240 trials. Never fitted; scored against the pair fit of main-ladder-qwen3.5-27b-nothink with `scripts/strengths.sh main-ladder-qwen3.5-27b-nothink --free results/main-free-qwen3.5-27b-nothink/records.jsonl`.",
+    "qwen3.5-27b on sm80-vllm0280, thinking off (study-nothink). Every main run of every model shares the design, sizes, repeats and tool_turns of its kind; only the model, the mode and the seed differ.",
+    "confirmatory is false: the owner decided on 2026-09-29 that there is no pre-registration, so every result of the main run is exploratory, and insights drawn from it are tested on further models.",
+    "Run it with scripts/run_trials.sh main-free-qwen3.5-27b-nothink, or every main run of this model with scripts/run_main.sh qwen3.5-27b. The same command resumes. Records go on the operator's branch, never on master."
+  ],
+  "run_id": "main-free-qwen3.5-27b-nothink",
+  "status": "main",
+  "confirmatory": false,
+  "model": "qwen3.5-27b",
+  "environment": "sm80-vllm0280",
+  "decoding": "study-nothink",
+  "base_seed": 20261162,
+  "repeats": 3,
+  "scenarios": "all",
+  "scenario_count": 1080,
+  "composition_max_sources": 5,
+  "composition_sizes": [3, 4, 5],
+  "tool_turns": 6,
+  "design": "free-predictions"
+}

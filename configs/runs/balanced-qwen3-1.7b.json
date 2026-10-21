@@ -1,0 +1,26 @@
+{
+  "_about": [
+    "The second run of Qwen 3 1.7B, after results/initial-qwen3-1.7b was read.",
+    "Still exploratory, and still never confirmatory evidence. It exists to show that the four things the first run exposed are fixed: position was decided by a source's name, the refusal family could only express one of its two options, a trial that called a tool was cut off before it could answer, and 154 format trials could not be told apart from a model that cannot produce the artifact at all.",
+    "design pairwise-balanced: the same conflicts as the first run, in the same scenarios, with the same source pairs, option pairs and flips -- laid out in a balanced arrangement instead of always in source-name order, and with the task placed rather than always last.",
+    "composition_sizes [1, 2]: every conflict is also sent as two solo trials, one per side. A solo trial is the conflict with the other source's turn deleted and nothing else changed, so an option the model cannot produce unopposed is visible as that rather than as a precedence result. This triples the trial count and is the reason the run exists.",
+    "repeats 3: one draw per item at temperature 0.7 cannot be told apart from the item itself. Three can. The draws are breadth-first -- every trial once, then every trial again -- so a run stopped by the clock is a complete single-draw dataset and not a third of one.",
+    "tool_turns 6: the loop answers a tool call with a neutral stub result and asks again, up to six times. The first run sent one request and stopped, so an ordering trial that emitted its first step scored UNRESOLVED and a format trial that read the config wrote nothing.",
+    "composition_max_sources stays 2. The composition sets that carry the main claim stay closed on this model.",
+    "Run it with scripts/run_trials.sh balanced-qwen3-1.7b. The same command resumes."
+  ],
+  "run_id": "balanced-qwen3-1.7b",
+  "status": "exploratory",
+  "confirmatory": false,
+  "model": "qwen3-1.7b",
+  "environment": "v100-vllm085",
+  "decoding": "study-nothink",
+  "base_seed": 20260913,
+  "repeats": 3,
+  "scenarios": "all",
+  "scenario_count": 1080,
+  "composition_max_sources": 2,
+  "composition_sizes": [1, 2],
+  "tool_turns": 6,
+  "design": "pairwise-balanced"
+}

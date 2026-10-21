@@ -1,0 +1,22 @@
+{
+  "_about": [
+    "MAIN RUN. The realism set: the hand-written items of data/realism/, six pairs of sources each, each order the chat format allows, bare and inside their own context. It builds only once the batches are written and pass check_realism. Read it with scripts/layouts.sh main-realism-qwen3-8b-think.",
+    "qwen3-8b on v100-vllm085, thinking on (study-think). Every main run of every model shares the design, sizes, repeats and tool_turns of its kind; only the model, the mode and the seed differ.",
+    "confirmatory is false: the owner decided on 2026-09-29 that there is no pre-registration, so every result of the main run is exploratory, and insights drawn from it are tested on further models.",
+    "Run it with scripts/run_trials.sh main-realism-qwen3-8b-think, or every main run of this model with scripts/run_main.sh qwen3-8b. The same command resumes. Records go on the operator's branch, never on master."
+  ],
+  "run_id": "main-realism-qwen3-8b-think",
+  "status": "main",
+  "confirmatory": false,
+  "model": "qwen3-8b",
+  "environment": "v100-vllm085",
+  "decoding": "study-think",
+  "base_seed": 20261323,
+  "repeats": 3,
+  "scenarios": "all",
+  "scenario_count": 1080,
+  "composition_max_sources": 5,
+  "composition_sizes": [2],
+  "tool_turns": 6,
+  "design": "realism"
+}

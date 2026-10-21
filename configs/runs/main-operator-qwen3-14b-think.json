@@ -1,0 +1,22 @@
+{
+  "_about": [
+    "MAIN RUN. The operator test: each scenario's operator line (S1 or S2) against the user, a tool result or the memory note, sent first or last, as a real operator message or as its label in a user message. 4,320 trials, or 3,240 where the template refuses a late operator message. Read it with scripts/layouts.sh main-operator-qwen3-14b-think.",
+    "qwen3-14b on v100-vllm085, thinking on (study-think). Every main run of every model shares the design, sizes, repeats and tool_turns of its kind; only the model, the mode and the seed differ.",
+    "confirmatory is false: the owner decided on 2026-09-29 that there is no pre-registration, so every result of the main run is exploratory, and insights drawn from it are tested on further models.",
+    "Run it with scripts/run_trials.sh main-operator-qwen3-14b-think, or every main run of this model with scripts/run_main.sh qwen3-14b. The same command resumes. Records go on the operator's branch, never on master."
+  ],
+  "run_id": "main-operator-qwen3-14b-think",
+  "status": "main",
+  "confirmatory": false,
+  "model": "qwen3-14b",
+  "environment": "v100-vllm085",
+  "decoding": "study-think",
+  "base_seed": 20261328,
+  "repeats": 3,
+  "scenarios": "all",
+  "scenario_count": 1080,
+  "composition_max_sources": 5,
+  "composition_sizes": [2],
+  "tool_turns": 6,
+  "design": "operator-decomposition"
+}

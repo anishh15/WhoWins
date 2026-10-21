@@ -1,0 +1,25 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.egg-info/
+/build/
+/dist/
+.venv/
+venv/
+.DS_Store
+
+# Local tools and settings.
+.codex/
+.claude/settings.local.json
+
+# Run records are released separately and never committed.
+results/
+
+# Run logs: what this checkout did, not what the study did (logs/README.md).
+logs/*.log
+
+# A build artifact: python3 -m whowins.validation.build_registry writes it.
+data/REGISTRY.md
+
+website/node_modules/
+website/dist/

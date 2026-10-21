@@ -1,0 +1,25 @@
+{
+  "_about": [
+    "The same run as balanced-qwen3-1.7b, on a model eight times the size. Still exploratory, still never confirmatory evidence.",
+    "ONE FACTOR CHANGES, AND THAT IS THE POINT. Same 1,080 scenarios, same design, same composition_sizes, same repeats, same tool_turns, same decoding policy, same machine. Only the weights and the seed differ, so any difference between the two reports is the model and not the setup. A run that changed two things at once could not say which one moved the number.",
+    "WHAT IT IS FOR. The second run found three things on the 1.7B and none of them can be told apart from 'this is what a small model does' without a second rung: the later instruction won 0.834 of the conflicts where position was free against a 0.06-0.08 spread between the sources themselves; two labelled lines of one operator message went the other way, to the FIRST line, 0.740; and an option the model could not produce unopposed won its conflict 0.063 of the time against 0.566 for one it always could. The 14B either repeats those or it does not, and either answer is worth having before the ladder is run.",
+    "IT ALSO RE-ASKS A QUESTION ABOUT THE COLLECTION. 166 scenarios -- 136 of them format -- were never produced by the 1.7B with nobody disagreeing, so they measured nothing about precedence on that model. The collection's rule is that no scenario is dropped for how ONE model did on it. A second rung is what turns 'this model could not' into 'no model can', and only the second of those is about the item.",
+    "seed: base_seed differs from every other run, so a draw is a draw and not the same draw sent twice.",
+    "Run it with scripts/run_trials.sh balanced-qwen3-14b. The same command resumes. Read it with scripts/analyse.sh balanced-qwen3-14b.",
+    "The 14B needs two of the DGX-1's cards (tensor-parallel-size 2 in its serve file), and generates perhaps a fifth as fast as the 1.7B per stream, so raise --timeout with --concurrency."
+  ],
+  "run_id": "balanced-qwen3-14b",
+  "status": "exploratory",
+  "confirmatory": false,
+  "model": "qwen3-14b",
+  "environment": "v100-vllm085",
+  "decoding": "study-nothink",
+  "base_seed": 20260915,
+  "repeats": 3,
+  "scenarios": "all",
+  "scenario_count": 1080,
+  "composition_max_sources": 2,
+  "composition_sizes": [1, 2],
+  "tool_turns": 6,
+  "design": "pairwise-balanced"
+}

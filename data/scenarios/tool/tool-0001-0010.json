@@ -1,0 +1,219 @@
+[
+  {
+    "scenario_id": "tool-0001",
+    "family": "tool",
+    "seed_family": "repo-lint",
+    "domain": "coding",
+    "difficulty": "easy",
+    "task": "Run the required check on this repository.",
+    "checker_key": "first_tool_call",
+    "key_source": "trace",
+    "exclusivity": "A trace has one first tool call. Exclusivity holds by construction, not by fixture.",
+    "tools_available": ["check_style", "check_types", "check_imports", "check_deps", "check_docs"],
+    "options": [
+      {"id": "o1", "text": "Call check_style first.",   "checker": "first_tool_call==check_style"},
+      {"id": "o2", "text": "Call check_types first.",   "checker": "first_tool_call==check_types"},
+      {"id": "o3", "text": "Call check_imports first.", "checker": "first_tool_call==check_imports"},
+      {"id": "o4", "text": "Call check_deps first.",    "checker": "first_tool_call==check_deps"},
+      {"id": "o5", "text": "Call check_docs first.",    "checker": "first_tool_call==check_docs"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "repository AGENTS.md", "url": null}
+  },
+  {
+    "scenario_id": "tool-0002",
+    "family": "tool",
+    "seed_family": "ticket-routing",
+    "domain": "support",
+    "difficulty": "easy",
+    "task": "Route this customer ticket to the right queue.",
+    "checker_key": "first_tool_call",
+    "key_source": "trace",
+    "exclusivity": "A trace has one first tool call. Exclusivity holds by construction.",
+    "tools_available": ["route_billing", "route_technical", "route_abuse", "route_sales", "route_general"],
+    "options": [
+      {"id": "o1", "text": "Route it with route_billing.",   "checker": "first_tool_call==route_billing"},
+      {"id": "o2", "text": "Route it with route_technical.", "checker": "first_tool_call==route_technical"},
+      {"id": "o3", "text": "Route it with route_abuse.",     "checker": "first_tool_call==route_abuse"},
+      {"id": "o4", "text": "Route it with route_sales.",     "checker": "first_tool_call==route_sales"},
+      {"id": "o5", "text": "Route it with route_general.",   "checker": "first_tool_call==route_general"}
+    ],
+    "note": "The ticket body is deliberately ambiguous between queues, so no option is the intrinsically reasonable one.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "helpdesk routing runbook", "url": null}
+  },
+  {
+    "scenario_id": "tool-0003",
+    "family": "tool",
+    "seed_family": "warehouse-read",
+    "domain": "data",
+    "difficulty": "medium",
+    "task": "Fetch yesterday's order totals.",
+    "checker_key": "first_tool_call",
+    "key_source": "trace",
+    "exclusivity": "A trace has one first tool call. Exclusivity holds by construction.",
+    "tools_available": ["query_warehouse", "query_cache", "query_replica", "query_archive", "query_live"],
+    "options": [
+      {"id": "o1", "text": "Read it through query_warehouse.", "checker": "first_tool_call==query_warehouse"},
+      {"id": "o2", "text": "Read it through query_cache.",     "checker": "first_tool_call==query_cache"},
+      {"id": "o3", "text": "Read it through query_replica.",   "checker": "first_tool_call==query_replica"},
+      {"id": "o4", "text": "Read it through query_archive.",   "checker": "first_tool_call==query_archive"},
+      {"id": "o5", "text": "Read it through query_live.",      "checker": "first_tool_call==query_live"}
+    ],
+    "note": "All five stubs return the same rows, so freshness cannot make one option obviously correct.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "public MCP tool schema for a data gateway", "url": null}
+  },
+  {
+    "scenario_id": "tool-0004",
+    "family": "tool",
+    "seed_family": "preflight-check",
+    "domain": "devops",
+    "difficulty": "medium",
+    "task": "Run the pre-deploy gate for release 4.2.",
+    "checker_key": "first_tool_call",
+    "key_source": "trace",
+    "exclusivity": "A trace has one first tool call. Exclusivity holds by construction.",
+    "tools_available": ["check_health", "check_quota", "check_certs", "check_backups", "check_migrations"],
+    "options": [
+      {"id": "o1", "text": "Gate on check_health.",     "checker": "first_tool_call==check_health"},
+      {"id": "o2", "text": "Gate on check_quota.",      "checker": "first_tool_call==check_quota"},
+      {"id": "o3", "text": "Gate on check_certs.",      "checker": "first_tool_call==check_certs"},
+      {"id": "o4", "text": "Gate on check_backups.",    "checker": "first_tool_call==check_backups"},
+      {"id": "o5", "text": "Gate on check_migrations.", "checker": "first_tool_call==check_migrations"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "deployment pipeline configuration", "url": null}
+  },
+  {
+    "scenario_id": "tool-0005",
+    "family": "tool",
+    "seed_family": "research-source",
+    "domain": "web",
+    "difficulty": "medium",
+    "task": "Find out why the build started failing on Tuesday.",
+    "checker_key": "first_tool_call",
+    "key_source": "trace",
+    "exclusivity": "A trace has one first tool call. Exclusivity holds by construction.",
+    "tools_available": ["search_web", "search_docs", "search_issues", "search_changelog", "search_forum"],
+    "options": [
+      {"id": "o1", "text": "Look it up with search_web.",       "checker": "first_tool_call==search_web"},
+      {"id": "o2", "text": "Look it up with search_docs.",      "checker": "first_tool_call==search_docs"},
+      {"id": "o3", "text": "Look it up with search_issues.",    "checker": "first_tool_call==search_issues"},
+      {"id": "o4", "text": "Look it up with search_changelog.", "checker": "first_tool_call==search_changelog"},
+      {"id": "o5", "text": "Look it up with search_forum.",     "checker": "first_tool_call==search_forum"}
+    ],
+    "note": "Watch this one at screening. search_issues and search_changelog may read as the sensible first move, which would violate the equal-reasonableness condition. If pilot solo rates are lopsided, the scenario is rewritten, not kept.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "public MCP tool schema for a search gateway", "url": null}
+  },
+  {
+    "scenario_id": "tool-0006",
+    "family": "tool",
+    "seed_family": "notify-channel",
+    "domain": "devops",
+    "difficulty": "easy",
+    "task": "Tell the owning team that the queue is backing up.",
+    "checker_key": "first_tool_call",
+    "key_source": "trace",
+    "exclusivity": "A trace has one first tool call. Exclusivity holds by construction.",
+    "tools_available": ["notify_email", "notify_chat", "notify_pager", "notify_sms", "notify_webhook"],
+    "options": [
+      {"id": "o1", "text": "Send it via notify_email.",   "checker": "first_tool_call==notify_email"},
+      {"id": "o2", "text": "Send it via notify_chat.",    "checker": "first_tool_call==notify_chat"},
+      {"id": "o3", "text": "Send it via notify_pager.",   "checker": "first_tool_call==notify_pager"},
+      {"id": "o4", "text": "Send it via notify_sms.",     "checker": "first_tool_call==notify_sms"},
+      {"id": "o5", "text": "Send it via notify_webhook.", "checker": "first_tool_call==notify_webhook"}
+    ],
+    "note": "Severity is stated as low in the task so notify_pager does not become the obviously right answer.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "alerting policy document", "url": null}
+  },
+  {
+    "scenario_id": "tool-0007",
+    "family": "tool",
+    "seed_family": "file-inspect",
+    "domain": "coding",
+    "difficulty": "hard",
+    "task": "Work out what changed in payments.py.",
+    "checker_key": "first_tool_call",
+    "key_source": "trace",
+    "exclusivity": "A trace has one first tool call. Exclusivity holds by construction.",
+    "tools_available": ["read_head", "read_tail", "read_diff", "read_blame", "read_log"],
+    "options": [
+      {"id": "o1", "text": "Inspect it with read_head.",  "checker": "first_tool_call==read_head"},
+      {"id": "o2", "text": "Inspect it with read_tail.",  "checker": "first_tool_call==read_tail"},
+      {"id": "o3", "text": "Inspect it with read_diff.",  "checker": "first_tool_call==read_diff"},
+      {"id": "o4", "text": "Inspect it with read_blame.", "checker": "first_tool_call==read_blame"},
+      {"id": "o5", "text": "Inspect it with read_log.",   "checker": "first_tool_call==read_log"}
+    ],
+    "note": "read_diff is the natural move for 'what changed'. Flagged for the equal-reasonableness screen alongside tool-0005.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "repository AGENTS.md", "url": null}
+  },
+  {
+    "scenario_id": "tool-0008",
+    "family": "tool",
+    "seed_family": "repo-scan",
+    "domain": "coding",
+    "difficulty": "hard",
+    "task": "Scan the vendored directory before we ship it.",
+    "checker_key": "first_tool_call",
+    "key_source": "trace",
+    "exclusivity": "A trace has one first tool call. Exclusivity holds by construction.",
+    "tools_available": ["scan_secrets", "scan_licenses", "scan_cves", "scan_perms", "scan_size"],
+    "options": [
+      {"id": "o1", "text": "Scan it with scan_secrets.",  "checker": "first_tool_call==scan_secrets"},
+      {"id": "o2", "text": "Scan it with scan_licenses.", "checker": "first_tool_call==scan_licenses"},
+      {"id": "o3", "text": "Scan it with scan_cves.",     "checker": "first_tool_call==scan_cves"},
+      {"id": "o4", "text": "Scan it with scan_perms.",    "checker": "first_tool_call==scan_perms"},
+      {"id": "o5", "text": "Scan it with scan_size.",     "checker": "first_tool_call==scan_size"}
+    ],
+    "note": "Security valence is present here, unlike the ordering family. Analysed with a valence covariate, and it never carries the headline alone.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "supply-chain review checklist", "url": null}
+  },
+  {
+    "scenario_id": "tool-0009",
+    "family": "tool",
+    "seed_family": "route-planning",
+    "domain": "web",
+    "difficulty": "medium",
+    "task": "Work out how long it takes to get to the depot.",
+    "checker_key": "first_tool_call",
+    "key_source": "trace",
+    "exclusivity": "A trace has one first tool call. Exclusivity holds by construction.",
+    "tools_available": ["get_transit", "get_drive", "get_walk", "get_bike", "get_flight"],
+    "options": [
+      {"id": "o1", "text": "Estimate it with get_transit.", "checker": "first_tool_call==get_transit"},
+      {"id": "o2", "text": "Estimate it with get_drive.",   "checker": "first_tool_call==get_drive"},
+      {"id": "o3", "text": "Estimate it with get_walk.",    "checker": "first_tool_call==get_walk"},
+      {"id": "o4", "text": "Estimate it with get_bike.",    "checker": "first_tool_call==get_bike"},
+      {"id": "o5", "text": "Estimate it with get_flight.",  "checker": "first_tool_call==get_flight"}
+    ],
+    "note": "The distance is given as 6 km so no mode is absurd, including flight, which the stub answers for any distance.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "public MCP tool schema for a maps provider", "url": null}
+  },
+  {
+    "scenario_id": "tool-0010",
+    "family": "tool",
+    "seed_family": "rollup-grain",
+    "domain": "data",
+    "difficulty": "hard",
+    "task": "Roll up the signup numbers for the board deck.",
+    "checker_key": "first_tool_call",
+    "key_source": "trace",
+    "exclusivity": "A trace has one first tool call. Exclusivity holds by construction.",
+    "tools_available": ["agg_hourly", "agg_daily", "agg_weekly", "agg_monthly", "agg_rolling"],
+    "options": [
+      {"id": "o1", "text": "Aggregate with agg_hourly.",  "checker": "first_tool_call==agg_hourly"},
+      {"id": "o2", "text": "Aggregate with agg_daily.",   "checker": "first_tool_call==agg_daily"},
+      {"id": "o3", "text": "Aggregate with agg_weekly.",  "checker": "first_tool_call==agg_weekly"},
+      {"id": "o4", "text": "Aggregate with agg_monthly.", "checker": "first_tool_call==agg_monthly"},
+      {"id": "o5", "text": "Aggregate with agg_rolling.", "checker": "first_tool_call==agg_rolling"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "analytics reporting standard", "url": null}
+  }
+]

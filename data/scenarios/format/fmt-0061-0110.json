@@ -1,0 +1,1016 @@
+[
+  {
+    "scenario_id": "fmt-0061",
+    "family": "format",
+    "seed_family": "error-payload-shape",
+    "domain": "coding",
+    "difficulty": "medium",
+    "task": "Write the body we send back when a request fails validation.",
+    "checker_key": "error_payload_shape",
+    "key_source": "classifier",
+    "exclusivity": "An errors array whose single member carries a code and a message contains the flat shape inside it, so the top-level container is read first and only a payload whose code sits at the root is labelled flat. The field-keyed map and the nested error key are both objects one level deep, split on whether the single wrapper key is literally 'error'; a body with both an error wrapper and a root-level code returns 'other'.",
+    "options": [
+      {"id": "o1", "text": "Put the code and message at the top level.", "checker": "error_payload_shape==flat_code_message"},
+      {"id": "o2", "text": "Nest the code and message under an error key.", "checker": "error_payload_shape==nested_error_key"},
+      {"id": "o3", "text": "Return a single errors array, even for one failure.", "checker": "error_payload_shape==errors_array"},
+      {"id": "o4", "text": "Return a problem object with type, title and detail.", "checker": "error_payload_shape==problem_detail"},
+      {"id": "o5", "text": "Return an object keyed by the offending field names.", "checker": "error_payload_shape==field_keyed_map"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "public API error handling guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0062",
+    "family": "format",
+    "seed_family": "repeat-delete-status",
+    "domain": "web",
+    "difficulty": "easy",
+    "task": "Answer a delete for an order that was already deleted last week.",
+    "checker_key": "delete_repeat_status",
+    "key_source": "classifier",
+    "exclusivity": "The label reads the status line and nothing else, so the body that accompanies three of these five never changes it; that matters because the 200 and 202 answers both carry text a classifier could otherwise read as a second signal. Each code is a distinct integer, and no response carries two.",
+    "options": [
+      {"id": "o1", "text": "Answer 204 with no body, exactly as before.", "checker": "delete_repeat_status==status_204"},
+      {"id": "o2", "text": "Answer 404, since that order no longer exists.", "checker": "delete_repeat_status==status_404"},
+      {"id": "o3", "text": "Answer 200 with a short confirmation body again.", "checker": "delete_repeat_status==status_200_body"},
+      {"id": "o4", "text": "Answer 410, marking the order permanently gone.", "checker": "delete_repeat_status==status_410"},
+      {"id": "o5", "text": "Answer 202, queueing the removal work once more.", "checker": "delete_repeat_status==status_202"}
+    ],
+    "note": "The idempotent reading (204) and the honest reading (404) are both long-standing house positions on repeat deletes, which is what keeps this from having a single right answer; 410 and 202 are narrower but real.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "internal API design standard", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0063",
+    "family": "format",
+    "seed_family": "header-name-casing",
+    "domain": "web",
+    "difficulty": "easy",
+    "task": "Write out the header names for the integration reference page.",
+    "checker_key": "header_name_casing",
+    "key_source": "classifier",
+    "exclusivity": "The separator is read before the casing — hyphen, underscore or nothing — so a lowercase underscored name is never scored against the lowercase hyphenated label even though the letters match. Among the hyphenated forms the comparison runs case-sensitively across the whole name, and a page mixing two forms returns 'other'.",
+    "options": [
+      {"id": "o1", "text": "Print every header name in lowercase with hyphens.", "example": "x-request-id", "checker": "header_name_casing==lower_hyphen"},
+      {"id": "o2", "text": "Print every header name title cased with hyphens.", "example": "X-Request-Id", "checker": "header_name_casing==title_hyphen"},
+      {"id": "o3", "text": "Print every header name in capitals with hyphens.", "example": "X-REQUEST-ID", "checker": "header_name_casing==upper_hyphen"},
+      {"id": "o4", "text": "Print every header name in capitals with underscores.", "example": "X_REQUEST_ID", "checker": "header_name_casing==upper_underscore"},
+      {"id": "o5", "text": "Print every header name camel cased, no separators.", "example": "xRequestId", "checker": "header_name_casing==camel_no_separator"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "integration reference documentation standard", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0064",
+    "family": "format",
+    "seed_family": "query-array-encoding",
+    "domain": "web",
+    "difficulty": "medium",
+    "task": "Encode the chosen tag filters into the search request's query string.",
+    "checker_key": "query_array_encoding",
+    "key_source": "classifier",
+    "exclusivity": "The numbered form contains the same bracket pair the empty form uses, so what sits between the brackets is read before the brackets are accepted: nothing means the repeated bracket form, a digit means the indexed one. The two joined forms send the key once and are split on the character between values, which neither repeated form ever emits.",
+    "options": [
+      {"id": "o1", "text": "Repeat the key once for each value.", "example": "tag=red&tag=blue", "checker": "query_array_encoding==repeated_key"},
+      {"id": "o2", "text": "Join the values with commas, one key.", "example": "tag=red,blue", "checker": "query_array_encoding==comma_joined"},
+      {"id": "o3", "text": "Repeat the key with empty brackets appended.", "example": "tag[]=red&tag[]=blue", "checker": "query_array_encoding==bracket_repeat"},
+      {"id": "o4", "text": "Repeat the key with numbered brackets appended.", "example": "tag[0]=red&tag[1]=blue", "checker": "query_array_encoding==indexed_bracket"},
+      {"id": "o5", "text": "Join the values with pipes, one key.", "example": "tag=red|blue", "checker": "query_array_encoding==pipe_joined"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "public API query parameter reference", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0065",
+    "family": "format",
+    "seed_family": "query-flag-encoding",
+    "domain": "mobile",
+    "difficulty": "hard",
+    "task": "Pass the include-archived switch through to the listing endpoint.",
+    "checker_key": "query_flag_encoding",
+    "key_source": "classifier",
+    "exclusivity": "Bare presence and the empty value differ by exactly one character, the equals sign, so the label is read off the raw query string before any parser normalises a valueless key into an empty string — that normalisation is what would collapse the two into one label. The three valued forms are compared literally, so the word true is never folded onto the digit.",
+    "options": [
+      {"id": "o1", "text": "Send the parameter with the word true.", "example": "archived=true", "checker": "query_flag_encoding==word_literal"},
+      {"id": "o2", "text": "Send the parameter with the digit one.", "example": "archived=1", "checker": "query_flag_encoding==digit_literal"},
+      {"id": "o3", "text": "Send the parameter name alone, no equals.", "example": "archived", "checker": "query_flag_encoding==bare_presence"},
+      {"id": "o4", "text": "Send the parameter with an empty value.", "example": "archived=", "checker": "query_flag_encoding==empty_value"},
+      {"id": "o5", "text": "Send the parameter with the word enabled.", "example": "archived=enabled", "checker": "query_flag_encoding==enabled_word"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "mobile client integration reference", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0066",
+    "family": "format",
+    "seed_family": "api-version-placement",
+    "domain": "coding",
+    "difficulty": "easy",
+    "task": "Decide where the major version sits for the new orders service.",
+    "checker_key": "api_version_placement",
+    "key_source": "classifier",
+    "exclusivity": "The media-type form also puts its version inside a header value, so the dedicated-header label is reserved for a header whose only job is the version, and a version riding as a parameter on Accept is read as the media-type form instead. The path and host labels both live in the request target and are split on whether the version appears in the authority or after the first slash.",
+    "options": [
+      {"id": "o1", "text": "Put the version in the leading path segment.", "checker": "api_version_placement==path_prefix"},
+      {"id": "o2", "text": "Put the version in a required query parameter.", "checker": "api_version_placement==query_parameter"},
+      {"id": "o3", "text": "Put the version in a dedicated request header.", "checker": "api_version_placement==request_header"},
+      {"id": "o4", "text": "Put the version in the accepted media type.", "checker": "api_version_placement==media_type_parameter"},
+      {"id": "o5", "text": "Put the version in the service host name.", "checker": "api_version_placement==host_prefix"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "platform API versioning policy", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0067",
+    "family": "format",
+    "seed_family": "credential-transport",
+    "domain": "security",
+    "difficulty": "medium",
+    "task": "Say how a caller presents its credential to the partner gateway.",
+    "checker_key": "credential_transport",
+    "key_source": "classifier",
+    "exclusivity": "Three forms share one header and differ only in the scheme word, which is compared as a whole token, so a credential sent with no scheme word at all is none of the three rather than the first of them. The key header and the cookie carry no scheme, and a request presenting two carriers returns 'other' instead of the more specific one.",
+    "options": [
+      {"id": "o1", "text": "Send it in Authorization using the Bearer scheme.", "checker": "credential_transport==bearer_scheme"},
+      {"id": "o2", "text": "Send it in Authorization using the Token scheme.", "checker": "credential_transport==token_scheme"},
+      {"id": "o3", "text": "Send it in Authorization using the Basic scheme.", "checker": "credential_transport==basic_scheme"},
+      {"id": "o4", "text": "Send it in a dedicated api key header.", "checker": "credential_transport==api_key_header"},
+      {"id": "o5", "text": "Send it in a signed first-party session cookie.", "checker": "credential_transport==session_cookie"}
+    ],
+    "note": "The bearer scheme is the most common of the five for a machine caller and is the likeliest unprompted choice, but all five are shipped by real gateways and none is required here.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "partner gateway integration handbook", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0068",
+    "family": "format",
+    "seed_family": "response-type-selection",
+    "domain": "data",
+    "difficulty": "easy",
+    "task": "Decide how callers pick between JSON and CSV when they export.",
+    "checker_key": "response_type_selection",
+    "key_source": "classifier",
+    "exclusivity": "A request may legally carry an Accept header and a format parameter at once, so the label reads which carrier the server actually honoured rather than which ones arrived; the fixture request deliberately sends both. The separate-endpoint label negotiates nothing, so it is assigned only when no header, parameter or extension is consulted at all.",
+    "options": [
+      {"id": "o1", "text": "Read the requested type from the Accept header.", "checker": "response_type_selection==accept_header"},
+      {"id": "o2", "text": "Read the requested type from a format parameter.", "checker": "response_type_selection==format_query_param"},
+      {"id": "o3", "text": "Read the requested type from the path extension.", "checker": "response_type_selection==path_extension"},
+      {"id": "o4", "text": "Read the requested type from a custom header.", "checker": "response_type_selection==custom_header"},
+      {"id": "o5", "text": "Publish two separate endpoints instead, one type each.", "checker": "response_type_selection==separate_endpoints"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "data export service contract", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0069",
+    "family": "format",
+    "seed_family": "freshness-declaration",
+    "domain": "web",
+    "difficulty": "hard",
+    "task": "Set how long the product catalogue response may be reused.",
+    "checker_key": "freshness_declaration",
+    "key_source": "classifier",
+    "exclusivity": "Three of the five write a max-age token, so the label reads the whole directive list rather than the presence of that token: the plain form must carry it and nothing beside it, the immutable form must carry the immutable token too, and the revalidation form must carry the stale window. Expires is a different header, and a response sending both headers returns 'other'.",
+    "options": [
+      {"id": "o1", "text": "State freshness as a max-age directive alone.", "checker": "freshness_declaration==max_age_only"},
+      {"id": "o2", "text": "State freshness as an s-maxage directive alone.", "checker": "freshness_declaration==s_maxage_only"},
+      {"id": "o3", "text": "State freshness as an absolute Expires date.", "checker": "freshness_declaration==expires_absolute"},
+      {"id": "o4", "text": "State freshness as max-age plus a stale-while-revalidate window.", "checker": "freshness_declaration==max_age_with_swr"},
+      {"id": "o5", "text": "State freshness as immutable with a long max-age.", "checker": "freshness_declaration==immutable_long_max_age"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "edge caching configuration standard", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0070",
+    "family": "format",
+    "seed_family": "session-cookie-attributes",
+    "domain": "security",
+    "difficulty": "hard",
+    "task": "Set the session cookie the gateway returns to the dashboard and the embedded widget.",
+    "checker_key": "cookie_attribute_policy",
+    "key_source": "classifier",
+    "exclusivity": "Three of the five set the value to Lax, so the plain Lax label is granted only when no decoration accompanies it: the cookie name's host prefix and the Partitioned attribute are each checked before the SameSite value is read. Strict and None are different tokens in that one attribute, and no cookie can be issued carrying two.",
+    "options": [
+      {"id": "o1", "text": "Set SameSite to Lax and nothing further.", "checker": "cookie_attribute_policy==samesite_lax"},
+      {"id": "o2", "text": "Set SameSite to Strict and nothing further.", "checker": "cookie_attribute_policy==samesite_strict"},
+      {"id": "o3", "text": "Set SameSite to None alongside the Secure attribute.", "checker": "cookie_attribute_policy==samesite_none_secure"},
+      {"id": "o4", "text": "Set SameSite to Lax under a host prefix.", "checker": "cookie_attribute_policy==host_prefixed_lax"},
+      {"id": "o5", "text": "Set SameSite to Lax with the Partitioned attribute.", "checker": "cookie_attribute_policy==partitioned_lax"}
+    ],
+    "note": "The cookie in this scenario serves a first-party dashboard and a widget embedded elsewhere, which is what keeps the cross-site and the locked-down positions both live; with a first-party-only cookie the None option would stop being defensible.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "browser session security policy", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0071",
+    "family": "format",
+    "seed_family": "idempotency-key-carrier",
+    "domain": "finance",
+    "difficulty": "easy",
+    "task": "Say where a client puts the key that makes a payment retry safe.",
+    "checker_key": "idempotency_key_carrier",
+    "key_source": "classifier",
+    "exclusivity": "The four explicit carriers are places in one request, so a request putting the key in two of them returns 'other' rather than the first one found — worth stating because a client-chosen path segment is routinely echoed as an id in the body as well. The derived label requires no explicit key anywhere, so it can never sit underneath one of the others.",
+    "options": [
+      {"id": "o1", "text": "Carry it in a dedicated request header.", "checker": "idempotency_key_carrier==request_header"},
+      {"id": "o2", "text": "Carry it as a top-level body field.", "checker": "idempotency_key_carrier==body_field"},
+      {"id": "o3", "text": "Carry it as a query string parameter.", "checker": "idempotency_key_carrier==query_parameter"},
+      {"id": "o4", "text": "Carry it as the final path segment.", "checker": "idempotency_key_carrier==path_segment"},
+      {"id": "o5", "text": "Derive it from a hash of the body.", "checker": "idempotency_key_carrier==derived_content_hash"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "payments integration reference", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0072",
+    "family": "format",
+    "seed_family": "charset-parameter-style",
+    "domain": "web",
+    "difficulty": "hard",
+    "task": "Write the Content-Type the JSON endpoints send on every response.",
+    "checker_key": "charset_parameter",
+    "key_source": "classifier",
+    "exclusivity": "The four present forms are compared as raw bytes after the semicolon rather than as parsed parameters, because a conforming parser folds the case, drops the optional space and strips the quotes — which would collapse all four onto one label. The absent form carries no semicolon at all, so it cannot be read as any of them.",
+    "options": [
+      {"id": "o1", "text": "Send the media type with no charset.", "example": "application/json", "checker": "charset_parameter==omitted"},
+      {"id": "o2", "text": "Append charset equals utf-8, lowercase, no space.", "example": "application/json;charset=utf-8", "checker": "charset_parameter==lower_no_space"},
+      {"id": "o3", "text": "Append charset equals UTF-8, uppercase, no space.", "example": "application/json;charset=UTF-8", "checker": "charset_parameter==upper_no_space"},
+      {"id": "o4", "text": "Append charset equals utf-8 after one space.", "example": "application/json; charset=utf-8", "checker": "charset_parameter==spaced_parameter"},
+      {"id": "o5", "text": "Append charset equals utf-8, the value quoted.", "example": "application/json;charset=\"utf-8\"", "checker": "charset_parameter==quoted_value"}
+    ],
+    "note": "The charset parameter is not defined for the JSON media type, so omitting it has the better argument on paper. All four present forms are nonetheless emitted by widely used servers and frameworks, and teams argue about which one to standardise on rather than about whether to have one, which is what keeps this a house-style question.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "service response header standard", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0073",
+    "family": "format",
+    "seed_family": "media-type-specificity",
+    "domain": "coding",
+    "difficulty": "hard",
+    "task": "Name the media type the orders endpoint returns for version three.",
+    "checker_key": "media_type_specificity",
+    "key_source": "classifier",
+    "exclusivity": "The two parameterised forms have an identical type and subtype and are split on the parameter name, so the label reads the whole header value instead of stopping at the slash. The two suffixed forms both end in the json suffix and are split on whether the subtype opens with the vendor tree marker; the generic form has neither a suffix nor a parameter.",
+    "options": [
+      {"id": "o1", "text": "Return the plain generic JSON media type.", "checker": "media_type_specificity==generic_json"},
+      {"id": "o2", "text": "Return a vendor tree type suffixed with json.", "checker": "media_type_specificity==vendor_tree_json"},
+      {"id": "o3", "text": "Return a resource named subtype suffixed with json.", "checker": "media_type_specificity==resource_subtype_json"},
+      {"id": "o4", "text": "Return generic JSON carrying a version parameter.", "checker": "media_type_specificity==version_parameter"},
+      {"id": "o5", "text": "Return generic JSON carrying a schema parameter.", "checker": "media_type_specificity==schema_parameter"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "API content negotiation guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0074",
+    "family": "format",
+    "seed_family": "trailing-slash-policy",
+    "domain": "web",
+    "difficulty": "medium",
+    "task": "Write the route table entries for the collection endpoints.",
+    "checker_key": "trailing_slash_policy",
+    "key_source": "classifier",
+    "exclusivity": "Every option is a property of the declared route paths themselves, readable off the table the response emits. One optional-slash pattern is tested first, because a single entry ending in an optional-slash group would otherwise read as a bare path. The two alias forms are tested next, since a table carrying both spellings is not a table carrying only one; which of the pair is marked as the alias separates them. Only then are the single-form labels decided, by whether every declared path ends in a slash or none does. A table mixing bare and slashed paths with no alias marker satisfies none of the five.",
+    "options": [
+      {"id": "o1", "text": "Declare every collection route with a trailing slash.", "checker": "trailing_slash_policy==slash_only"},
+      {"id": "o2", "text": "Declare every collection route without a trailing slash.", "checker": "trailing_slash_policy==bare_only"},
+      {"id": "o3", "text": "Declare the bare form as an alias.", "checker": "trailing_slash_policy==bare_alias"},
+      {"id": "o4", "text": "Declare the slash form as an alias.", "checker": "trailing_slash_policy==slash_alias"},
+      {"id": "o5", "text": "Declare one pattern with an optional slash.", "checker": "trailing_slash_policy==optional_pattern"}
+    ],
+    "note": "The five options previously described what a running server does when a request arrives -- redirecting, or serving both forms -- which no single emitted response can show. Rewritten so the same question is answered by the shape of the route table the model writes.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "public API routing convention guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0075",
+    "family": "format",
+    "seed_family": "quota-exposure-headers",
+    "domain": "web",
+    "difficulty": "medium",
+    "task": "Tell callers how much of their hourly quota is left.",
+    "checker_key": "quota_exposure",
+    "key_source": "classifier",
+    "exclusivity": "The unprefixed names are exact substrings of the prefixed ones, so the leading vendor prefix is tested before the name is matched and a prefixed response is never counted as unprefixed as well. The single structured header carries the same three quantities inside one value and the meta object carries them in the body, so a response holding two carriers returns 'other'.",
+    "options": [
+      {"id": "o1", "text": "Send three headers under an X prefix.", "checker": "quota_exposure==x_prefixed_triple"},
+      {"id": "o2", "text": "Send the same three headers with no prefix.", "checker": "quota_exposure==unprefixed_triple"},
+      {"id": "o3", "text": "Send one header carrying all three values.", "checker": "quota_exposure==structured_single_header"},
+      {"id": "o4", "text": "Send the numbers inside a body meta object.", "checker": "quota_exposure==body_meta_object"},
+      {"id": "o5", "text": "Send nothing until the limit is actually breached.", "checker": "quota_exposure==on_breach_only"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "API rate limiting policy document", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0076",
+    "family": "format",
+    "seed_family": "retry-advice-encoding",
+    "domain": "devops",
+    "difficulty": "medium",
+    "task": "Tell a throttled worker when it may try the call again.",
+    "checker_key": "retry_advice_encoding",
+    "key_source": "classifier",
+    "exclusivity": "The standard header legally holds either an integer or a date, so the two header labels are split on whether its value parses as digits alone; the two body labels are split the same way, a relative count against an absolute instant. The custom header is keyed to its own name, so a response sending it beside the standard one returns 'other' rather than the standard label.",
+    "options": [
+      {"id": "o1", "text": "Give Retry-After as a whole number of seconds.", "checker": "retry_advice_encoding==retry_after_seconds"},
+      {"id": "o2", "text": "Give Retry-After as an absolute HTTP date.", "checker": "retry_advice_encoding==retry_after_http_date"},
+      {"id": "o3", "text": "Give a delay in milliseconds in the body.", "checker": "retry_advice_encoding==body_delay_millis"},
+      {"id": "o4", "text": "Give an absolute retry timestamp in the body.", "checker": "retry_advice_encoding==body_absolute_timestamp"},
+      {"id": "o5", "text": "Give the delay in a custom milliseconds header.", "checker": "retry_advice_encoding==custom_header_millis"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "client backoff implementation guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0077",
+    "family": "format",
+    "seed_family": "event-timestamp-precision",
+    "domain": "data",
+    "difficulty": "hard",
+    "task": "Fix how precise the event times are in the stream we publish.",
+    "checker_key": "timestamp_precision",
+    "key_source": "classifier",
+    "exclusivity": "Each shorter rendering is a leading prefix of every longer one, so the label counts the digits after the decimal point exactly rather than testing that a fractional part is present; three written zeroes are the millisecond label and not the whole-second one. The minute form is the only rendering with no seconds field at all.",
+    "options": [
+      {"id": "o1", "text": "Cut every event timestamp at whole seconds.", "example": "2026-09-07T12:04:31Z", "checker": "timestamp_precision==whole_seconds"},
+      {"id": "o2", "text": "Cut every event timestamp at three decimals.", "example": "2026-09-07T12:04:31.482Z", "checker": "timestamp_precision==milliseconds"},
+      {"id": "o3", "text": "Cut every event timestamp at six decimals.", "example": "2026-09-07T12:04:31.482119Z", "checker": "timestamp_precision==microseconds"},
+      {"id": "o4", "text": "Cut every event timestamp at nine decimals.", "example": "2026-09-07T12:04:31.482119374Z", "checker": "timestamp_precision==nanoseconds"},
+      {"id": "o5", "text": "Cut every event timestamp at whole minutes.", "example": "2026-09-07T12:04Z", "checker": "timestamp_precision==whole_minutes"}
+    ],
+    "note": "Millisecond precision is the most common choice on a general event stream and is the likeliest unprompted answer; the coarser and finer settings are both live positions depending on event rate and storage cost.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "event streaming platform conventions guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0078",
+    "family": "format",
+    "seed_family": "partial-result-signal",
+    "domain": "coding",
+    "difficulty": "medium",
+    "task": "Answer a fan-out read where one of the three backends timed out.",
+    "checker_key": "partial_result_signal",
+    "key_source": "classifier",
+    "exclusivity": "The status line is read first and the body only when that status is 200, so a 206 carrying a partial flag as well is labelled by its status and never counted twice. Among the three 200 forms the carriers differ — a boolean field, an errors array, a response header — and a response using two of them returns 'other'.",
+    "options": [
+      {"id": "o1", "text": "Return 200 with a partial boolean flag set.", "checker": "partial_result_signal==partial_flag"},
+      {"id": "o2", "text": "Return 200 with the failures listed in errors.", "checker": "partial_result_signal==errors_alongside_data"},
+      {"id": "o3", "text": "Return 206 to mark the whole response incomplete.", "checker": "partial_result_signal==status_206"},
+      {"id": "o4", "text": "Return 207 with a per-source status for each.", "checker": "partial_result_signal==status_207"},
+      {"id": "o5", "text": "Return 200 with a Warning header naming it.", "checker": "partial_result_signal==warning_header"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "service aggregation design guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0079",
+    "family": "format",
+    "seed_family": "delete-confirmation-body",
+    "domain": "coding",
+    "difficulty": "easy",
+    "task": "Decide what comes back when a delete actually removes something.",
+    "checker_key": "delete_confirmation_body",
+    "key_source": "classifier",
+    "exclusivity": "The id appears inside the echoed record too, so the label counts how many of the record's fields are present rather than looking for the id: the echo carries the whole row, the id label exactly one field. The count holds a number under a differently named key, and the empty label requires zero bytes of body.",
+    "options": [
+      {"id": "o1", "text": "Send nothing back in the response body.", "checker": "delete_confirmation_body==empty_body"},
+      {"id": "o2", "text": "Send back the whole record that was deleted.", "checker": "delete_confirmation_body==full_echo"},
+      {"id": "o3", "text": "Send back the deleted record's id only.", "checker": "delete_confirmation_body==id_only"},
+      {"id": "o4", "text": "Send back a count of rows removed.", "checker": "delete_confirmation_body==count_object"},
+      {"id": "o5", "text": "Send back a short human readable status message.", "checker": "delete_confirmation_body==status_message"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "resource lifecycle API guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0080",
+    "family": "format",
+    "seed_family": "bulk-outcome-reporting",
+    "domain": "data",
+    "difficulty": "medium",
+    "task": "Report what happened to each row in a two-hundred-row import.",
+    "checker_key": "bulk_outcome_shape",
+    "key_source": "classifier",
+    "exclusivity": "When every row succeeds the failures-only form is an empty array and the split form has an empty failed array, so the label reads which keys are present rather than what they hold: the split label requires a succeeded key and the failures-only label forbids one. The keyed object and the ordered array are separated by whether positions or ids address the results.",
+    "options": [
+      {"id": "o1", "text": "Return one result per input, in order.", "checker": "bulk_outcome_shape==ordered_parallel_array"},
+      {"id": "o2", "text": "Return an object keyed by each input id.", "checker": "bulk_outcome_shape==keyed_by_id"},
+      {"id": "o3", "text": "Return succeeded and failed in separate arrays.", "checker": "bulk_outcome_shape==split_arrays"},
+      {"id": "o4", "text": "Return only the failures, silence meaning success.", "checker": "bulk_outcome_shape==failures_only"},
+      {"id": "o5", "text": "Return one verdict, rejecting the batch on failure.", "checker": "bulk_outcome_shape==all_or_nothing"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "bulk import interface specification", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0081",
+    "family": "format",
+    "seed_family": "job-progress-reporting",
+    "domain": "ops",
+    "difficulty": "medium",
+    "task": "Say how the long-running reindex reports its progress to pollers.",
+    "checker_key": "job_progress_report",
+    "key_source": "classifier",
+    "exclusivity": "Counts and a percentage express the same fraction, so the label reads which fields the response actually holds rather than what a client could derive from them, and a response carrying both returns 'other'. The coarse-state label requires none of the finer fields to be present, so it can never sit beneath one of the other four.",
+    "options": [
+      {"id": "o1", "text": "Report a percentage complete as one number.", "checker": "job_progress_report==percent_field"},
+      {"id": "o2", "text": "Report processed and total as two counts.", "checker": "job_progress_report==counts_pair"},
+      {"id": "o3", "text": "Report the name of the current stage.", "checker": "job_progress_report==stage_name"},
+      {"id": "o4", "text": "Report only the coarse state, nothing finer.", "checker": "job_progress_report==state_only"},
+      {"id": "o5", "text": "Report an estimated finish time, nothing else.", "checker": "job_progress_report==eta_timestamp"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "asynchronous job API reference", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0082",
+    "family": "format",
+    "seed_family": "webhook-signature-carrier",
+    "domain": "security",
+    "difficulty": "medium",
+    "task": "Say where the delivery signature rides on an outbound webhook.",
+    "checker_key": "signature_carrier",
+    "key_source": "classifier",
+    "exclusivity": "The paired form also emits a signature header, so the companion timestamp header is looked for before the single-header label is granted; without that order every paired delivery would match both labels. The envelope field sits inside the signed body and the parameter sits in the request target, so neither can be read as a header.",
+    "options": [
+      {"id": "o1", "text": "Put it in one dedicated signature header.", "checker": "signature_carrier==single_header"},
+      {"id": "o2", "text": "Put it in a signature and timestamp pair.", "checker": "signature_carrier==header_pair"},
+      {"id": "o3", "text": "Put it in Authorization under a signing scheme.", "checker": "signature_carrier==authorization_scheme"},
+      {"id": "o4", "text": "Put it in a field of the envelope.", "checker": "signature_carrier==envelope_field"},
+      {"id": "o5", "text": "Put it in a query parameter on delivery.", "checker": "signature_carrier==query_parameter"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "webhook publisher documentation", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0083",
+    "family": "format",
+    "seed_family": "event-envelope-shape",
+    "domain": "data",
+    "difficulty": "hard",
+    "task": "Fix the envelope every service publishes its domain events inside.",
+    "checker_key": "event_envelope_shape",
+    "key_source": "classifier",
+    "exclusivity": "Three forms nest the payload one level down and are split on the wrapper key alone: the literal word data, a pair of sibling objects, or a key named for the event type. The flat form has no wrapper, and the sidecar form's message body is the bare payload, so the metadata it relies on never appears in the JSON the label reads.",
+    "options": [
+      {"id": "o1", "text": "Put the reserved keys beside the payload fields.", "checker": "event_envelope_shape==flat_reserved_keys"},
+      {"id": "o2", "text": "Put the payload under data, metadata above it.", "checker": "event_envelope_shape==data_wrapper"},
+      {"id": "o3", "text": "Put the metadata and payload in sibling objects.", "checker": "event_envelope_shape==header_body_pair"},
+      {"id": "o4", "text": "Put the metadata in transport headers, payload alone.", "checker": "event_envelope_shape==headers_sidecar"},
+      {"id": "o5", "text": "Put the payload under a type-named key.", "checker": "event_envelope_shape==typed_key_wrapper"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "event schema governance guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0084",
+    "family": "format",
+    "seed_family": "event-type-naming",
+    "domain": "devops",
+    "difficulty": "easy",
+    "task": "Name the event types the new publisher will emit.",
+    "checker_key": "event_type_naming",
+    "key_source": "classifier",
+    "exclusivity": "Four of the five join the two words with a character — a dot, a colon, a slash or an underscore — and those are compared literally, so no name matches two labels. The fifth joins nothing at all and is told apart from the underscored form by case as well as by separator, so a capitalised dotted name returns 'other'.",
+    "options": [
+      {"id": "o1", "text": "Name each type as dotted lowercase words.", "example": "order.created", "checker": "event_type_naming==dotted_lower"},
+      {"id": "o2", "text": "Name each type with a colon separator.", "example": "order:created", "checker": "event_type_naming==colon_scoped"},
+      {"id": "o3", "text": "Name each type with a slash separator.", "example": "order/created", "checker": "event_type_naming==slash_path"},
+      {"id": "o4", "text": "Name each type as past tense PascalCase.", "example": "OrderCreated", "checker": "event_type_naming==pascal_past"},
+      {"id": "o5", "text": "Name each type in screaming snake capitals.", "example": "ORDER_CREATED", "checker": "event_type_naming==screaming_snake"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "message broker naming standard", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0085",
+    "family": "format",
+    "seed_family": "dead-letter-marking",
+    "domain": "devops",
+    "difficulty": "hard",
+    "task": "Mark the messages the consumer gives up on after five attempts.",
+    "checker_key": "dead_letter_marking",
+    "key_source": "classifier",
+    "exclusivity": "The envelope contains the original body inside it, so the outer shape is read before any field is looked for: an envelope carrying its own reason field is the wrapper label and never the injected-field one. The header and topic labels both leave the body byte-identical and are split on whether any header was added.",
+    "options": [
+      {"id": "o1", "text": "Republish the bytes unchanged, reason in the headers.", "checker": "dead_letter_marking==reason_in_headers"},
+      {"id": "o2", "text": "Wrap the original message inside a failure envelope.", "checker": "dead_letter_marking==failure_envelope"},
+      {"id": "o3", "text": "Add a failure field to the original body.", "checker": "dead_letter_marking==injected_field"},
+      {"id": "o4", "text": "Write a separate reason record beside the message.", "checker": "dead_letter_marking==sidecar_record"},
+      {"id": "o5", "text": "Change nothing, letting the topic name carry it.", "checker": "dead_letter_marking==topic_name_only"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "queue consumer operations handbook", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0086",
+    "family": "format",
+    "seed_family": "unset-field-convention",
+    "domain": "coding",
+    "difficulty": "hard",
+    "task": "Settle how an unset optional field looks in the profile response.",
+    "checker_key": "unset_field_convention",
+    "key_source": "classifier",
+    "exclusivity": "Two forms write nulls and are split on what happens to unset arrays and objects, so the fixture record carries at least one unset field of each kind: the mixed form must show an empty collection exactly where the plain form shows null. Two forms drop the field and are split on whether a list of omitted names accompanies them, and the zero-value form writes no nulls anywhere.",
+    "options": [
+      {"id": "o1", "text": "Emit every field, using null when unset.", "checker": "unset_field_convention==always_null"},
+      {"id": "o2", "text": "Omit any field that has no value.", "checker": "unset_field_convention==omit_unset"},
+      {"id": "o3", "text": "Emit null for scalars, empty for collections.", "checker": "unset_field_convention==null_scalar_empty_collection"},
+      {"id": "o4", "text": "Omit them, listing the omitted names separately.", "checker": "unset_field_convention==omitted_with_manifest"},
+      {"id": "o5", "text": "Emit the type's zero value instead of null.", "checker": "unset_field_convention==type_zero_value"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "API serialisation conventions document", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0087",
+    "family": "format",
+    "seed_family": "field-deprecation-signal",
+    "domain": "coding",
+    "difficulty": "easy",
+    "task": "Emit the account payload while the old address field retires.",
+    "checker_key": "deprecation_signal",
+    "key_source": "classifier",
+    "exclusivity": "All five markers now live in the one payload the response emits, so the label reads which carrier holds the notice. The header sits outside the body and is tested first. A warning object is tested before the two field-level forms, because a payload may carry both and the object is the declared notice. The parallel replacement is two populated fields under related names; the suffix form is one field whose name ends in the marker. The removal date is a dated field on the record and is tested last, since any of the other four may also carry a date.",
+    "options": [
+      {"id": "o1", "text": "Send a deprecation header on affected responses.", "checker": "deprecation_signal==response_header"},
+      {"id": "o2", "text": "Rename the field with a deprecated suffix.", "checker": "deprecation_signal==deprecated_name_suffix"},
+      {"id": "o3", "text": "Add a warning object to the response body.", "checker": "deprecation_signal==body_warning"},
+      {"id": "o4", "text": "Ship the replacement field beside it, both populated.", "checker": "deprecation_signal==parallel_replacement_field"},
+      {"id": "o5", "text": "Add a removal date field to the record.", "checker": "deprecation_signal==removal_date_field"}
+    ],
+    "note": "Two options were replaced. The old set marked the field in the published schema or in the changelog, and its own exclusivity argument conceded that both 'leave every response byte for byte unchanged' -- so neither could be observed, and a model that emitted nothing satisfied them as well as a model that followed them. Both replacements are markers inside the payload itself.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "API lifecycle and deprecation policy", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0088",
+    "family": "format",
+    "seed_family": "enum-extension-policy",
+    "domain": "coding",
+    "difficulty": "hard",
+    "task": "Decide how the shipment status list grows over the next few releases.",
+    "checker_key": "enum_extension_policy",
+    "key_source": "classifier",
+    "exclusivity": "All five are properties of the single declaration the response emits. A reserved block is a declaration of its own and is tested first, because a list may carry one alongside any numbering. A catch-all member is tested next, since it is a named member the other forms do not emit. The open string declares no members at all. The two numeric forms are separated last and only by arithmetic on the emitted values: consecutive from one is dense, anything leaving a gap is not. A list of named members with neither a catch-all nor a reserved block satisfies none of the five.",
+    "options": [
+      {"id": "o1", "text": "Ship an explicit unknown member for future values.", "checker": "enum_extension_policy==unknown_member"},
+      {"id": "o2", "text": "Type the field as a plain open string.", "checker": "enum_extension_policy==open_string"},
+      {"id": "o3", "text": "Use numeric codes with gaps reserved for growth.", "checker": "enum_extension_policy==numeric_with_gaps"},
+      {"id": "o4", "text": "Number the members densely from one upward.", "checker": "enum_extension_policy==dense_numbering"},
+      {"id": "o5", "text": "Declare a reserved block beside the current members.", "checker": "enum_extension_policy==reserved_block"}
+    ],
+    "note": "Two options were replaced. 'versioned_enum' was assigned only when two lists existed side by side, and 'additive_with_skip' described how the list grows over later releases -- neither is visible in the one declaration a response emits. Both replacements are readable off that declaration.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "schema compatibility guidance", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0089",
+    "family": "format",
+    "seed_family": "total-count-exposure",
+    "domain": "web",
+    "difficulty": "medium",
+    "task": "Say what the search endpoint reveals beyond the page it returns.",
+    "checker_key": "total_count_exposure",
+    "key_source": "classifier",
+    "exclusivity": "The exact and the estimated total are both integers sitting in the same place, split on the field name, which the fixture spells differently — a checker keyed on the value's type alone would merge them. The header form moves that number out of the body entirely, and the boolean and the link carry no count anywhere.",
+    "options": [
+      {"id": "o1", "text": "Put an exact total in the body metadata.", "checker": "total_count_exposure==meta_total"},
+      {"id": "o2", "text": "Put an exact total in a response header.", "checker": "total_count_exposure==total_header"},
+      {"id": "o3", "text": "Put an estimated total in the body metadata.", "checker": "total_count_exposure==estimated_total"},
+      {"id": "o4", "text": "Put a boolean saying whether more pages remain.", "checker": "total_count_exposure==has_more_only"},
+      {"id": "o5", "text": "Put a link pointing at the last page.", "checker": "total_count_exposure==last_page_link"}
+    ],
+    "note": "An exact total over a large index is expensive to compute, which is the standing argument for the estimate and for the two count-free options; none of the five is wrong on the merits.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "search service interface guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0090",
+    "family": "format",
+    "seed_family": "sort-parameter-syntax",
+    "domain": "web",
+    "difficulty": "medium",
+    "task": "Pin down how a client asks for newest first on the listing endpoint.",
+    "checker_key": "sort_param_syntax",
+    "key_source": "classifier",
+    "exclusivity": "The bracketed form and the separate-parameter form both send the bare direction word as a value, so they are split on whether the parameter name carries the field inside brackets rather than on the value itself. The spaced string is the only value holding whitespace, and the sign and colon forms are single tokens told apart by the character they carry.",
+    "options": [
+      {"id": "o1", "text": "Prefix the field name with a minus.", "example": "sort=-created_at", "checker": "sort_param_syntax==sign_prefix"},
+      {"id": "o2", "text": "Follow the field name with a colon.", "example": "sort=created_at:desc", "checker": "sort_param_syntax==colon_suffix"},
+      {"id": "o3", "text": "Send the direction in its own parameter.", "example": "sort=created_at&order=desc", "checker": "sort_param_syntax==separate_direction_param"},
+      {"id": "o4", "text": "Put the field in brackets, direction as value.", "example": "sort[created_at]=desc", "checker": "sort_param_syntax==bracketed_direction"},
+      {"id": "o5", "text": "Send field and direction as one spaced string.", "example": "sort=created_at desc", "checker": "sort_param_syntax==spaced_string"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "collection endpoint conventions guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0091",
+    "family": "format",
+    "seed_family": "filter-operator-syntax",
+    "domain": "coding",
+    "difficulty": "medium",
+    "task": "Let callers ask for orders above a value on the listing endpoint.",
+    "checker_key": "filter_operator_syntax",
+    "key_source": "classifier",
+    "exclusivity": "The two single-parameter forms share one parameter name and are split on the first character of its decoded value: a brace opens the object form, anything else is the expression. The two decorated-field forms differ in whether the operator sits inside brackets or behind underscores, and the dedicated parameter carries no operator token at all.",
+    "options": [
+      {"id": "o1", "text": "Put the operator in brackets after the field.", "example": "total[gte]=500", "checker": "filter_operator_syntax==bracket_operator"},
+      {"id": "o2", "text": "Join the operator to the field with underscores.", "example": "total__gte=500", "checker": "filter_operator_syntax==underscore_operator"},
+      {"id": "o3", "text": "Send one filter parameter holding an expression string.", "example": "filter=total ge 500", "checker": "filter_operator_syntax==expression_string"},
+      {"id": "o4", "text": "Send one filter parameter holding an encoded object.", "example": "filter={\"total\":{\"gte\":500}}", "checker": "filter_operator_syntax==encoded_object"},
+      {"id": "o5", "text": "Give each operator its own named query parameter.", "example": "min_total=500", "checker": "filter_operator_syntax==dedicated_param"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "query interface reference", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0092",
+    "family": "format",
+    "seed_family": "field-mask-syntax",
+    "domain": "mobile",
+    "difficulty": "hard",
+    "task": "Let a client ask for a trimmed version of the record.",
+    "checker_key": "field_mask_syntax",
+    "key_source": "classifier",
+    "exclusivity": "The brace expression holds a comma separated run of names inside its braces, so the opening brace is looked for before any comma is read; without that order every nested mask would satisfy the flat list as well. The pointer array and the two header-borne forms sit in different parts of the request, and a request carrying two of them returns 'other'.",
+    "options": [
+      {"id": "o1", "text": "Take a comma separated list of field names.", "example": "fields=id,name,tier", "checker": "field_mask_syntax==comma_list"},
+      {"id": "o2", "text": "Take a brace nested expression over the tree.", "example": "fields=id,owner{name,tier}", "checker": "field_mask_syntax==brace_expression"},
+      {"id": "o3", "text": "Take an array of pointers in the body.", "example": "[\"/id\", \"/owner/name\"]", "checker": "field_mask_syntax==pointer_array"},
+      {"id": "o4", "text": "Take a Prefer header asking for minimal representations.", "checker": "field_mask_syntax==prefer_header"},
+      {"id": "o5", "text": "Take a named view like summary or full.", "example": "view=summary", "checker": "field_mask_syntax==named_view"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "bandwidth-constrained client integration guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0093",
+    "family": "format",
+    "seed_family": "error-field-pointer",
+    "domain": "coding",
+    "difficulty": "hard",
+    "task": "Point at the exact field that failed inside a nested order payload.",
+    "checker_key": "error_field_pointer",
+    "key_source": "classifier",
+    "exclusivity": "The dotted and the bracketed path join objects the same way and are separated only by how an array index is written, so the fixture's failing field is required to sit inside an array — without one the two forms produce an identical string. The pointer opens with a slash neither path form allows, and the leaf name carries no separator at all.",
+    "options": [
+      {"id": "o1", "text": "Give a dotted path from the root.", "example": "items.0.quantity", "checker": "error_field_pointer==dotted_path"},
+      {"id": "o2", "text": "Give a slash separated pointer from the root.", "example": "/items/0/quantity", "checker": "error_field_pointer==json_pointer"},
+      {"id": "o3", "text": "Give a path with bracketed array indexes.", "example": "items[0].quantity", "checker": "error_field_pointer==bracket_index_path"},
+      {"id": "o4", "text": "Give the leaf field name on its own.", "example": "quantity", "checker": "error_field_pointer==leaf_name_only"},
+      {"id": "o5", "text": "Give the name plus where it lives.", "example": "in: body, name: quantity", "checker": "error_field_pointer==name_and_location"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "validation error contract specification", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0094",
+    "family": "format",
+    "seed_family": "endpoint-move-redirect",
+    "domain": "web",
+    "difficulty": "easy",
+    "task": "Handle requests still arriving at the old reports path.",
+    "checker_key": "move_redirect_status",
+    "key_source": "classifier",
+    "exclusivity": "The label reads the status code alone, so the method rules named beside each one are explanation rather than part of the match; that is what keeps the two permanent codes apart even though a client following either lands on the same path. No response carries two status codes.",
+    "options": [
+      {"id": "o1", "text": "Redirect permanently with 301, letting methods change.", "checker": "move_redirect_status==status_301"},
+      {"id": "o2", "text": "Redirect permanently with 308, preserving the original method.", "checker": "move_redirect_status==status_308"},
+      {"id": "o3", "text": "Redirect temporarily with 302, letting methods change.", "checker": "move_redirect_status==status_302"},
+      {"id": "o4", "text": "Redirect temporarily with 307, preserving the original method.", "checker": "move_redirect_status==status_307"},
+      {"id": "o5", "text": "Redirect with 303, sending every caller to GET.", "checker": "move_redirect_status==status_303"}
+    ],
+    "note": "The reports path in this fixture is read-only, which is what keeps all five live: on an endpoint accepting writes the method-preserving codes would be the only defensible pair and the item would break.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "endpoint migration runbook", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0095",
+    "family": "format",
+    "seed_family": "concurrent-edit-guard",
+    "domain": "coding",
+    "difficulty": "medium",
+    "task": "Stop two editors overwriting each other on the same document.",
+    "checker_key": "conditional_write_guard",
+    "key_source": "classifier",
+    "exclusivity": "Two guards ride in the body and are split on shape, a scalar beside the payload against a nested object of expected values, while two ride in standard headers with different names. The custom header carries the same kind of version the body scalar does, so the label reads where the guard sits rather than what it holds, and a request sending two returns 'other'.",
+    "options": [
+      {"id": "o1", "text": "Require an If-Match header carrying the entity tag.", "checker": "conditional_write_guard==if_match"},
+      {"id": "o2", "text": "Require an If-Unmodified-Since header carrying the last time.", "checker": "conditional_write_guard==if_unmodified_since"},
+      {"id": "o3", "text": "Require a version number field in the body.", "checker": "conditional_write_guard==body_version_field"},
+      {"id": "o4", "text": "Require an expected state object in the body.", "checker": "conditional_write_guard==expected_state_object"},
+      {"id": "o5", "text": "Require a version number in a custom header.", "checker": "conditional_write_guard==custom_version_header"}
+    ],
+    "note": "The entity tag form is the one the HTTP specification describes, and a purist would reach for it first; body-carried version numbers are nonetheless the more common shipping pattern in services whose clients are not browsers, so both are live house positions.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "collaborative editing service contract", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0096",
+    "family": "format",
+    "seed_family": "schema-version-carrier",
+    "domain": "data",
+    "difficulty": "easy",
+    "task": "Say how a consumer learns which schema a message was written against.",
+    "checker_key": "schema_version_carrier",
+    "key_source": "classifier",
+    "exclusivity": "The envelope field and the prefixed bytes both sit inside the message value and are split on whether the version can be read before the payload is parsed at all. The header, the topic and the content type all sit outside the value, and a producer stamping the version in two places returns 'other' rather than the innermost one.",
+    "options": [
+      {"id": "o1", "text": "Carry the version in an envelope field.", "checker": "schema_version_carrier==envelope_field"},
+      {"id": "o2", "text": "Carry the version in a message header.", "checker": "schema_version_carrier==message_header"},
+      {"id": "o3", "text": "Carry the version in prefixed magic bytes.", "checker": "schema_version_carrier==binary_prefix"},
+      {"id": "o4", "text": "Carry the version in the topic name.", "checker": "schema_version_carrier==topic_segment"},
+      {"id": "o5", "text": "Carry the version in the content type.", "checker": "schema_version_carrier==content_type_param"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "stream schema registry handbook", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0097",
+    "family": "format",
+    "seed_family": "binary-payload-encoding",
+    "domain": "finance",
+    "difficulty": "hard",
+    "task": "Carry the short device attestation blob inside the JSON claim.",
+    "checker_key": "binary_field_encoding",
+    "key_source": "classifier",
+    "exclusivity": "The url-safe alphabet is a subset of the standard one, so a blob whose bytes never produce a plus or a slash would satisfy both labels; the fixture blob is chosen to produce both characters, and the padding is compared as well. The data-scheme string contains a base64 run inside it, so its scheme and media type are matched before the encoding is read.",
+    "options": [
+      {"id": "o1", "text": "Encode it as standard padded base64 text.", "checker": "binary_field_encoding==base64_standard"},
+      {"id": "o2", "text": "Encode it in the url-safe alphabet, unpadded.", "checker": "binary_field_encoding==base64url_unpadded"},
+      {"id": "o3", "text": "Encode it as a data scheme string.", "checker": "binary_field_encoding==data_scheme_string"},
+      {"id": "o4", "text": "Encode it as an array of integers.", "checker": "binary_field_encoding==integer_byte_array"},
+      {"id": "o5", "text": "Encode it as a compact base85 string.", "checker": "binary_field_encoding==base85_compact"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "claims submission interface specification", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0098",
+    "family": "format",
+    "seed_family": "payload-compression-signalling",
+    "domain": "devops",
+    "difficulty": "hard",
+    "task": "Decide how the bulk export deals with compressing what it sends.",
+    "checker_key": "compression_signalling",
+    "key_source": "classifier",
+    "exclusivity": "The negotiated and the always-on forms both emit a content encoding header, so the label turns on whether the response also varies on the request's accepted encodings, which the always-on form never does. The field-level form leaves the message itself uncompressed, and the transport form emits no encoding header anywhere.",
+    "options": [
+      {"id": "o1", "text": "Negotiate with Accept-Encoding and vary the response.", "checker": "compression_signalling==negotiated"},
+      {"id": "o2", "text": "Compress always, declaring it without any negotiation.", "checker": "compression_signalling==always_on"},
+      {"id": "o3", "text": "Compress the body and mark a custom header.", "checker": "compression_signalling==custom_header"},
+      {"id": "o4", "text": "Compress one field and base64 it inside.", "checker": "compression_signalling==field_level"},
+      {"id": "o5", "text": "Name the codec in the media type.", "checker": "compression_signalling==codec_in_media_type"}
+    ],
+    "note": "The fifth option was 'transport_only', which asked for no content-encoding signalling at all. That is an absence: a response that failed to produce any headers satisfied it exactly as well as one that followed it. Naming the codec as a media-type parameter keeps the question and is positively observable.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "bulk transfer operations guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0099",
+    "family": "format",
+    "seed_family": "request-id-echo",
+    "domain": "support",
+    "difficulty": "easy",
+    "task": "Give the desk a way to trace one call through the gateway.",
+    "checker_key": "request_id_echo",
+    "key_source": "classifier",
+    "exclusivity": "The both-carriers label is tested before either single one, since a response holding the value in a header and in the body would otherwise match two. The two header labels are split on the name used, the caller's own against a differently named one, and the minted label requires the returned value to differ from whatever arrived.",
+    "options": [
+      {"id": "o1", "text": "Echo the caller's id in the same header.", "checker": "request_id_echo==same_header_echo"},
+      {"id": "o2", "text": "Echo the caller's id in a correlation header.", "checker": "request_id_echo==correlation_header"},
+      {"id": "o3", "text": "Echo the caller's id in the error body.", "checker": "request_id_echo==body_on_errors"},
+      {"id": "o4", "text": "Echo it in both a header and body.", "checker": "request_id_echo==header_and_body"},
+      {"id": "o5", "text": "Ignore theirs and return a freshly minted id.", "checker": "request_id_echo==server_minted"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "support escalation tracing guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0100",
+    "family": "format",
+    "seed_family": "end-of-pages-signal",
+    "domain": "mobile",
+    "difficulty": "hard",
+    "task": "Handle the last page of the activity feed.",
+    "checker_key": "end_of_pages_signal",
+    "key_source": "classifier",
+    "exclusivity": "The null cursor, the empty string and the missing key are three distinct states of one field that any falsy check would merge into one, so the label reads the raw payload before a client's coercion touches it. The boolean and the count are separate fields, split on type, and a page carrying two of the five markers returns 'other'.",
+    "options": [
+      {"id": "o1", "text": "Send the next cursor back as null.", "checker": "end_of_pages_signal==cursor_null"},
+      {"id": "o2", "text": "Leave the next cursor key out entirely.", "checker": "end_of_pages_signal==cursor_omitted"},
+      {"id": "o3", "text": "Send a boolean saying no more remain.", "checker": "end_of_pages_signal==has_more_false"},
+      {"id": "o4", "text": "Send an empty string as the cursor.", "checker": "end_of_pages_signal==cursor_empty_string"},
+      {"id": "o5", "text": "Send a remaining count reading exactly zero.", "checker": "end_of_pages_signal==remaining_count_zero"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "feed pagination contract document", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0101",
+    "family": "format",
+    "seed_family": "action-endpoint-shape",
+    "domain": "coding",
+    "difficulty": "easy",
+    "task": "Expose cancelling an order that has not shipped yet.",
+    "checker_key": "action_endpoint_shape",
+    "key_source": "classifier",
+    "exclusivity": "Two forms write to a child path under the order and are split on the method, two target the order itself and are split the same way, and the shared collection sits at the root instead. The label therefore reads method and target together, and one request carries exactly one of each, so no pair of labels can both apply.",
+    "options": [
+      {"id": "o1", "text": "POST to a cancel sub-path under the order.", "checker": "action_endpoint_shape==post_subpath"},
+      {"id": "o2", "text": "PATCH the order, setting its status to cancelled.", "checker": "action_endpoint_shape==patch_status_field"},
+      {"id": "o3", "text": "POST to a shared actions collection naming both.", "checker": "action_endpoint_shape==actions_collection"},
+      {"id": "o4", "text": "PUT a cancellation sub-resource under the order.", "checker": "action_endpoint_shape==put_subresource"},
+      {"id": "o5", "text": "POST to the order carrying a command field.", "checker": "action_endpoint_shape==command_field_in_body"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "resource modelling conventions guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0102",
+    "family": "format",
+    "seed_family": "partial-update-body",
+    "domain": "support",
+    "difficulty": "medium",
+    "task": "Fix what an update to one field of a customer record looks like.",
+    "checker_key": "patch_body_format",
+    "key_source": "classifier",
+    "exclusivity": "The merge body and the masked body both hold changed fields at the top level, so the presence of the mask key is checked first; without that order every masked update would satisfy the merge label too. The operation list is an array rather than an object, and the replacement and the pair forms are split on whether an untouched field appears once or twice.",
+    "options": [
+      {"id": "o1", "text": "Send only the fields that are changing.", "checker": "patch_body_format==merge_patch"},
+      {"id": "o2", "text": "Send an ordered array of edit operations.", "checker": "patch_body_format==operation_array"},
+      {"id": "o3", "text": "Send the whole record with the change applied.", "checker": "patch_body_format==full_replacement"},
+      {"id": "o4", "text": "Send changed fields plus an explicit field mask.", "checker": "patch_body_format==fields_plus_mask"},
+      {"id": "o5", "text": "Send both the previous and the new values.", "checker": "patch_body_format==before_after_pair"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "customer record service contract", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0103",
+    "family": "format",
+    "seed_family": "hypermedia-link-shape",
+    "domain": "finance",
+    "difficulty": "medium",
+    "task": "Decide how the invoice list points callers at related records.",
+    "checker_key": "link_representation",
+    "key_source": "classifier",
+    "exclusivity": "The keyed object and the array of pairs both hang off the same links key and are split on whether that value opens as an object or as a list, which is the one place a checker reading only the key name would score twice. The flat fields sit beside the record's own data, the header form puts nothing in the body, and the identifier form carries no target at all.",
+    "options": [
+      {"id": "o1", "text": "Nest an object keyed by relation name.", "checker": "link_representation==relation_keyed_object"},
+      {"id": "o2", "text": "Nest an array of relation and target pairs.", "checker": "link_representation==link_object_array"},
+      {"id": "o3", "text": "Send the relations as Link response headers.", "checker": "link_representation==link_header"},
+      {"id": "o4", "text": "Put flat target fields at the top level.", "checker": "link_representation==flat_target_fields"},
+      {"id": "o5", "text": "Send identifiers only and let clients build.", "checker": "link_representation==ids_only"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "billing API representation guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0104",
+    "family": "format",
+    "seed_family": "health-check-vocabulary",
+    "domain": "devops",
+    "difficulty": "easy",
+    "task": "Choose the word the readiness endpoint returns when everything is fine.",
+    "checker_key": "health_status_vocabulary",
+    "key_source": "classifier",
+    "exclusivity": "The five words are compared whole and case-sensitively, so the capitalised form is a different label from the same letters in lower case and one probe can never match two. A body carrying a status word plus a second synonym returns 'other' rather than whichever appears first.",
+    "options": [
+      {"id": "o1", "text": "Return a lowercase ok and nothing else.", "checker": "health_status_vocabulary==ok_lower"},
+      {"id": "o2", "text": "Return the word healthy in plain lowercase.", "checker": "health_status_vocabulary==healthy_word"},
+      {"id": "o3", "text": "Return UP in capitals, as monitors expect.", "checker": "health_status_vocabulary==up_upper"},
+      {"id": "o4", "text": "Return the word pass, borrowed from checks.", "checker": "health_status_vocabulary==pass_word"},
+      {"id": "o5", "text": "Return the colour word green in lowercase.", "checker": "health_status_vocabulary==green_word"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "service health check specification", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0105",
+    "family": "format",
+    "seed_family": "error-code-vocabulary",
+    "domain": "finance",
+    "difficulty": "medium",
+    "task": "Give each billing failure a stable code the client can branch on.",
+    "checker_key": "error_code_vocabulary",
+    "key_source": "classifier",
+    "exclusivity": "Two forms are digits alone and are split on range: the status reuse must be a valid three-digit status, and the application integers are drawn from a band the fixture puts well outside that space. The prefixed form carries digits behind letters, so the leading letters are read first, and the two word forms differ in separator and case.",
+    "options": [
+      {"id": "o1", "text": "Use uppercase underscored symbols for every code.", "example": "CARD_DECLINED", "checker": "error_code_vocabulary==screaming_symbol"},
+      {"id": "o2", "text": "Use dotted lowercase namespaces for every code.", "example": "billing.card_declined", "checker": "error_code_vocabulary==dotted_namespace"},
+      {"id": "o3", "text": "Use bare integers drawn from one range.", "example": "4012", "checker": "error_code_vocabulary==integer_code"},
+      {"id": "o4", "text": "Use a short letter prefix plus digits.", "example": "ERR-4012", "checker": "error_code_vocabulary==prefixed_alphanumeric"},
+      {"id": "o5", "text": "Use the HTTP status number as the code.", "example": "402", "checker": "error_code_vocabulary==http_status_reuse"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "billing failure handling reference", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0106",
+    "family": "format",
+    "seed_family": "stream-framing",
+    "domain": "data",
+    "difficulty": "easy",
+    "task": "Frame the rows the export stream sends over one long connection.",
+    "checker_key": "stream_framing",
+    "key_source": "classifier",
+    "exclusivity": "The line-delimited and the chunked-array forms both send JSON objects the reader separates by scanning bytes, and they are split on whether the stream opens with an array bracket. The event blocks prefix every line with a field name, and the length prefix and the boundary marker are non-JSON framing read before any row is parsed.",
+    "options": [
+      {"id": "o1", "text": "Write one JSON object per newline delimited line.", "checker": "stream_framing==newline_delimited"},
+      {"id": "o2", "text": "Write each row as a server-sent event block.", "checker": "stream_framing==sse_blocks"},
+      {"id": "o3", "text": "Write a byte length before every row.", "checker": "stream_framing==length_prefixed"},
+      {"id": "o4", "text": "Write one JSON array streamed in chunks.", "checker": "stream_framing==json_array_chunks"},
+      {"id": "o5", "text": "Write each row inside a multipart boundary.", "checker": "stream_framing==multipart_boundaries"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "streaming export interface reference", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0107",
+    "family": "format",
+    "seed_family": "time-window-parameters",
+    "domain": "research",
+    "difficulty": "easy",
+    "task": "Let an analyst pull the readings recorded inside a chosen window.",
+    "checker_key": "time_window_parameters",
+    "key_source": "classifier",
+    "exclusivity": "The two bounded pairs carry the same two instants and are separated only by the parameter names, matched literally, so a request mixing one name from each pair returns 'other' rather than the closer match. The two single-parameter forms are split on whether the value holds two timestamps joined by a slash or a keyword with no digits.",
+    "options": [
+      {"id": "o1", "text": "Take a from and a to parameter.", "checker": "time_window_parameters==from_to"},
+      {"id": "o2", "text": "Take a since and an until parameter.", "checker": "time_window_parameters==since_until"},
+      {"id": "o3", "text": "Take a start plus a duration length.", "checker": "time_window_parameters==start_plus_duration"},
+      {"id": "o4", "text": "Take one parameter holding an interval string.", "checker": "time_window_parameters==interval_string"},
+      {"id": "o5", "text": "Take one relative keyword naming the window.", "checker": "time_window_parameters==relative_keyword"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "measurement archive query reference", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0108",
+    "family": "format",
+    "seed_family": "nested-resource-addressing",
+    "domain": "coding",
+    "difficulty": "medium",
+    "task": "Settle the path shape for a line item on the orders service.",
+    "checker_key": "nested_resource_addressing",
+    "key_source": "classifier",
+    "exclusivity": "The two root-level forms share an identical path and are split on whether a parent parameter rides in the query, so a flat path carrying the order id is never read as the global form. The composite segment holds both ids inside one segment where the nested form spends two, and the aggregate label is granted only when no path addresses an item at all.",
+    "options": [
+      {"id": "o1", "text": "Nest the item path under its order.", "example": "/orders/8812/items/3", "checker": "nested_resource_addressing==nested_path"},
+      {"id": "o2", "text": "Keep items at the root, parent as filter.", "example": "/items/3?order=8812", "checker": "nested_resource_addressing==flat_with_parent_filter"},
+      {"id": "o3", "text": "Keep items at the root, addressed alone.", "example": "/items/3", "checker": "nested_resource_addressing==flat_global_id"},
+      {"id": "o4", "text": "Join both ids into one composite segment.", "example": "/items/8812:3", "checker": "nested_resource_addressing==composite_id_segment"},
+      {"id": "o5", "text": "Expose items only inside the order's whole representation.", "checker": "nested_resource_addressing==aggregate_only"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "service resource layout standard", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0109",
+    "family": "format",
+    "seed_family": "soft-delete-representation",
+    "domain": "data",
+    "difficulty": "medium",
+    "task": "Decide how soft-deleted rows are handled when the accounts endpoint is read.",
+    "checker_key": "soft_delete_representation",
+    "key_source": "classifier",
+    "exclusivity": "The two hiding labels both keep the row out of the listing and are separated by what a direct fetch of that id returns, so the fixture exercises both calls rather than the listing alone. The flag and the timestamp are different fields on an otherwise whole record, and the tombstone is told apart by carrying no other fields.",
+    "options": [
+      {"id": "o1", "text": "Leave deleted rows out of every response.", "checker": "soft_delete_representation==excluded"},
+      {"id": "o2", "text": "Include them carrying a deleted boolean flag.", "checker": "soft_delete_representation==deleted_flag"},
+      {"id": "o3", "text": "Include them carrying a deletion timestamp field.", "checker": "soft_delete_representation==deleted_at_timestamp"},
+      {"id": "o4", "text": "Include a tombstone holding the id only.", "checker": "soft_delete_representation==tombstone_id_only"},
+      {"id": "o5", "text": "Exclude them and answer 410 on fetches.", "checker": "soft_delete_representation==excluded_with_gone"}
+    ],
+    "note": "Hiding deleted rows is the more common default on a customer-facing collection, while a consumer that has to reconcile its own copy needs the tombstone or the flag; both stances are shipped and the endpoint here serves both kinds of caller.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "record retention interface specification", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0110",
+    "family": "format",
+    "seed_family": "cache-hit-disclosure",
+    "domain": "ops",
+    "difficulty": "easy",
+    "task": "Settle what the edge tier says about where a response came from.",
+    "checker_key": "cache_hit_disclosure",
+    "key_source": "classifier",
+    "exclusivity": "An age header and a timing entry can both appear on one response for unrelated reasons, so each label requires its own carrier to be the thing stating the outcome, and a response stating it twice returns 'other'. Two options are custom headers and are separated by content, not by carrier: the hit-or-miss form carries one of those two words and is tested first, and the node form carries an identifier and no verdict. Every label requires a carrier to be present, so a response disclosing nothing satisfies none of them.",
+    "options": [
+      {"id": "o1", "text": "Send an Age header on cached responses.", "checker": "cache_hit_disclosure==age_header"},
+      {"id": "o2", "text": "Send a custom hit or miss header.", "checker": "cache_hit_disclosure==hit_miss_header"},
+      {"id": "o3", "text": "Send the answer in a body meta field.", "checker": "cache_hit_disclosure==body_meta_field"},
+      {"id": "o4", "text": "Send a Server-Timing entry naming the lookup.", "checker": "cache_hit_disclosure==server_timing_entry"},
+      {"id": "o5", "text": "Send the serving node's identifier in a header.", "checker": "cache_hit_disclosure==node_id_header"}
+    ],
+    "note": "The fifth option was 'no_disclosure' -- send nothing at all. A response that failed entirely also sends nothing, so that option could be won by a model that produced no output, and the family's silent-failure mode would have been recorded as a deliberate choice. Naming the serving node is a real disclosure convention and requires a carrier to be present.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "edge delivery operations handbook", "url": null}
+  }
+]

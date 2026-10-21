@@ -1,0 +1,65 @@
+{
+  "_about": "Which ten scenarios each realism batch wraps: five tool, five path. Fixed before writing began; see data/REALISM-AUTHORING.md.",
+  "batches": {
+    "rs-01": [
+      "tool-0009",
+      "tool-0057",
+      "tool-0108",
+      "tool-0163",
+      "tool-0206",
+      "path-0012",
+      "path-0047",
+      "path-0106",
+      "path-0145",
+      "path-0198"
+    ],
+    "rs-02": [
+      "tool-0013",
+      "tool-0066",
+      "tool-0121",
+      "tool-0169",
+      "tool-0215",
+      "path-0016",
+      "path-0053",
+      "path-0114",
+      "path-0156",
+      "path-0209"
+    ],
+    "rs-03": [
+      "tool-0023",
+      "tool-0077",
+      "tool-0133",
+      "tool-0175",
+      "tool-0224",
+      "path-0024",
+      "path-0068",
+      "path-0120",
+      "path-0165",
+      "path-0213"
+    ],
+    "rs-04": [
+      "tool-0034",
+      "tool-0090",
+      "tool-0144",
+      "tool-0186",
+      "tool-0228",
+      "path-0035",
+      "path-0080",
+      "path-0131",
+      "path-0176",
+      "path-0226"
+    ],
+    "rs-05": [
+      "tool-0040",
+      "tool-0102",
+      "tool-0155",
+      "tool-0196",
+      "tool-0235",
+      "path-0039",
+      "path-0092",
+      "path-0143",
+      "path-0187",
+      "path-0233"
+    ]
+  }
+}

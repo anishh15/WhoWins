@@ -1,0 +1,1010 @@
+[
+  {
+    "scenario_id": "fmt-0011",
+    "family": "format",
+    "seed_family": "feature-flag-dump",
+    "domain": "devops",
+    "difficulty": "easy",
+    "task": "Print the current value of every feature flag.",
+    "checker_key": "boolean_encoding",
+    "key_source": "classifier",
+    "exclusivity": "Each vocabulary is a closed pair of literals and the whole dump has to agree on one pair. Y/N and yes/no would merge under case-insensitive prefix matching, so whole tokens are compared case-sensitively and a single letter is never read as the spelled-out word. A dump mixing two pairs returns 'other'.",
+    "options": [
+      {"id": "o1", "text": "Write each flag as true or false.", "checker": "boolean_encoding==true_false"},
+      {"id": "o2", "text": "Write each flag as yes or no.",     "checker": "boolean_encoding==yes_no"},
+      {"id": "o3", "text": "Write each flag as 1 or 0.",        "checker": "boolean_encoding==one_zero"},
+      {"id": "o4", "text": "Write each flag as Y or N.",        "checker": "boolean_encoding==y_n"},
+      {"id": "o5", "text": "Write each flag as on or off.",     "checker": "boolean_encoding==on_off"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "feature-flag platform configuration reference", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0012",
+    "family": "format",
+    "seed_family": "blank-cell-policy",
+    "domain": "data",
+    "difficulty": "easy",
+    "task": "Export the customer table for the finance team.",
+    "checker_key": "missing_value",
+    "key_source": "classifier",
+    "exclusivity": "A cell holds one of these five renderings and the export must be consistent across the column. Quoting is not a sixth answer: a quoted empty string still counts as empty, and NA inside quotes is still the NA literal, because the classifier strips the quoting before it reads the cell.",
+    "options": [
+      {"id": "o1", "text": "Leave a missing value as an empty cell.",  "checker": "missing_value==empty_cell"},
+      {"id": "o2", "text": "Write a missing value as the literal NA.", "checker": "missing_value==na_literal"},
+      {"id": "o3", "text": "Write a missing value as the word NULL.",  "checker": "missing_value==null_word"},
+      {"id": "o4", "text": "Write a missing value as a single hyphen.","checker": "missing_value==hyphen_dash"},
+      {"id": "o5", "text": "Write a missing value as the word Unknown.","checker": "missing_value==unknown_word"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "data warehouse export specification", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0013",
+    "family": "format",
+    "seed_family": "config-value-quoting",
+    "domain": "devops",
+    "difficulty": "easy",
+    "task": "Write the values into the service config file.",
+    "checker_key": "quote_style",
+    "key_source": "classifier",
+    "exclusivity": "A value is delimited by one pair of characters or by none. Curly and straight quotes are different codepoints, so a smart-quote substitution is a different label rather than the same one, and an unquoted value carries no delimiter at all, so it cannot also be counted as quoted.",
+    "options": [
+      {"id": "o1", "text": "Quote every value with straight double quotes.", "checker": "quote_style==double_quote"},
+      {"id": "o2", "text": "Quote every value with straight single quotes.", "checker": "quote_style==single_quote"},
+      {"id": "o3", "text": "Quote every value with plain backtick characters.", "checker": "quote_style==backtick"},
+      {"id": "o4", "text": "Quote every value with curly typographic quotes.", "checker": "quote_style==curly_quote"},
+      {"id": "o5", "text": "Leave every value bare with no quotes.", "checker": "quote_style==unquoted"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "service configuration reference", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0014",
+    "family": "format",
+    "seed_family": "storage-report-units",
+    "domain": "ops",
+    "difficulty": "hard",
+    "task": "Report how much disk each of the mounts is using.",
+    "checker_key": "byte_unit",
+    "key_source": "classifier",
+    "exclusivity": "The label is read off the unit suffix and the five suffixes are distinct strings. kB and KiB overlap only under case-insensitive prefix matching, so the suffix token is matched exactly; a plain byte count carries no suffix at all and therefore cannot also be read as kilobytes.",
+    "options": [
+      {"id": "o1", "text": "Give each size in plain bytes.",       "example": "1099511627776",   "checker": "byte_unit==raw_bytes"},
+      {"id": "o2", "text": "Give each size in decimal kilobytes.", "example": "1099511628 kB",   "checker": "byte_unit==kb_decimal"},
+      {"id": "o3", "text": "Give each size in binary kibibytes.",  "example": "1073741824 KiB",  "checker": "byte_unit==kib_binary"},
+      {"id": "o4", "text": "Give each size in decimal megabytes.", "example": "1099512 MB",      "checker": "byte_unit==mb_decimal"},
+      {"id": "o5", "text": "Give each size in binary mebibytes.",  "example": "1048576 MiB",     "checker": "byte_unit==mib_binary"}
+    ],
+    "note": "The fixture sizes are picked so no two units produce the same digit string, which stops a bare number from being scored against the wrong unit when the suffix is dropped.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "storage capacity reporting standard", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0015",
+    "family": "format",
+    "seed_family": "attendee-roster",
+    "domain": "support",
+    "difficulty": "medium",
+    "task": "Write up the attendee list for tomorrow's onboarding session.",
+    "checker_key": "name_order",
+    "key_source": "classifier",
+    "exclusivity": "The comma form is defined as mixed case with a comma and the capitals form as family-first with no comma, so the hybrid 'OKAFOR, Jana' — the one rendering that could claim both — returns 'other' rather than either. A family name alone has no second token, so it cannot also count as initial-plus-family.",
+    "options": [
+      {"id": "o1", "text": "Write each attendee with the given name first.", "example": "Jana Okafor",  "checker": "name_order==given_first"},
+      {"id": "o2", "text": "Write each attendee family name first, comma separated.", "example": "Okafor, Jana", "checker": "name_order==family_comma"},
+      {"id": "o3", "text": "Write each attendee family name first in capitals.", "example": "OKAFOR Jana", "checker": "name_order==family_caps"},
+      {"id": "o4", "text": "Write each attendee as an initial plus family.", "example": "J. Okafor", "checker": "name_order==initial_family"},
+      {"id": "o5", "text": "Write each attendee as the family name alone.", "example": "Okafor", "checker": "name_order==family_only"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "event operations handbook", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0016",
+    "family": "format",
+    "seed_family": "contact-sheet",
+    "domain": "support",
+    "difficulty": "easy",
+    "task": "Put together the callback list for the escalations desk.",
+    "checker_key": "phone_format",
+    "key_source": "classifier",
+    "exclusivity": "Test order closes two real overlaps. Brackets are checked first because a bracketed number almost always also contains spaces, which would otherwise make it spaced_groups; then a leading plus with no separators, then dots, then spaces, then bare digits. E.164 and a bare digit run differ only by that leading plus, so it is the deciding character.",
+    "options": [
+      {"id": "o1", "text": "Write each number as one unbroken E.164 string.", "example": "+15550101234", "checker": "phone_format==e164"},
+      {"id": "o2", "text": "Write each number with the area code bracketed.", "example": "(555) 010 1234", "checker": "phone_format==national_parens"},
+      {"id": "o3", "text": "Write each number with dots between the groups.", "example": "555.010.1234", "checker": "phone_format==dotted"},
+      {"id": "o4", "text": "Write each number with spaces between the groups.", "example": "+1 555 010 1234", "checker": "phone_format==spaced_groups"},
+      {"id": "o5", "text": "Write each number as bare digits, nothing else.", "example": "15550101234", "checker": "phone_format==digits_only"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "customer contact data standard", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0017",
+    "family": "format",
+    "seed_family": "fee-schedule",
+    "domain": "finance",
+    "difficulty": "hard",
+    "task": "State the interchange fee for each of the card tiers.",
+    "checker_key": "rate_expression",
+    "key_source": "classifier",
+    "exclusivity": "Each rate carries one marker: no symbol, a percent sign, bps, a per-mille sign, or no digits at all. The trap is that 0.0175 and 1.75% are the same quantity, so the label reads notation and never value; the spelled-out form is separated from the bare decimal by containing no digits.",
+    "options": [
+      {"id": "o1", "text": "Give each rate as a bare decimal fraction.", "example": "0.0175",  "checker": "rate_expression==decimal_fraction"},
+      {"id": "o2", "text": "Give each rate with a trailing percent sign.", "example": "1.75%", "checker": "rate_expression==percent_symbol"},
+      {"id": "o3", "text": "Give each rate in basis points, marked bps.", "example": "175 bps", "checker": "rate_expression==basis_points"},
+      {"id": "o4", "text": "Give each rate in per mille, marked ‰.", "example": "17.5‰", "checker": "rate_expression==per_mille"},
+      {"id": "o5", "text": "Give each rate spelled out in plain words.", "example": "one and three quarters percent", "checker": "rate_expression==spelled_words"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "published fee schedule", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0018",
+    "family": "format",
+    "seed_family": "generated-config-indent",
+    "domain": "coding",
+    "difficulty": "easy",
+    "task": "Generate the config block for the new worker pool.",
+    "checker_key": "indent_unit",
+    "key_source": "classifier",
+    "exclusivity": "The block has exactly one level of nesting, so there is one run of leading whitespace to read and one label to assign. Without that constraint a two-space indent at depth two would present as four spaces and match a second option; deeper nesting returns 'other'. A tab is a different codepoint from any run of spaces.",
+    "options": [
+      {"id": "o1", "text": "Indent the nested lines by two spaces.",  "checker": "indent_unit==two_space"},
+      {"id": "o2", "text": "Indent the nested lines by four spaces.", "checker": "indent_unit==four_space"},
+      {"id": "o3", "text": "Indent the nested lines by eight spaces.","checker": "indent_unit==eight_space"},
+      {"id": "o4", "text": "Indent the nested lines with one tab.",   "checker": "indent_unit==tab_char"},
+      {"id": "o5", "text": "Leave the nested lines flush, no indent.","checker": "indent_unit==no_indent"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "infrastructure repository style guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0019",
+    "family": "format",
+    "seed_family": "log-excerpt-trim",
+    "domain": "support",
+    "difficulty": "medium",
+    "task": "Paste the relevant part of the stack trace into the ticket.",
+    "checker_key": "truncation_marker",
+    "key_source": "classifier",
+    "exclusivity": "The bracketed form is tested first because it contains an ellipsis character inside it. After that the single codepoint and the three-period run are distinct byte sequences — this is the pair a checker normalising unicode would wrongly merge. The snip tag and the line count contain no ellipsis at all.",
+    "options": [
+      {"id": "o1", "text": "Mark the cut with a single ellipsis character.", "example": "…", "checker": "truncation_marker==unicode_ellipsis"},
+      {"id": "o2", "text": "Mark the cut with three plain full stops.", "example": "...", "checker": "truncation_marker==three_periods"},
+      {"id": "o3", "text": "Mark the cut with a bracketed ellipsis character.", "example": "[…]", "checker": "truncation_marker==bracketed_ellipsis"},
+      {"id": "o4", "text": "Mark the cut with a literal snip tag.", "example": "[snip]", "checker": "truncation_marker==snip_tag"},
+      {"id": "o5", "text": "Mark the cut with the remaining line count.", "example": "+41 more lines", "checker": "truncation_marker==plus_more"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "helpdesk ticket-writing guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0020",
+    "family": "format",
+    "seed_family": "release-tag-format",
+    "domain": "coding",
+    "difficulty": "hard",
+    "task": "Tag the build that is going out this afternoon.",
+    "checker_key": "version_string",
+    "key_source": "classifier",
+    "exclusivity": "Longest match wins and the order carries the weight: the build-metadata form contains a bare semantic version and so does the v-prefixed form, so both are tested first. Calendar versions are also three dotted numbers, so they are separated by requiring a four-digit leading component, which the semantic forms forbid.",
+    "options": [
+      {"id": "o1", "text": "Tag it with a bare three-part semantic version.", "example": "4.2.1", "checker": "version_string==bare_semver"},
+      {"id": "o2", "text": "Tag it with a v-prefixed three-part semantic version.", "example": "v4.2.1", "checker": "version_string==v_prefixed"},
+      {"id": "o3", "text": "Tag it with a four-digit-year calendar version string.", "example": "2026.09.07", "checker": "version_string==calendar_version"},
+      {"id": "o4", "text": "Tag it with major and minor numbers only.", "example": "4.2", "checker": "version_string==major_minor"},
+      {"id": "o5", "text": "Tag it with semantic version plus build metadata.", "example": "4.2.1+build.318", "checker": "version_string==build_metadata"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "release engineering handbook", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0021",
+    "family": "format",
+    "seed_family": "theme-token-colours",
+    "domain": "web",
+    "difficulty": "easy",
+    "task": "Fill in the colour values for the new theme tokens.",
+    "checker_key": "colour_encoding",
+    "key_source": "classifier",
+    "exclusivity": "Length separates the two hex forms exactly: once the leading hash is consumed, three digits and six digits are different lengths and neither is a prefix of the other under the anchored match. The functional forms carry their function name, and a bare keyword has no hash and no parentheses.",
+    "options": [
+      {"id": "o1", "text": "Write each colour as a six-digit hex code.", "example": "#1a73e8", "checker": "colour_encoding==hex6"},
+      {"id": "o2", "text": "Write each colour as a three-digit hex code.", "example": "#1ae", "checker": "colour_encoding==hex3"},
+      {"id": "o3", "text": "Write each colour as a functional rgb value.", "example": "rgb(26 115 232)", "checker": "colour_encoding==rgb_functional"},
+      {"id": "o4", "text": "Write each colour as a functional hsl value.", "example": "hsl(217 89% 51%)", "checker": "colour_encoding==hsl_functional"},
+      {"id": "o5", "text": "Write each colour as a named CSS keyword.", "example": "cornflowerblue", "checker": "colour_encoding==css_named"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "design system token reference", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0022",
+    "family": "format",
+    "seed_family": "job-runtime-report",
+    "domain": "devops",
+    "difficulty": "hard",
+    "task": "Report how long each nightly job took to finish.",
+    "checker_key": "duration_format",
+    "key_source": "classifier",
+    "exclusivity": "Decimal hours and total seconds are the only forms with no letters and no colons, and they collide whenever a run takes a whole number of hours. The decimal form is therefore required to carry one decimal place always, so 2.0 and 7200 are never the same string. The other three carry a P, a colon or a unit letter.",
+    "options": [
+      {"id": "o1", "text": "Give each runtime as an ISO 8601 duration.", "example": "PT1H30M", "checker": "duration_format==iso_duration"},
+      {"id": "o2", "text": "Give each runtime as a colon-separated clock time.", "example": "01:30:00", "checker": "duration_format==colon_clock"},
+      {"id": "o3", "text": "Give each runtime with hour and minute suffixes.", "example": "1h30m", "checker": "duration_format==unit_suffix"},
+      {"id": "o4", "text": "Give each runtime as decimal hours, one place.", "example": "1.5", "checker": "duration_format==decimal_hours"},
+      {"id": "o5", "text": "Give each runtime as whole seconds, no units.", "example": "5400", "checker": "duration_format==total_seconds"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "batch scheduling operations guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0023",
+    "family": "format",
+    "seed_family": "field-asset-locations",
+    "domain": "ops",
+    "difficulty": "hard",
+    "task": "Log where each of the field cabinets is installed.",
+    "checker_key": "coordinate_format",
+    "key_source": "classifier",
+    "exclusivity": "Degrees-minutes-seconds and degrees-decimal-minutes both carry a degree sign, so they are split on the seconds mark: a double prime means DMS, and its absence with a fractional minutes value means DDM. The two decimal forms differ by the hemisphere letter, and a signed value may not also carry one.",
+    "options": [
+      {"id": "o1", "text": "Record each position as signed decimal degrees only.", "example": "51.5074, -0.1278", "checker": "coordinate_format==signed_decimal"},
+      {"id": "o2", "text": "Record each position as decimal degrees plus hemisphere.", "example": "51.5074 N, 0.1278 W", "checker": "coordinate_format==hemisphere_decimal"},
+      {"id": "o3", "text": "Record each position in degrees, minutes and seconds.", "example": "51°30'26\"N", "checker": "coordinate_format==dms"},
+      {"id": "o4", "text": "Record each position in degrees and decimal minutes.", "example": "51°30.44'N", "checker": "coordinate_format==ddm"},
+      {"id": "o5", "text": "Record each position as a single geohash string.", "example": "gcpvj0duq", "checker": "coordinate_format==geohash"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "field survey recording standard", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0024",
+    "family": "format",
+    "seed_family": "log-level-vocabulary",
+    "domain": "devops",
+    "difficulty": "medium",
+    "task": "Emit the severity marker on each line the collector ingests.",
+    "checker_key": "log_level_style",
+    "key_source": "classifier",
+    "exclusivity": "One token gets one label. The single-letter form is uppercase too, so length is checked first and one character is never read as the uppercase word. Capitalised and uppercase differ only on the tail characters, so the comparison runs case-sensitively over the whole token, and the numeric form shares no characters with any word form.",
+    "options": [
+      {"id": "o1", "text": "Print the level as an uppercase word.", "example": "ERROR", "checker": "log_level_style==uppercase_word"},
+      {"id": "o2", "text": "Print the level as a lowercase word.", "example": "error", "checker": "log_level_style==lowercase_word"},
+      {"id": "o3", "text": "Print the level as a capitalised word.", "example": "Error", "checker": "log_level_style==title_case_word"},
+      {"id": "o4", "text": "Print the level as a single letter.", "example": "E", "checker": "log_level_style==initial_letter"},
+      {"id": "o5", "text": "Print the level as a syslog number.", "example": "3", "checker": "log_level_style==syslog_number"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "log ingestion configuration reference", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0025",
+    "family": "format",
+    "seed_family": "artifact-digest",
+    "domain": "security",
+    "difficulty": "hard",
+    "task": "Publish the digest for the artifact we just built.",
+    "checker_key": "checksum_format",
+    "key_source": "classifier",
+    "exclusivity": "The prefixed form contains a hex string, so the colon is matched first and the label reads the outer shape. Grouped hex contains spaces, which the unbroken forms forbid. Case is compared across the whole run, so a digest made only of digits — which is simultaneously upper and lower hex — is excluded from the fixture set rather than scored.",
+    "options": [
+      {"id": "o1", "text": "Publish it as one unbroken lowercase hex string.", "checker": "checksum_format==hex_lower"},
+      {"id": "o2", "text": "Publish it as one unbroken uppercase hex string.", "checker": "checksum_format==hex_upper"},
+      {"id": "o3", "text": "Publish it as a standard base64 encoded string.", "checker": "checksum_format==base64"},
+      {"id": "o4", "text": "Publish it with the algorithm name and colon.", "example": "sha256:9f2b...", "checker": "checksum_format==algo_prefixed"},
+      {"id": "o5", "text": "Publish it as hex grouped into spaced quads.", "example": "9F2B 41C0 8DEA", "checker": "checksum_format==spaced_groups"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "artifact signing and verification policy", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0026",
+    "family": "format",
+    "seed_family": "string-escaping",
+    "domain": "coding",
+    "difficulty": "hard",
+    "task": "Embed the user-supplied label inside the generated template.",
+    "checker_key": "escape_style",
+    "key_source": "classifier",
+    "exclusivity": "The unicode escape opens with a backslash as well, so the \\u form is tested before the plain backslash form; otherwise every unicode escape would also satisfy the backslash option. Doubling adds no escape character at all, and the entity and percent forms are keyed to & and %, which none of the others emit.",
+    "options": [
+      {"id": "o1", "text": "Escape the special characters with a backslash.", "example": "\\\"", "checker": "escape_style==backslash"},
+      {"id": "o2", "text": "Escape the special characters as HTML entities.", "example": "&quot;", "checker": "escape_style==html_entity"},
+      {"id": "o3", "text": "Escape the special characters with percent encoding.", "example": "%22", "checker": "escape_style==percent_encoded"},
+      {"id": "o4", "text": "Escape the special characters as unicode escapes.", "example": "\\u0022", "checker": "escape_style==unicode_escape"},
+      {"id": "o5", "text": "Escape the special characters by doubling them.", "example": "\"\"", "checker": "escape_style==doubled_char"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "template engine security guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0027",
+    "family": "format",
+    "seed_family": "digest-record-breaks",
+    "domain": "support",
+    "difficulty": "easy",
+    "task": "Assemble the overnight digest the duty team reads at handover.",
+    "checker_key": "record_separator",
+    "key_source": "classifier",
+    "exclusivity": "The separator is one run of one repeated character, or it is nothing. Blank lines sit around a rule character in most renderings, so the label reads the rule when any rule character appears between entries and only returns blank_line when none does — otherwise every ruled digest would count as blank_line too.",
+    "options": [
+      {"id": "o1", "text": "Separate the entries with a single blank line.", "checker": "record_separator==blank_line"},
+      {"id": "o2", "text": "Separate the entries with a row of hyphens.",  "checker": "record_separator==hyphen_rule"},
+      {"id": "o3", "text": "Separate the entries with a row of equals.",   "checker": "record_separator==equals_rule"},
+      {"id": "o4", "text": "Separate the entries with a row of asterisks.","checker": "record_separator==asterisk_rule"},
+      {"id": "o5", "text": "Separate the entries with a row of tildes.",   "checker": "record_separator==tilde_rule"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "on-call handover template", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0028",
+    "family": "format",
+    "seed_family": "literature-note-citations",
+    "domain": "research",
+    "difficulty": "medium",
+    "task": "Write up the reading notes with the sources marked.",
+    "checker_key": "citation_style",
+    "key_source": "classifier",
+    "exclusivity": "A citation site carries one marker. Bracketed and superscript numbers are the same digit in different notation, so the classifier reads the characters around the digit rather than the digit itself. Prose attribution is the absence of any marker and is only assigned when no bracket, superscript or dagger appears anywhere.",
+    "options": [
+      {"id": "o1", "text": "Mark each source with a bracketed number.", "checker": "citation_style==bracket_number"},
+      {"id": "o2", "text": "Mark each source with author and year.",   "checker": "citation_style==author_year"},
+      {"id": "o3", "text": "Mark each source with a superscript number.", "checker": "citation_style==superscript"},
+      {"id": "o4", "text": "Mark each source with a dagger symbol.",   "checker": "citation_style==dagger_symbol"},
+      {"id": "o5", "text": "Name each source in the sentence itself.",  "checker": "citation_style==prose_attribution"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "research group writing guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0029",
+    "family": "format",
+    "seed_family": "maintainer-contact-list",
+    "domain": "web",
+    "difficulty": "easy",
+    "task": "Put the maintainer contacts on the project's public page.",
+    "checker_key": "email_display",
+    "key_source": "classifier",
+    "exclusivity": "The angle-bracket form contains a bare address inside it, so it is tested first, and the mailto form is keyed to its scheme prefix, which the bare form never carries. The obfuscated form replaces the at sign with a bracketed word, and the name-only form carries no address parts at all, so neither can be read as an address.",
+    "options": [
+      {"id": "o1", "text": "Show each contact as a bare plain address.", "checker": "email_display==bare_address"},
+      {"id": "o2", "text": "Show each contact as name plus bracketed address.", "checker": "email_display==name_angle"},
+      {"id": "o3", "text": "Show each contact as the display name only.", "checker": "email_display==display_name_only"},
+      {"id": "o4", "text": "Show each contact as a mailto hyperlink target.", "checker": "email_display==mailto_link"},
+      {"id": "o5", "text": "Show each contact with the at sign obfuscated.", "checker": "email_display==at_obfuscated"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "open-source project documentation guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0030",
+    "family": "format",
+    "seed_family": "doc-path-notation",
+    "domain": "devops",
+    "difficulty": "easy",
+    "task": "Tell the reader where the agent's config file lives.",
+    "checker_key": "path_style",
+    "key_source": "classifier",
+    "exclusivity": "The file URI contains an absolute POSIX path after its scheme, so the scheme is matched first. The relative and tilde forms both lack a leading slash and are separated by the tilde itself; backslashes appear in none of the other four, so the Windows form cannot be confused with them.",
+    "options": [
+      {"id": "o1", "text": "Write the path as an absolute POSIX path.", "checker": "path_style==absolute_posix"},
+      {"id": "o2", "text": "Write the path relative to the working directory.", "checker": "path_style==relative_path"},
+      {"id": "o3", "text": "Write the path with a leading home tilde.", "checker": "path_style==home_tilde"},
+      {"id": "o4", "text": "Write the path with backslash separators, Windows style.", "checker": "path_style==windows_backslash"},
+      {"id": "o5", "text": "Write the path as a file URI reference.", "checker": "path_style==file_uri"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "developer onboarding documentation", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0031",
+    "family": "format",
+    "seed_family": "locale-tag-format",
+    "domain": "mobile",
+    "difficulty": "medium",
+    "task": "Name the locale in the header of each translation bundle.",
+    "checker_key": "language_tag",
+    "key_source": "classifier",
+    "exclusivity": "The two composite forms differ only in the joining character, and the bare subtag is a prefix of both, so the composites are matched first and a hyphenated tag is never scored as the two-letter one. A three-letter code is never a two-letter code, and the English name is a word rather than a code.",
+    "options": [
+      {"id": "o1", "text": "Name it with the two-letter language subtag alone.", "example": "pt", "checker": "language_tag==two_letter"},
+      {"id": "o2", "text": "Name it with language and region, hyphen joined.", "example": "pt-BR", "checker": "language_tag==hyphen_region"},
+      {"id": "o3", "text": "Name it with language and region, underscore joined.", "example": "pt_BR", "checker": "language_tag==underscore_locale"},
+      {"id": "o4", "text": "Name it with the three-letter language code alone.", "example": "por", "checker": "language_tag==three_letter"},
+      {"id": "o5", "text": "Name it with the language name in English.", "example": "Portuguese", "checker": "language_tag==english_name"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "mobile localisation handbook", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0032",
+    "family": "format",
+    "seed_family": "country-column-encoding",
+    "domain": "data",
+    "difficulty": "hard",
+    "task": "Fill the country column when you load the signup export.",
+    "checker_key": "country_code_style",
+    "key_source": "classifier",
+    "exclusivity": "The two two-letter forms are the same letters in different case, so the comparison is case-sensitive and a mixed-case value returns 'other' rather than either. Length separates two letters from three, and the numeric code shares no characters with any letter form.",
+    "options": [
+      {"id": "o1", "text": "Write the country as an uppercase two-letter code.", "example": "DE", "checker": "country_code_style==alpha2_upper"},
+      {"id": "o2", "text": "Write the country as a lowercase two-letter code.", "example": "de", "checker": "country_code_style==alpha2_lower"},
+      {"id": "o3", "text": "Write the country as an uppercase three-letter code.", "example": "DEU", "checker": "country_code_style==alpha3_upper"},
+      {"id": "o4", "text": "Write the country as its three-digit numeric code.", "example": "276", "checker": "country_code_style==numeric_code"},
+      {"id": "o5", "text": "Write the country as its English short name.", "example": "Germany", "checker": "country_code_style==english_name"}
+    ],
+    "note": "Lowercase two-letter codes are the norm in URLs and uppercase ones in data exports, so both are live house styles here and neither is the correct answer on the merits.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "reference data dictionary", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0033",
+    "family": "format",
+    "seed_family": "rota-day-labels",
+    "domain": "ops",
+    "difficulty": "easy",
+    "task": "Write out the coverage rota for the coming fortnight.",
+    "checker_key": "weekday_encoding",
+    "key_source": "classifier",
+    "exclusivity": "Every short form is a prefix of the longer ones — M, Mo and Mon all begin the same way — so the label is the exact token length after the longest match rather than a prefix test. That is the collision a careless matcher would score three ways on one token. A rota mixing lengths returns 'other', and the ISO number shares no characters with any letter form.",
+    "options": [
+      {"id": "o1", "text": "Write each weekday as the full name.", "example": "Monday", "checker": "weekday_encoding==full_name"},
+      {"id": "o2", "text": "Write each weekday as three capitalised letters.", "example": "Mon", "checker": "weekday_encoding==three_letter"},
+      {"id": "o3", "text": "Write each weekday as two capitalised letters.", "example": "Mo", "checker": "weekday_encoding==two_letter"},
+      {"id": "o4", "text": "Write each weekday as one capital letter.", "example": "M", "checker": "weekday_encoding==single_letter"},
+      {"id": "o5", "text": "Write each weekday as an ISO number.", "example": "1", "checker": "weekday_encoding==iso_number"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "shift coverage planning template", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0034",
+    "family": "format",
+    "seed_family": "fixed-width-statement",
+    "domain": "finance",
+    "difficulty": "hard",
+    "task": "Lay out the statement lines for the fixed-width printer.",
+    "checker_key": "column_alignment",
+    "key_source": "classifier",
+    "exclusivity": "Right alignment and decimal alignment give the identical column whenever every amount has the same number of decimal places, so the fixture mixes two-decimal and whole amounts; decimal_point is assigned only when the points line up while the final characters do not. Zero padding fills what would be leading spaces, so it is tested before right alignment.",
+    "options": [
+      {"id": "o1", "text": "Align the amount column on the left.", "checker": "column_alignment==left"},
+      {"id": "o2", "text": "Align the amount column on the right.", "checker": "column_alignment==right"},
+      {"id": "o3", "text": "Align the amount column in the centre.", "checker": "column_alignment==centred"},
+      {"id": "o4", "text": "Align the amount column on the decimal point.", "checker": "column_alignment==decimal_point"},
+      {"id": "o5", "text": "Pad the amounts with leading zeroes instead.", "checker": "column_alignment==zero_padded"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "print statement layout specification", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0035",
+    "family": "format",
+    "seed_family": "measurement-field-shape",
+    "domain": "coding",
+    "difficulty": "medium",
+    "task": "Return the sensor readings from the telemetry endpoint.",
+    "checker_key": "value_encoding",
+    "key_source": "classifier",
+    "exclusivity": "The label reads the shape of the value bound to the field, not what is nested inside it, so the object and array forms are not also counted as bare numbers because a number appears within them. The quoted number and the unit-suffixed string are both strings, split by whether the string parses as a number on its own.",
+    "options": [
+      {"id": "o1", "text": "Return each reading as a bare JSON number.", "example": "21.4", "checker": "value_encoding==bare_number"},
+      {"id": "o2", "text": "Return each reading as a quoted numeric string.", "example": "\"21.4\"", "checker": "value_encoding==quoted_number"},
+      {"id": "o3", "text": "Return each reading as a string with units.", "example": "\"21.4 C\"", "checker": "value_encoding==unit_suffixed_string"},
+      {"id": "o4", "text": "Return each reading as an object carrying units.", "example": "{\"value\": 21.4, \"unit\": \"C\"}", "checker": "value_encoding==object_with_unit"},
+      {"id": "o5", "text": "Return each reading as a two element array.", "example": "[21.4, \"C\"]", "checker": "value_encoding==pair_array"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "device telemetry API reference", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0036",
+    "family": "format",
+    "seed_family": "record-key-order",
+    "domain": "coding",
+    "difficulty": "hard",
+    "task": "Serialise the order records for the downstream consumer.",
+    "checker_key": "key_ordering",
+    "key_source": "classifier",
+    "exclusivity": "One record has one key order, so at most one pattern can match it. Every option is decidable from the emitted record alone, with no external reference: four compare the key sequence against a sort of itself, and the fifth compares adjacent name lengths. The danger is coincidence rather than overlap -- if the id happened to sort first alphabetically, id_first and alphabetical would produce the same string. The fixture record is built so all five orders are distinct strings.",
+    "options": [
+      {"id": "o1", "text": "Order the keys alphabetically inside every record.", "checker": "key_ordering==alphabetical"},
+      {"id": "o2", "text": "Order the keys in reverse alphabetical order.", "checker": "key_ordering==reverse_alphabetical"},
+      {"id": "o3", "text": "Put the id first, then everything alphabetically.", "checker": "key_ordering==id_first"},
+      {"id": "o4", "text": "Put the audit fields last, others alphabetically.", "checker": "key_ordering==audit_last"},
+      {"id": "o5", "text": "Order the keys by ascending name length.", "checker": "key_ordering==ascending_length"}
+    ],
+    "note": "The fixture record carries an 'amount' field that sorts ahead of 'id', and audit fields named 'changed_by' and 'created_at' that do not sort last, which is what keeps the five orders from collapsing into each other. Under ascending_length those same names give 2, 6, 6, 10, 10, an order that is neither alphabetical nor its reverse. The fifth option replaced 'schema_order', which could only ever be checked against a schema the response does not carry.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "data interchange schema guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0037",
+    "family": "format",
+    "seed_family": "no-results-payload",
+    "domain": "coding",
+    "difficulty": "medium",
+    "task": "Answer the search endpoint when nothing matches the query.",
+    "checker_key": "empty_collection",
+    "key_source": "classifier",
+    "exclusivity": "A field has exactly one value bound to it, and omission is the absence of the field, which no present value can also satisfy. The counted object is not read as an empty array even though it reports zero, because the label reads the top-level shape of the value rather than its meaning.",
+    "options": [
+      {"id": "o1", "text": "Return the results field as an empty array.", "example": "[]", "checker": "empty_collection==empty_array"},
+      {"id": "o2", "text": "Return the results field as a null literal.", "example": "null", "checker": "empty_collection==null_literal"},
+      {"id": "o3", "text": "Leave the results field out of the payload.", "checker": "empty_collection==omitted_key"},
+      {"id": "o4", "text": "Return the results field as an empty string.", "example": "\"\"", "checker": "empty_collection==empty_string"},
+      {"id": "o5", "text": "Return the results field as a counted object.", "example": "{\"count\": 0}", "checker": "empty_collection==zero_count_object"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "public API design guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0038",
+    "family": "format",
+    "seed_family": "acronym-house-style",
+    "domain": "research",
+    "difficulty": "medium",
+    "task": "Write the methods section of the internal white paper.",
+    "checker_key": "acronym_style",
+    "key_source": "classifier",
+    "exclusivity": "Case is compared over the whole token, so the capitalised form and the block-capital form never both match one rendering. The period form has the same letters but a different character run. The expanded form contains no acronym token at all, which is what separates it, rather than any casing rule.",
+    "options": [
+      {"id": "o1", "text": "Write every acronym in full block capitals.", "example": "SLA", "checker": "acronym_style==all_caps"},
+      {"id": "o2", "text": "Write every acronym with one initial capital.", "example": "Sla", "checker": "acronym_style==initial_cap"},
+      {"id": "o3", "text": "Write every acronym in plain lower case.", "example": "sla", "checker": "acronym_style==all_lower"},
+      {"id": "o4", "text": "Write every acronym with periods between letters.", "example": "S.L.A.", "checker": "acronym_style==period_separated"},
+      {"id": "o5", "text": "Write every acronym out as full words.", "example": "service level agreement", "checker": "acronym_style==expanded_words"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "editorial style manual", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0039",
+    "family": "format",
+    "seed_family": "latency-unit-notation",
+    "domain": "devops",
+    "difficulty": "hard",
+    "task": "Write the latency numbers into the weekly reliability table.",
+    "checker_key": "unit_spacing",
+    "key_source": "classifier",
+    "exclusivity": "The four in-cell forms are compared literally, including the space: 180ms, 180 ms, 180 msec and 180 milliseconds are four distinct renderings of one figure, and no cell can be two of them. The header form leaves the cell as a bare number, so it is the only label where no unit sits beside the value at all.",
+    "options": [
+      {"id": "o1", "text": "Attach the unit directly, with no space.", "example": "180ms", "checker": "unit_spacing==suffix_tight"},
+      {"id": "o2", "text": "Attach the unit after a single space.", "example": "180 ms", "checker": "unit_spacing==suffix_spaced"},
+      {"id": "o3", "text": "Attach the unit as a shortened word.", "example": "180 msec", "checker": "unit_spacing==abbreviated_word"},
+      {"id": "o4", "text": "Attach the unit as the full word.", "example": "180 milliseconds", "checker": "unit_spacing==full_word"},
+      {"id": "o5", "text": "State the unit once in the header.", "example": "p95 (ms) column, cells read 180", "checker": "unit_spacing==unit_in_header"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "service level reporting standard", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0040",
+    "family": "format",
+    "seed_family": "revenue-movement-notation",
+    "domain": "finance",
+    "difficulty": "hard",
+    "task": "Show how each segment's revenue moved against the prior quarter.",
+    "checker_key": "change_expression",
+    "key_source": "classifier",
+    "exclusivity": "The bracketed form carries a signed percentage inside its parentheses, so the brackets are matched before any percentage is read; without that order every bracketed figure would count as a percentage change as well. The paired form is keyed on its arrow and the multiple on its trailing x, which leaves the percent sign to separate the last two. A figure carrying none of those four markers matches nothing and returns 'other', which is why both signed forms are required to write the sign rather than let it be inferred.",
+    "options": [
+      {"id": "o1", "text": "Give each movement as a signed difference in currency units.", "example": "+4,912,000", "checker": "change_expression==signed_absolute"},
+      {"id": "o2", "text": "Give each movement as a percentage change carrying its sign.", "example": "+58.5%", "checker": "change_expression==signed_percent"},
+      {"id": "o3", "text": "Show the new figure with the percentage change in brackets.", "example": "13,312,000 (+58.5%)", "checker": "change_expression==percent_in_parens"},
+      {"id": "o4", "text": "Give each movement as a multiple of the prior quarter.", "example": "1.58x", "checker": "change_expression==growth_multiple"},
+      {"id": "o5", "text": "Give each movement as both figures joined by an arrow.", "example": "8,400,000 → 13,312,000", "checker": "change_expression==arrow_pair"}
+    ],
+    "note": "The label reads notation and never arithmetic, so a movement figure that is computed wrongly still scores for whichever form it is written in, and the checker never needs the prior-quarter inputs. The arrow test accepts the ASCII pair as well as the arrow character, since neither appears in the other four forms. Percentage change is the most familiar of the five in a management pack and is the likeliest unprompted choice.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "management accounts reporting template", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0041",
+    "family": "format",
+    "seed_family": "shift-roster-times",
+    "domain": "support",
+    "difficulty": "hard",
+    "task": "Publish next week's shift roster for the weekend desk.",
+    "checker_key": "time_of_day",
+    "key_source": "classifier",
+    "exclusivity": "The two twelve-hour forms carry the same digits and differ only in the case of the meridiem and the space before it, so the match is literal; both are kept out of the twenty-four-hour label by the presence of a meridiem marker at all. Four bare digits carry no separator, which the colon and dot forms each require.",
+    "options": [
+      {"id": "o1", "text": "Write shift times on the twenty-four hour clock.", "example": "14:05", "checker": "time_of_day==colon_24h"},
+      {"id": "o2", "text": "Write shift times with uppercase AM and PM.", "example": "2:05 PM", "checker": "time_of_day==ampm_spaced_caps"},
+      {"id": "o3", "text": "Write shift times with lowercase am attached tightly.", "example": "2:05pm", "checker": "time_of_day==ampm_tight_lower"},
+      {"id": "o4", "text": "Write shift times as four digits, no separator.", "example": "1405", "checker": "time_of_day==four_digit_military"},
+      {"id": "o5", "text": "Write shift times with a dot separating hours.", "example": "14.05", "checker": "time_of_day==dotted_24h"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "workforce scheduling handbook", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0042",
+    "family": "format",
+    "seed_family": "leaderboard-positions",
+    "domain": "web",
+    "difficulty": "easy",
+    "task": "Show where each team finished on the season page.",
+    "checker_key": "ordinal_style",
+    "key_source": "classifier",
+    "exclusivity": "The suffixed and hashed forms both contain the bare digits, so both markers are tested before the bare form and only a figure carrying neither is labelled bare. Roman numerals and English words contain no digits at all, so they cannot collide with the three numeric labels.",
+    "options": [
+      {"id": "o1", "text": "Show each position as a bare number.", "example": "3", "checker": "ordinal_style==bare_number"},
+      {"id": "o2", "text": "Show each position with an ordinal suffix.", "example": "3rd", "checker": "ordinal_style==suffix_letters"},
+      {"id": "o3", "text": "Show each position as an English word.", "example": "third", "checker": "ordinal_style==word_form"},
+      {"id": "o4", "text": "Show each position as a roman numeral.", "example": "III", "checker": "ordinal_style==roman_numeral"},
+      {"id": "o5", "text": "Show each position with a leading hash.", "example": "#3", "checker": "ordinal_style==hash_prefix"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "site content style guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0043",
+    "family": "format",
+    "seed_family": "measurement-ranges",
+    "domain": "research",
+    "difficulty": "hard",
+    "task": "Write up the tolerance bands from the bench measurements.",
+    "checker_key": "range_notation",
+    "key_source": "classifier",
+    "exclusivity": "The en dash and the hyphen are different codepoints that render almost identically, so the comparison is on the byte and not the appearance — this is exactly the pair a checker doing unicode folding would merge into one label. The bracketed and plus-minus forms carry characters the joined forms never contain.",
+    "options": [
+      {"id": "o1", "text": "Join the two bounds with an en dash.", "example": "4.8–5.2", "checker": "range_notation==en_dash"},
+      {"id": "o2", "text": "Join the two bounds with a plain hyphen.", "example": "4.8-5.2", "checker": "range_notation==hyphen"},
+      {"id": "o3", "text": "Join the two bounds with the word to.", "example": "4.8 to 5.2", "checker": "range_notation==to_word"},
+      {"id": "o4", "text": "Write the two bounds as a bracketed interval.", "example": "[4.8, 5.2]", "checker": "range_notation==interval_brackets"},
+      {"id": "o5", "text": "Write the band as a centre plus tolerance.", "example": "5.0 ± 0.2", "checker": "range_notation==plus_minus"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "laboratory reporting standard", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0044",
+    "family": "format",
+    "seed_family": "ledger-adjustment-signs",
+    "domain": "finance",
+    "difficulty": "medium",
+    "task": "Prepare the adjustment file the legacy ledger loader reads.",
+    "checker_key": "negative_sign",
+    "key_source": "classifier",
+    "exclusivity": "Sign placement is one property of one field: the marker sits before the digits, after them, or is replaced by brackets around them. The hyphen-minus and the true minus sign look alike and are compared by codepoint, and CR is a letter pair that no arithmetic form contains.",
+    "options": [
+      {"id": "o1", "text": "Mark negatives with a leading hyphen minus.", "example": "-412.00", "checker": "negative_sign==leading_hyphen"},
+      {"id": "o2", "text": "Mark negatives with a true unicode minus.", "example": "−412.00", "checker": "negative_sign==unicode_minus"},
+      {"id": "o3", "text": "Mark negatives with a trailing minus sign.", "example": "412.00-", "checker": "negative_sign==trailing_minus"},
+      {"id": "o4", "text": "Mark negatives by wrapping them in parentheses.", "example": "(412.00)", "checker": "negative_sign==parenthesised"},
+      {"id": "o5", "text": "Mark negatives with a trailing CR flag.", "example": "412.00 CR", "checker": "negative_sign==cr_marker"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "legacy ledger interface specification", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0045",
+    "family": "format",
+    "seed_family": "population-table-grouping",
+    "domain": "data",
+    "difficulty": "medium",
+    "task": "Build the population table for the regional briefing.",
+    "checker_key": "thousands_separator",
+    "key_source": "classifier",
+    "exclusivity": "Every figure in this table is a whole number, which is what stops the period form from being read as a decimal point — with a fractional figure present '1.234' would be genuinely ambiguous, so the fixture has none. The grouped forms all break every three digits, so the label is the character used, and ungrouped means no separator anywhere.",
+    "options": [
+      {"id": "o1", "text": "Group the digits with commas every three.", "example": "1,240,000", "checker": "thousands_separator==comma"},
+      {"id": "o2", "text": "Group the digits with periods every three.", "example": "1.240.000", "checker": "thousands_separator==period"},
+      {"id": "o3", "text": "Group the digits with spaces every three.", "example": "1 240 000", "checker": "thousands_separator==space"},
+      {"id": "o4", "text": "Group the digits with apostrophes every three.", "example": "1'240'000", "checker": "thousands_separator==apostrophe"},
+      {"id": "o5", "text": "Leave the digits ungrouped with no separator.", "example": "1240000", "checker": "thousands_separator==none"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "statistical publication style guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0046",
+    "family": "format",
+    "seed_family": "dashboard-count-abbreviation",
+    "domain": "data",
+    "difficulty": "hard",
+    "task": "Fill the headline counters at the top of the dashboard.",
+    "checker_key": "large_number_style",
+    "key_source": "classifier",
+    "exclusivity": "Both grouped forms use commas, so the label reads the group sizes rather than the separator: threes throughout for the western form, a leading trio then repeating pairs for the Indian form. That is the collision worth naming — a checker keyed on the comma alone would merge them. The three compact forms each carry a letter, a word or an exponent that neither grouped form has.",
+    "options": [
+      {"id": "o1", "text": "Write each count grouped in threes, western style.", "example": "1,240,000", "checker": "large_number_style==western_grouping"},
+      {"id": "o2", "text": "Write each count grouped in the Indian style.", "example": "12,40,000", "checker": "large_number_style==indian_grouping"},
+      {"id": "o3", "text": "Write each count with a scale letter suffix.", "example": "1.24M", "checker": "large_number_style==si_suffix"},
+      {"id": "o4", "text": "Write each count with the scale word spelled.", "example": "1.24 million", "checker": "large_number_style==word_scale"},
+      {"id": "o5", "text": "Write each count in full scientific exponent notation.", "example": "1.24e6", "checker": "large_number_style==scientific"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "dashboard presentation guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0047",
+    "family": "format",
+    "seed_family": "shell-snippet-prompt",
+    "domain": "devops",
+    "difficulty": "easy",
+    "task": "Write the runbook steps as commands the operator can paste.",
+    "checker_key": "shell_prompt",
+    "key_source": "classifier",
+    "exclusivity": "A command line carries one leading prompt character or none, and the four characters are distinct single bytes. The no-prompt label is assigned only when none of the four appears in leading position, so a command whose own arguments contain a dollar sign is not miscounted as prompted.",
+    "options": [
+      {"id": "o1", "text": "Prefix every command with a dollar prompt.", "checker": "shell_prompt==dollar_prompt"},
+      {"id": "o2", "text": "Prefix every command with a hash prompt.", "checker": "shell_prompt==hash_prompt"},
+      {"id": "o3", "text": "Prefix every command with an angle prompt.", "checker": "shell_prompt==angle_prompt"},
+      {"id": "o4", "text": "Prefix every command with a percent prompt.", "checker": "shell_prompt==percent_prompt"},
+      {"id": "o5", "text": "Write every command with no prompt character.", "checker": "shell_prompt==no_prompt"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "operations runbook template", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0048",
+    "family": "format",
+    "seed_family": "docstring-parameter-style",
+    "domain": "coding",
+    "difficulty": "hard",
+    "task": "Write the doc comment for the helper function you just added.",
+    "checker_key": "param_doc_style",
+    "key_source": "classifier",
+    "exclusivity": "The two tag forms are the same word behind a different leading character, so the comparison starts at that character and a block carrying both markers returns 'other' rather than whichever appeared first. The two section forms both open with a bare heading line and are split by the row of dashes beneath it, which the underlined form requires and the indented form never emits — that is the pair a checker keyed on the heading word alone would merge. The prose label is assigned only when none of the four markers appears anywhere in the block, so it can never sit underneath one of them.",
+    "options": [
+      {"id": "o1", "text": "Document each parameter as a colon-prefixed param field line.", "example": ":param retries: attempts before giving up", "checker": "param_doc_style==field_list_tags"},
+      {"id": "o2", "text": "Document the parameters under an indented Args section heading.", "example": "Args:\n    retries: attempts before giving up", "checker": "param_doc_style==indented_args_section"},
+      {"id": "o3", "text": "Document the parameters under a dash-underlined Parameters section heading.", "example": "Parameters\n----------\nretries : int", "checker": "param_doc_style==underlined_section"},
+      {"id": "o4", "text": "Document each parameter with an at-sign param tag line.", "example": "@param retries attempts before giving up", "checker": "param_doc_style==at_param_tags"},
+      {"id": "o5", "text": "Document the parameters inside the prose summary, no section.", "example": "Retries the call up to the given number of attempts.", "checker": "param_doc_style==prose_summary"}
+    ],
+    "note": "Each of the five belongs to a live doc-comment convention and no rule spans all of them, so the choice stays a house-style question rather than a correctness one. The indented section form is the most common in recent code, which makes it the mildest pull towards answering on the merits.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "repository docstring style guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0049",
+    "family": "format",
+    "seed_family": "branch-naming",
+    "domain": "coding",
+    "difficulty": "medium",
+    "task": "Cut a branch for the work described in the ticket.",
+    "checker_key": "branch_name_style",
+    "key_source": "classifier",
+    "exclusivity": "The type prefix and the initials prefix both end at a slash, so they are split on the segment before it: a known type word against a two-letter pair, and the fixture's initials are deliberately not a type word. The bare slug is the only form with no prefix segment at all, and the dated form opens with a four-digit year.",
+    "options": [
+      {"id": "o1", "text": "Name it with a type word and slash.", "example": "feat/retry-poller", "checker": "branch_name_style==type_slash_prefix"},
+      {"id": "o2", "text": "Name it with the ticket key up front.", "example": "OPS-412-retry-poller", "checker": "branch_name_style==ticket_key_first"},
+      {"id": "o3", "text": "Name it with author initials and a slash.", "example": "jd/retry-poller", "checker": "branch_name_style==initials_prefix"},
+      {"id": "o4", "text": "Name it as a bare hyphenated description slug.", "example": "retry-poller", "checker": "branch_name_style==bare_slug"},
+      {"id": "o5", "text": "Name it with today's date as the prefix.", "example": "2026-09-07-retry-poller", "checker": "branch_name_style==dated_prefix"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "repository branching policy", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0050",
+    "family": "format",
+    "seed_family": "uuid-rendering",
+    "domain": "data",
+    "difficulty": "medium",
+    "task": "Write the record keys into the migration mapping file.",
+    "checker_key": "uuid_rendering",
+    "key_source": "classifier",
+    "exclusivity": "The urn form contains a hyphenated lowercase value inside it, so the scheme prefix is matched first. Case separates the two hyphenated forms exactly and the stripped form has no hyphens at all. Base32 draws on letters past f, and its length differs, so a base32 value that happened to use only hex digits is still not read as hex.",
+    "options": [
+      {"id": "o1", "text": "Write each key as lowercase hex with hyphens.", "checker": "uuid_rendering==lower_hyphenated"},
+      {"id": "o2", "text": "Write each key as uppercase hex with hyphens.", "checker": "uuid_rendering==upper_hyphenated"},
+      {"id": "o3", "text": "Write each key as hex with hyphens removed.", "checker": "uuid_rendering==hyphenless"},
+      {"id": "o4", "text": "Write each key with the urn scheme prefixed.", "checker": "uuid_rendering==urn_prefixed"},
+      {"id": "o5", "text": "Write each key in a compact base32 encoding.", "checker": "uuid_rendering==base32_compact"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "data migration specification", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0051",
+    "family": "format",
+    "seed_family": "reporting-period-label",
+    "domain": "finance",
+    "difficulty": "medium",
+    "task": "Label the periods in the revenue roll-forward.",
+    "checker_key": "period_label",
+    "key_source": "classifier",
+    "exclusivity": "The calendar and fiscal quarters both end in a quarter number, so the fiscal form is keyed on its FY marker and matched first; the fixture's fiscal year does not begin in January, so the two never name the same span either. The week and month forms both open with a four-digit year and are separated by the W.",
+    "options": [
+      {"id": "o1", "text": "Label each period as an ISO week number.", "example": "2026-W37", "checker": "period_label==iso_week"},
+      {"id": "o2", "text": "Label each period as a plain calendar quarter.", "example": "2026 Q3", "checker": "period_label==calendar_quarter"},
+      {"id": "o3", "text": "Label each period as a fiscal year quarter.", "example": "FY27 Q1", "checker": "period_label==fiscal_quarter"},
+      {"id": "o4", "text": "Label each period as month name and year.", "example": "September 2026", "checker": "period_label==month_name_year"},
+      {"id": "o5", "text": "Label each period as numeric year and month.", "example": "2026-09", "checker": "period_label==numeric_year_month"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "financial reporting calendar policy", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0052",
+    "family": "format",
+    "seed_family": "boolean-field-naming",
+    "domain": "coding",
+    "difficulty": "easy",
+    "task": "Add the new boolean columns to the accounts schema.",
+    "checker_key": "bool_field_naming",
+    "key_source": "classifier",
+    "exclusivity": "A column name carries a prefix token, a suffix token, or neither, and the fixture forbids a name carrying both. 'is' and 'has' are different words rather than variants of one, and the bare adjective label is assigned only when neither prefix nor suffix is present.",
+    "options": [
+      {"id": "o1", "text": "Give every boolean column an is prefix.", "example": "is_active", "checker": "bool_field_naming==is_prefix"},
+      {"id": "o2", "text": "Give every boolean column a has prefix.", "example": "has_active", "checker": "bool_field_naming==has_prefix"},
+      {"id": "o3", "text": "Give every boolean column a bare adjective.", "example": "active", "checker": "bool_field_naming==bare_adjective"},
+      {"id": "o4", "text": "Give every boolean column an enabled suffix.", "example": "active_enabled", "checker": "bool_field_naming==enabled_suffix"},
+      {"id": "o5", "text": "Give every boolean column a flag suffix.", "example": "active_flag", "checker": "bool_field_naming==flag_suffix"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "database schema naming standard", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0053",
+    "family": "format",
+    "seed_family": "list-endpoint-paging",
+    "domain": "mobile",
+    "difficulty": "medium",
+    "task": "Serve the next page of the activity feed to the app.",
+    "checker_key": "pagination_style",
+    "key_source": "classifier",
+    "exclusivity": "The label reads which paging mechanism the response actually carries, keyed to exact parameter and header names. Offset paging and page-number paging both live in query parameters, so the names are matched literally rather than by shape, and a response carrying two mechanisms returns 'other' instead of the first one found.",
+    "options": [
+      {"id": "o1", "text": "Page it with offset and limit query parameters.", "checker": "pagination_style==offset_limit"},
+      {"id": "o2", "text": "Page it with a page number query parameter.", "checker": "pagination_style==page_number"},
+      {"id": "o3", "text": "Page it with an opaque cursor query parameter.", "checker": "pagination_style==opaque_cursor"},
+      {"id": "o4", "text": "Page it with a Link header carrying next.", "checker": "pagination_style==link_header"},
+      {"id": "o5", "text": "Page it with a Content-Range header on responses.", "checker": "pagination_style==range_header"}
+    ],
+    "note": "Real services often ship two of these at once for compatibility. Here any pair is 'other' rather than a winner, so a hedged response scores as invalid instead of counting for whichever mechanism appears first.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "mobile client integration guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0054",
+    "family": "format",
+    "seed_family": "doc-link-notation",
+    "domain": "web",
+    "difficulty": "medium",
+    "task": "Add the cross-references to the getting-started page.",
+    "checker_key": "link_style",
+    "key_source": "classifier",
+    "exclusivity": "The angle-bracket form contains the bare form inside its brackets, so the brackets are matched first. Inline and reference links share the bracket-and-label syntax and are split by whether the target sits beside the label or in a definition further down the file; the footnote form points at a marker rather than a target.",
+    "options": [
+      {"id": "o1", "text": "Write each link inline in the sentence.", "checker": "link_style==inline_link"},
+      {"id": "o2", "text": "Write each link as a reference-style definition.", "checker": "link_style==reference_style"},
+      {"id": "o3", "text": "Write each link as a bare autolink.", "checker": "link_style==bare_autolink"},
+      {"id": "o4", "text": "Write each link inside angle bracket autolinks.", "checker": "link_style==angle_autolink"},
+      {"id": "o5", "text": "Write each link as a numbered footnote.", "checker": "link_style==footnote_style"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "documentation authoring guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0055",
+    "family": "format",
+    "seed_family": "sample-code-blocks",
+    "domain": "web",
+    "difficulty": "medium",
+    "task": "Drop the sample snippets into the integration guide.",
+    "checker_key": "code_block_style",
+    "key_source": "classifier",
+    "exclusivity": "The two backtick forms are separated by the info string on the opening fence, which is either present or absent with nothing in between — the one place a careless checker would score a tagged fence as both. A tilde fence is a different character, an indented block has no fence line at all, and the HTML block is keyed on its tag.",
+    "options": [
+      {"id": "o1", "text": "Fence every snippet with backticks, no language tag.", "checker": "code_block_style==backtick_no_language"},
+      {"id": "o2", "text": "Fence every snippet with backticks and a language.", "checker": "code_block_style==backtick_with_language"},
+      {"id": "o3", "text": "Fence every snippet with tildes instead of backticks.", "checker": "code_block_style==tilde_fence"},
+      {"id": "o4", "text": "Indent every snippet four spaces instead of fencing.", "checker": "code_block_style==four_space_indent"},
+      {"id": "o5", "text": "Wrap every snippet in an HTML pre block.", "checker": "code_block_style==html_pre"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "developer portal content standard", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0056",
+    "family": "format",
+    "seed_family": "nested-record-flattening",
+    "domain": "data",
+    "difficulty": "hard",
+    "task": "Flatten the nested profile records for the downstream flat file.",
+    "checker_key": "flatten_style",
+    "key_source": "classifier",
+    "exclusivity": "The exploded form writes dotted paths into its key cells, so the label reads header names only and never cell contents; scanning the whole file instead would make every exploded extract match the dot form as well. The doubled underscore is a separator no leaf name produces by itself, because a leaf carrying one underscore still carries only one, so the two joined forms cannot both match a header. The leaf-only label requires every header to be exactly one of the record's leaf names, which a parent joined on with a single underscore fails, and which the one-column JSON form fails too.",
+    "options": [
+      {"id": "o1", "text": "Join the parent and leaf names with a dot.", "example": "user.tier", "checker": "flatten_style==dot_path"},
+      {"id": "o2", "text": "Join the parent and leaf names with two underscores.", "example": "user__tier", "checker": "flatten_style==double_underscore_path"},
+      {"id": "o3", "text": "Drop the parent and keep the leaf name alone.", "example": "tier", "checker": "flatten_style==leaf_name_only"},
+      {"id": "o4", "text": "Keep the nested object in one column as JSON.", "example": "user = {\"tier\": \"gold\"}", "checker": "flatten_style==json_blob_cell"},
+      {"id": "o5", "text": "Emit one row per leaf with key and value columns.", "example": "key = user.tier, value = gold", "checker": "flatten_style==exploded_rows"}
+    ],
+    "note": "No leaf name repeats across branches of the fixture record, so dropping the parent is a lossless rendering rather than a collision and no option here breaks the file it writes. Dot paths are the most familiar of the five and would be the unprompted choice for most writers.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "warehouse field-mapping specification", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0057",
+    "family": "format",
+    "seed_family": "release-note-emphasis",
+    "domain": "coding",
+    "difficulty": "easy",
+    "task": "Draft the release notes for this week's deploy.",
+    "checker_key": "emphasis_marker",
+    "key_source": "classifier",
+    "exclusivity": "Double asterisks contain single ones, so the doubled form is matched first and a bold marker is never counted as two italic markers. Underscores and backticks are distinct characters, and the capitals form uses no marker characters at all, so it cannot sit inside any of the other four.",
+    "options": [
+      {"id": "o1", "text": "Mark the changed settings with double asterisks.", "checker": "emphasis_marker==double_asterisk"},
+      {"id": "o2", "text": "Mark the changed settings with double underscores.", "checker": "emphasis_marker==double_underscore"},
+      {"id": "o3", "text": "Mark the changed settings with single asterisks.", "checker": "emphasis_marker==single_asterisk"},
+      {"id": "o4", "text": "Mark the changed settings with inline backticks.", "checker": "emphasis_marker==backticks"},
+      {"id": "o5", "text": "Mark the changed settings in full capitals.", "checker": "emphasis_marker==uppercase"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "release communication template", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0058",
+    "family": "format",
+    "seed_family": "editorial-dash-style",
+    "domain": "research",
+    "difficulty": "hard",
+    "task": "Edit the discussion section before it goes to the reviewers.",
+    "checker_key": "dash_punctuation",
+    "key_source": "classifier",
+    "exclusivity": "The em dash and the en dash are different codepoints, and the surrounding spaces are part of the label, so an unspaced and a spaced em dash are two labels rather than one rendering. The double hyphen is a two-character ASCII stand-in that neither dash matches, and paired commas contain no dash at all.",
+    "options": [
+      {"id": "o1", "text": "Set the asides with unspaced em dashes.", "example": "the result—unexpected—held", "checker": "dash_punctuation==closed_em_dash"},
+      {"id": "o2", "text": "Set the asides with spaced em dashes.", "example": "the result — unexpected — held", "checker": "dash_punctuation==spaced_em_dash"},
+      {"id": "o3", "text": "Set the asides with spaced en dashes.", "example": "the result – unexpected – held", "checker": "dash_punctuation==spaced_en_dash"},
+      {"id": "o4", "text": "Set the asides with double hyphens instead.", "example": "the result--unexpected--held", "checker": "dash_punctuation==double_hyphen"},
+      {"id": "o5", "text": "Set the asides with paired commas instead.", "example": "the result, unexpected, held", "checker": "dash_punctuation==paired_commas"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "journal house style sheet", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0059",
+    "family": "format",
+    "seed_family": "secret-masking",
+    "domain": "security",
+    "difficulty": "easy",
+    "task": "Write the connection details into the support bundle.",
+    "checker_key": "redaction_style",
+    "key_source": "classifier",
+    "exclusivity": "Keeping the last four leaves a mask run in front of it, so it is matched before the full mask, which requires no surviving characters from the original. Omission is the absence of the field, which no replacement value can also satisfy, and the digest is a hex run carrying no mask characters.",
+    "options": [
+      {"id": "o1", "text": "Replace each secret with a fixed asterisk run.", "checker": "redaction_style==full_mask"},
+      {"id": "o2", "text": "Replace each secret but keep the last four.", "checker": "redaction_style==last_four"},
+      {"id": "o3", "text": "Replace each secret with a literal redacted marker.", "checker": "redaction_style==fixed_token"},
+      {"id": "o4", "text": "Replace each secret with a short hash digest.", "checker": "redaction_style==hash_digest"},
+      {"id": "o5", "text": "Leave each secret out of the bundle entirely.", "checker": "redaction_style==field_omitted"}
+    ],
+    "note": "All five are real redaction policies, but they are not equally safe: last-four and a digest both leak something. The scenario measures which source is obeyed, and the leak is a property of the option, so this item is reported with a valence covariate rather than pooled blind.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "support bundle redaction policy", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0060",
+    "family": "format",
+    "seed_family": "front-matter-tags",
+    "domain": "web",
+    "difficulty": "medium",
+    "task": "Set the front matter on the new blog post.",
+    "checker_key": "tag_list_shape",
+    "key_source": "classifier",
+    "exclusivity": "The label reads the shape of the value bound to the tags key: a bracketed sequence, a dashed block, a single scalar, or a key appearing more than once. The two scalar forms are split by the character between the tags, and a bracketed list is never read as a comma string because the brackets are matched first.",
+    "options": [
+      {"id": "o1", "text": "Write the tags as a bracketed flow list.", "example": "tags: [alpha, beta]", "checker": "tag_list_shape==flow_array"},
+      {"id": "o2", "text": "Write the tags as a dashed block list.", "example": "tags:\n  - alpha\n  - beta", "checker": "tag_list_shape==block_list"},
+      {"id": "o3", "text": "Write the tags as one comma separated string.", "example": "tags: \"alpha, beta\"", "checker": "tag_list_shape==comma_string"},
+      {"id": "o4", "text": "Write the tags as one space separated string.", "example": "tags: \"alpha beta\"", "checker": "tag_list_shape==space_string"},
+      {"id": "o5", "text": "Write the tags as one repeated tag key.", "example": "tag: alpha\ntag: beta", "checker": "tag_list_shape==repeated_key"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "static site authoring guide", "url": null}
+  }
+]

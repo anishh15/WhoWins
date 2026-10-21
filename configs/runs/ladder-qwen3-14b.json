@@ -1,0 +1,30 @@
+{
+  "_about": [
+    "The composition ladder: the same 1,080 scenarios asked as pairs, as triples, and as the one five-way set.",
+    "WHAT IT IS FOR. Every run so far has sent pairs, and the study's headline is whether pairwise measurements PREDICT what happens when three or five sources compete. `python3 -m ipb.stats.phase1` shows exactly why that cannot be answered from pairs: two worlds with identical pairwise win rates can have a different three-way winner. This is the run that collects the other half.",
+    "THE SIZES ARE THE DECLARED LADDER. dataset-plan.md declares n = 2, 3, 5 and data/splits/set.json freezes which sets stage one fits and which it predicts. Four-way sets are enumerated there under `not_in_declared_ladder` and are deliberately not sent.",
+    "REFUSAL IS NOT IN IT ABOVE A PAIR, and that is the plan working. A composition of n sources needs n mutually exclusive options; refusal has two, comply and decline, because it is binary by nature. dataset-plan.md has said since it was written that refusal is pairwise only, never pooled into the main scale. So sizes 3 and 5 carry 960 scenarios, not 1,080, and the runner says so when it builds the list.",
+    "NO SOLO ARM, ON PURPOSE. Solo ability is a property of (scenario, option) and `balanced-qwen3-14b` already measured it for the pairs on this model. Adding size 1 here would emit ten more solo trials per scenario and quadruple the run; add it in a separate run if the triples turn out to need their own control.",
+    "COST. 3,000 trials at 3 draws each is 9,000 draws -- the same size as balanced-qwen3-14b, which took about two and a half hours on two cards. Check before you start: scripts/run_trials.sh prints the plan, and `python3 -m ipb.runner.design ladder-qwen3-14b --balance` shows what it sends and how evenly.",
+    "seed: base_seed differs from every other run, so a draw is a draw and not the same draw sent twice.",
+    "Read it with scripts/analyse.sh, then `scripts/strengths.sh ladder-qwen3-14b` for the fit -- which, for the first time, will have a composition above a pair to predict."
+  ],
+  "run_id": "ladder-qwen3-14b",
+  "status": "exploratory",
+  "confirmatory": false,
+  "model": "qwen3-14b",
+  "environment": "v100-vllm085",
+  "decoding": "study-nothink",
+  "base_seed": 20260916,
+  "repeats": 3,
+  "scenarios": "all",
+  "scenario_count": 1080,
+  "composition_max_sources": 5,
+  "composition_sizes": [
+    2,
+    3,
+    5
+  ],
+  "tool_turns": 6,
+  "design": "composition-ladder"
+}

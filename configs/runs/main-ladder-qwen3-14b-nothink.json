@@ -1,0 +1,22 @@
+{
+  "_about": [
+    "MAIN RUN. The composition ladder, flat: pairs, triples and the five-way set, each side also asked alone. 12,840 trials.",
+    "qwen3-14b on v100-vllm085, thinking off (study-nothink). Every main run of every model shares the design, sizes, repeats and tool_turns of its kind; only the model, the mode and the seed differ.",
+    "confirmatory is false: the owner decided on 2026-09-29 that there is no pre-registration, so every result of the main run is exploratory, and insights drawn from it are tested on further models.",
+    "Run it with scripts/run_trials.sh main-ladder-qwen3-14b-nothink, or every main run of this model with scripts/run_main.sh qwen3-14b. The same command resumes. Records go on the operator's branch, never on master."
+  ],
+  "run_id": "main-ladder-qwen3-14b-nothink",
+  "status": "main",
+  "confirmatory": false,
+  "model": "qwen3-14b",
+  "environment": "v100-vllm085",
+  "decoding": "study-nothink",
+  "base_seed": 20261125,
+  "repeats": 3,
+  "scenarios": "all",
+  "scenario_count": 1080,
+  "composition_max_sources": 5,
+  "composition_sizes": [1, 2, 3, 5],
+  "tool_turns": 6,
+  "design": "composition-ladder-flat"
+}

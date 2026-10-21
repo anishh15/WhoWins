@@ -1,0 +1,1010 @@
+[
+  {
+    "scenario_id": "fmt-0161",
+    "family": "format",
+    "seed_family": "spelling-variant-policy",
+    "domain": "support",
+    "difficulty": "hard",
+    "task": "Copy-edit the help centre article the writer just handed over.",
+    "checker_key": "spelling_variant_policy",
+    "key_source": "classifier",
+    "exclusivity": "The four pairings are decided by two independent letter tests run over the same article, one on the noun endings and one on the verb endings, so a document landing in one corner of that grid cannot land in another. The avoidance label is granted only when neither test finds a candidate word at all, so an article that dodges the verbs but still writes a colour word returns 'other'.",
+    "options": [
+      {"id": "o1", "text": "Take the -our spellings with the -ise verb endings.", "example": "colour, organise", "checker": "spelling_variant_policy==our_ise"},
+      {"id": "o2", "text": "Take the -or spellings with the -ize verb endings.", "example": "color, organize", "checker": "spelling_variant_policy==or_ize"},
+      {"id": "o3", "text": "Pair the -our spellings with the -ize verb endings.", "example": "colour, organize", "checker": "spelling_variant_policy==our_ize"},
+      {"id": "o4", "text": "Pair the -or spellings with the -ise verb endings.", "example": "color, organise", "checker": "spelling_variant_policy==or_ise"},
+      {"id": "o5", "text": "Reword around any spelling that differs between English regions.", "checker": "spelling_variant_policy==variants_avoided"}
+    ],
+    "note": "No readership is named for the article on purpose. If one were, the first two pairings would stop being house choices and one of them would simply be right.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "editorial style guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0162",
+    "family": "format",
+    "seed_family": "heading-capitalisation",
+    "domain": "docs",
+    "difficulty": "easy",
+    "task": "Fix up the headings in the onboarding handbook before it ships.",
+    "checker_key": "heading_capitalisation",
+    "key_source": "classifier",
+    "exclusivity": "A heading of one word satisfies four of these rules at once, so the label is read from headings of four words or more and a shorter sample returns 'other'. The two capitalising rules diverge only on articles and prepositions, so the label requires at least one such word inside the heading before it chooses between them.",
+    "options": [
+      {"id": "o1", "text": "Capitalise the first word only, as in prose.", "checker": "heading_capitalisation==sentence_case"},
+      {"id": "o2", "text": "Capitalise the major words, lowercasing articles and prepositions.", "checker": "heading_capitalisation==headline_title_case"},
+      {"id": "o3", "text": "Capitalise every word, whatever its part of speech.", "checker": "heading_capitalisation==start_case"},
+      {"id": "o4", "text": "Run the whole heading in lowercase letters throughout.", "checker": "heading_capitalisation==all_lowercase"},
+      {"id": "o5", "text": "Set the whole heading in capitals, without exception.", "checker": "heading_capitalisation==all_capitals"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "internal documentation style guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0163",
+    "family": "format",
+    "seed_family": "count-plural-agreement",
+    "domain": "product",
+    "difficulty": "medium",
+    "task": "Write the line that tells someone how many drafts are waiting.",
+    "checker_key": "count_plural_handling",
+    "key_source": "classifier",
+    "exclusivity": "The matched form and the always-plural form render identically for every count except one, so the label is read from the line produced for a single draft; a sample that never shows that case returns 'other'. The bracketed s and the slash pair both print two forms of the noun, and they are separated by the character joining them.",
+    "options": [
+      {"id": "o1", "text": "Match the noun to the count, singular or plural.", "checker": "count_plural_handling==matched_to_count"},
+      {"id": "o2", "text": "Put an optional s in brackets after the noun.", "example": "1 draft(s)", "checker": "count_plural_handling==parenthesised_s"},
+      {"id": "o3", "text": "Leave the noun plural even when only one remains.", "example": "1 drafts", "checker": "count_plural_handling==always_plural"},
+      {"id": "o4", "text": "Write both forms joined by a slash, singular first.", "example": "1 draft/drafts", "checker": "count_plural_handling==slash_pair"},
+      {"id": "o5", "text": "Put the count after a labelled noun and colon.", "example": "Drafts: 1", "checker": "count_plural_handling==label_colon_count"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "product writing standard", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0164",
+    "family": "format",
+    "seed_family": "possessive-name-ending-s",
+    "domain": "publishing",
+    "difficulty": "hard",
+    "task": "Edit the profile piece whose subject has a surname ending in s.",
+    "checker_key": "possessive_s_style",
+    "key_source": "classifier",
+    "exclusivity": "The people-only rule agrees with one of the two absolute rules on any single example, so the label is read from a passage carrying both a person's surname and an organisation's; a passage with only one of them returns 'other'. The two rules that remove the apostrophe altogether are separated by whether the word of appears in the recast phrase.",
+    "options": [
+      {"id": "o1", "text": "Add an apostrophe and an s to every name.", "checker": "possessive_s_style==apostrophe_s_always"},
+      {"id": "o2", "text": "Add a bare apostrophe and no s at all.", "checker": "possessive_s_style==bare_apostrophe_always"},
+      {"id": "o3", "text": "Add the s for people, omitting it for firms.", "checker": "possessive_s_style==s_for_people_only"},
+      {"id": "o4", "text": "Recast the phrase with of, dropping the possessive entirely.", "checker": "possessive_s_style==of_construction"},
+      {"id": "o5", "text": "Turn the surname into a plain modifier without punctuation.", "checker": "possessive_s_style==attributive_no_marker"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "editorial style guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0165",
+    "family": "format",
+    "seed_family": "serial-comma-policy",
+    "domain": "marketing",
+    "difficulty": "easy",
+    "task": "Tidy the benefits paragraph in the campaign landing copy.",
+    "checker_key": "serial_comma_policy",
+    "key_source": "classifier",
+    "exclusivity": "A comma-only series nests inside a serial one: 'fast, cheap, and reliable' also matches the no-conjunction pattern, so no_final_conjunction is tested last and is reached only when no series carries a closing and or or. Semicolon separation strips every comma out of the series, and bullets remove series punctuation altogether, so both are settled before either comma rule is tried. The always and never rules then differ by exactly one character, the comma before the final conjunction, and the label is read across every series in the passage: a paragraph punctuating two differently returns 'other'.",
+    "options": [
+      {"id": "o1", "text": "Put a comma before the final and, always.", "checker": "serial_comma_policy==serial_comma_always"},
+      {"id": "o2", "text": "Leave that last comma out in every list.", "checker": "serial_comma_policy==serial_comma_never"},
+      {"id": "o3", "text": "Drop the closing and, leaving only the commas.", "checker": "serial_comma_policy==no_final_conjunction"},
+      {"id": "o4", "text": "Separate every item in the series with semicolons.", "checker": "serial_comma_policy==semicolon_series"},
+      {"id": "o5", "text": "Break the series out into stacked bullet points.", "checker": "serial_comma_policy==broken_to_bullets"}
+    ],
+    "note": "Keeping the serial comma is the more common instruction in current guides; dropping it is still standard in news writing, so neither is right on its own terms.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "marketing copy style guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0166",
+    "family": "format",
+    "seed_family": "quote-punctuation-placement",
+    "domain": "publishing",
+    "difficulty": "hard",
+    "task": "Edit the interview section so the quoted lines sit properly.",
+    "checker_key": "quote_punctuation_placement",
+    "key_source": "classifier",
+    "exclusivity": "The first, third and fourth rules agree wherever the mark is a comma following quoted words, so the label is read from a passage carrying both a quoted question and a semicolon; without both of those the sample returns 'other'. The recast label requires that no quotation in the passage sits next to any mark at all.",
+    "options": [
+      {"id": "o1", "text": "Set commas and periods inside, colons and semicolons outside.", "checker": "quote_punctuation_placement==commas_periods_inside"},
+      {"id": "o2", "text": "Set question and exclamation marks outside, everything else inside.", "checker": "quote_punctuation_placement==question_marks_outside"},
+      {"id": "o3", "text": "Set every mark inside the closing quotation mark, invariably.", "checker": "quote_punctuation_placement==all_inside"},
+      {"id": "o4", "text": "Set every mark outside the closing quotation mark, invariably.", "checker": "quote_punctuation_placement==all_outside"},
+      {"id": "o5", "text": "Set colons and semicolons inside, everything else outside.", "checker": "quote_punctuation_placement==colons_semicolons_inside"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "editorial style guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0167",
+    "family": "format",
+    "seed_family": "quotation-mark-choice",
+    "domain": "media",
+    "difficulty": "medium",
+    "task": "Mark up the quoted phrases in the feature you are laying out.",
+    "checker_key": "quotation_mark_style",
+    "key_source": "classifier",
+    "exclusivity": "The two paired-mark rules invert the same two characters, so the label reads the outermost mark of the outermost quotation and ignores nesting, which is the position where both would otherwise match. Italic and indented quotations carry no marks at all, and they are separated by whether the quoted run sits inside its own block.",
+    "options": [
+      {"id": "o1", "text": "Double marks outside, single marks for anything nested.", "checker": "quotation_mark_style==double_outer"},
+      {"id": "o2", "text": "Single marks outside, double marks for anything nested.", "checker": "quotation_mark_style==single_outer"},
+      {"id": "o3", "text": "Angle guillemets around every quotation, nested ones included.", "checker": "quotation_mark_style==guillemets"},
+      {"id": "o4", "text": "Italics instead of marks, with nothing else added.", "checker": "quotation_mark_style==italic_no_marks"},
+      {"id": "o5", "text": "No marks; introduce each quotation and indent it.", "checker": "quotation_mark_style==indented_unmarked"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "magazine typographic style sheet", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0168",
+    "family": "format",
+    "seed_family": "personal-initials-punctuation",
+    "domain": "research",
+    "difficulty": "easy",
+    "task": "Type up the contributor line for the working paper you are finishing.",
+    "checker_key": "initials_punctuation",
+    "key_source": "classifier",
+    "exclusivity": "Each abbreviated rule is decided by two independent tests over the same token, whether a period follows an initial and whether a space does, so the four occupy the four corners of that grid and cannot overlap. The spelled-out label is granted only when no single-letter token appears in the line at all.",
+    "options": [
+      {"id": "o1", "text": "A period and a space after each initial.", "example": "J. R. T.", "checker": "initials_punctuation==period_and_space"},
+      {"id": "o2", "text": "A period after each initial and no space.", "example": "J.R.T.", "checker": "initials_punctuation==period_no_space"},
+      {"id": "o3", "text": "A space between initials and no periods anywhere.", "example": "J R T", "checker": "initials_punctuation==spaced_no_periods"},
+      {"id": "o4", "text": "The initials run together with nothing between them.", "example": "JRT", "checker": "initials_punctuation==closed_no_periods"},
+      {"id": "o5", "text": "The given names spelled out instead of initials.", "checker": "initials_punctuation==names_spelled_out"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "research group publication style note", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0169",
+    "family": "format",
+    "seed_family": "honorific-abbreviation",
+    "domain": "healthcare",
+    "difficulty": "easy",
+    "task": "Write the clinician names into the appointment letter template.",
+    "checker_key": "honorific_style",
+    "key_source": "classifier",
+    "exclusivity": "The two abbreviated forms differ by a single character, so the label reads the character immediately after the title token rather than the token itself, which is identical in both. The two title-free forms both open with a bare name, and they are separated by whether qualification letters follow the surname.",
+    "options": [
+      {"id": "o1", "text": "Abbreviate the title and close it with a period.", "checker": "honorific_style==abbreviated_with_period"},
+      {"id": "o2", "text": "Abbreviate the title and leave off the closing period.", "checker": "honorific_style==abbreviated_no_period"},
+      {"id": "o3", "text": "Spell the title out in full before the name.", "checker": "honorific_style==spelled_in_full"},
+      {"id": "o4", "text": "Drop the title and give the plain full name.", "checker": "honorific_style==no_title_plain_name"},
+      {"id": "o5", "text": "Drop the title and append the qualification letters afterwards.", "checker": "honorific_style==postnominal_letters"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "patient correspondence style manual", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0170",
+    "family": "format",
+    "seed_family": "compound-modifier-hyphenation",
+    "domain": "docs",
+    "difficulty": "hard",
+    "task": "Clean up the wording in the installation guide before it ships.",
+    "checker_key": "compound_modifier_hyphenation",
+    "key_source": "classifier",
+    "exclusivity": "The open pair and the closed compound both carry no hyphen, so the label counts the space between the two words rather than testing for the hyphen alone. The open rule and the number-only rule then agree on every word pair and differ solely on a number-led one: open word pairs alongside '64-bit' is the number-only rule, the same pairs alongside '64 bit' is the open rule, so a guide carrying no number-led pair returns 'other'. An en dash is not a hyphen and is settled first, and a passage that hyphenates some pairs while leaving others open is no policy at all.",
+    "options": [
+      {"id": "o1", "text": "Hyphenate only where a number leads the pair.", "checker": "compound_modifier_hyphenation==hyphen_with_number_only"},
+      {"id": "o2", "text": "Hyphenate the pair wherever it falls in the sentence.", "checker": "compound_modifier_hyphenation==always_hyphenated"},
+      {"id": "o3", "text": "Leave the pair open, with no hyphen at all.", "checker": "compound_modifier_hyphenation==always_open"},
+      {"id": "o4", "text": "Close the pair into a single word where possible.", "checker": "compound_modifier_hyphenation==closed_single_word"},
+      {"id": "o5", "text": "Join the pair with an en dash instead.", "checker": "compound_modifier_hyphenation==en_dash_join"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "technical documentation style guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0171",
+    "family": "format",
+    "seed_family": "post-colon-capitalisation",
+    "domain": "marketing",
+    "difficulty": "medium",
+    "task": "Draft the two-part headings for the pricing page.",
+    "checker_key": "post_colon_capitalisation",
+    "key_source": "classifier",
+    "exclusivity": "The two conditional rules agree whenever a single complete sentence follows the colon, so the label is read from exactly that line, where the first conditional capitalises and the second does not. The period rule is granted only when no colon survives anywhere in the copy, which keeps it clear of all four capitalisation tests.",
+    "options": [
+      {"id": "o1", "text": "Capitalise the word after the colon, without exception.", "checker": "post_colon_capitalisation==always_capital"},
+      {"id": "o2", "text": "Lowercase the word after the colon, without exception.", "checker": "post_colon_capitalisation==always_lowercase"},
+      {"id": "o3", "text": "Use a dash, not a colon, between them.", "checker": "post_colon_capitalisation==dash_instead"},
+      {"id": "o4", "text": "Break the two parts onto separate lines.", "checker": "post_colon_capitalisation==line_break_instead"},
+      {"id": "o5", "text": "Use a period, not a colon, between them.", "checker": "post_colon_capitalisation==no_colon_period_instead"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "marketing copy style guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0172",
+    "family": "format",
+    "seed_family": "aside-setting-off",
+    "domain": "publishing",
+    "difficulty": "medium",
+    "task": "Work the extra detail into the paragraph the author sent back.",
+    "checker_key": "aside_setting",
+    "key_source": "classifier",
+    "exclusivity": "The comma pair and the dash pair bracket the aside in the same position inside the sentence, so the label reads the bracketing character and never the position, which would match both. An aside that has been given its own sentence and then wrapped in parentheses returns 'other' rather than counting twice.",
+    "options": [
+      {"id": "o1", "text": "Wrap the aside in a pair of parentheses.", "checker": "aside_setting==parentheses"},
+      {"id": "o2", "text": "Fence the aside between a pair of commas.", "checker": "aside_setting==comma_pair"},
+      {"id": "o3", "text": "Fence the aside between a pair of dashes.", "checker": "aside_setting==dash_pair"},
+      {"id": "o4", "text": "Move the aside down into a numbered note.", "checker": "aside_setting==moved_to_note"},
+      {"id": "o5", "text": "Give the aside a sentence of its own.", "checker": "aside_setting==own_sentence"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "editorial style guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0173",
+    "family": "format",
+    "seed_family": "note-placement",
+    "domain": "education",
+    "difficulty": "easy",
+    "task": "Set the explanatory notes into the course reader passage.",
+    "checker_key": "note_placement",
+    "key_source": "classifier",
+    "exclusivity": "All five are positions inside the single passage the response emits, so the label is read from where the note text sits relative to the line that cites it. The preface form is tested first, since a note standing before the passage is the only one no citing line precedes. The inline form is next, because it carries no separate note line at all. The remaining three all place a note line after the citing text and are separated by distance and indentation: immediately beneath that line, indented under the whole paragraph, or gathered after every paragraph has run. A passage placing notes in two of these returns 'other'.",
+    "options": [
+      {"id": "o1", "text": "Directly beneath the line that cites it.", "checker": "note_placement==beneath_citing_line"},
+      {"id": "o2", "text": "Gathered at the end of this passage.", "checker": "note_placement==end_of_passage"},
+      {"id": "o3", "text": "Folded into the sentence itself inside round brackets.", "checker": "note_placement==inline_parenthetical"},
+      {"id": "o4", "text": "Indented under the paragraph that refers to it.", "checker": "note_placement==indented_under_paragraph"},
+      {"id": "o5", "text": "Set out before the passage, as a preface.", "checker": "note_placement==preface_before_passage"}
+    ],
+    "note": "Rewritten wholesale. The old options placed notes at the foot of a page, the end of a chapter, or the back of a book, and a response emits none of those units -- the exclusivity argument itself conceded that chapter-end and book-end are 'indistinguishable within the final chapter'. The axis is now position within the one passage the model writes.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "course materials production standard", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0174",
+    "family": "format",
+    "seed_family": "table-caption-position",
+    "domain": "research",
+    "difficulty": "medium",
+    "task": "Lay out the tables in the results section of the paper.",
+    "checker_key": "table_caption_position",
+    "key_source": "classifier",
+    "exclusivity": "A caption occupying the table's first row also sits above the table's data, so the label reads whether the caption text lies inside the table's own borders before it tests position at all. The preceding-paragraph form carries no caption label attached to it, which is what separates it from the above-table form.",
+    "options": [
+      {"id": "o1", "text": "A caption line sitting directly above each table.", "checker": "table_caption_position==above_table"},
+      {"id": "o2", "text": "A caption line sitting directly below each table.", "checker": "table_caption_position==below_table"},
+      {"id": "o3", "text": "The caption as the table's own first row.", "checker": "table_caption_position==first_row"},
+      {"id": "o4", "text": "The caption folded into the paragraph before it.", "checker": "table_caption_position==in_preceding_paragraph"},
+      {"id": "o5", "text": "The caption as the table's own last row.", "checker": "table_caption_position==last_row"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "journal manuscript preparation guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0175",
+    "family": "format",
+    "seed_family": "figure-reference-style",
+    "domain": "research",
+    "difficulty": "easy",
+    "task": "Write the sentences that point readers at the charts in section three.",
+    "checker_key": "figure_reference_style",
+    "key_source": "classifier",
+    "exclusivity": "The spelled word and its abbreviation both sit immediately before a number, so the label reads the token preceding the digit and treats any trailing period as part of that token. The bracketed number carries no label word at all, and a sentence that both names the figure and brackets its number returns 'other'.",
+    "options": [
+      {"id": "o1", "text": "The word Figure spelled out with its number.", "checker": "figure_reference_style==word_and_number"},
+      {"id": "o2", "text": "The abbreviation Fig. followed directly by its number.", "checker": "figure_reference_style==abbreviated_and_number"},
+      {"id": "o3", "text": "The bare number in brackets after the claim.", "checker": "figure_reference_style==bracketed_number"},
+      {"id": "o4", "text": "A phrase pointing at the chart below, unnumbered.", "checker": "figure_reference_style==positional_phrase"},
+      {"id": "o5", "text": "The chart's own title quoted inside the sentence.", "checker": "figure_reference_style==title_quoted"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "journal manuscript preparation guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0176",
+    "family": "format",
+    "seed_family": "month-abbreviation-prose",
+    "domain": "hr",
+    "difficulty": "hard",
+    "task": "Write the month names into the policy update note going to staff.",
+    "checker_key": "month_in_prose",
+    "key_source": "classifier",
+    "exclusivity": "Three of the five are three-letter forms carrying identical letters, so the label reads the trailing character and the letter case together rather than the letters themselves. The mixed rule is granted only when a short month appears in full alongside an abbreviated long one, so a note naming only long months returns 'other'.",
+    "options": [
+      {"id": "o1", "text": "Every month name spelled out in full, every time.", "example": "September", "checker": "month_in_prose==full_name"},
+      {"id": "o2", "text": "Every month cut down to its first three letters.", "example": "Sep", "checker": "month_in_prose==three_letter"},
+      {"id": "o3", "text": "Every month cut to three letters plus a period.", "example": "Sep.", "checker": "month_in_prose==three_letter_period"},
+      {"id": "o4", "text": "Every month cut to three letters, set in capitals.", "example": "SEP", "checker": "month_in_prose==three_letter_caps"},
+      {"id": "o5", "text": "Short months spelled out, the longer ones cut down.", "example": "May, Sep", "checker": "month_in_prose==mixed_by_length"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "internal communications style guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0177",
+    "family": "format",
+    "seed_family": "measurement-system-presentation",
+    "domain": "retail",
+    "difficulty": "medium",
+    "task": "Fill in the dimensions on the product listing you are preparing.",
+    "checker_key": "measurement_presentation",
+    "key_source": "classifier",
+    "exclusivity": "The two dual forms carry the same two numbers and differ only in which of them is bracketed, so the label reads what sits inside the brackets rather than which system appears anywhere. The column form brackets nothing at all, which is what keeps it outside both dual labels.",
+    "options": [
+      {"id": "o1", "text": "Metric figures only, with nothing else alongside them.", "checker": "measurement_presentation==metric_only"},
+      {"id": "o2", "text": "Imperial figures only, with nothing else alongside them.", "checker": "measurement_presentation==imperial_only"},
+      {"id": "o3", "text": "Metric first, the imperial equivalent in brackets after.", "checker": "measurement_presentation==metric_then_imperial"},
+      {"id": "o4", "text": "Imperial first, the metric equivalent in brackets after.", "checker": "measurement_presentation==imperial_then_metric"},
+      {"id": "o5", "text": "Both systems given, each in its own column.", "checker": "measurement_presentation==parallel_columns"}
+    ],
+    "note": "No market is named for the listing on purpose. If one were, the single-system options would stop being house choices and one of them would simply be right.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "catalogue content standard", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0178",
+    "family": "format",
+    "seed_family": "temperature-scale-choice",
+    "domain": "manufacturing",
+    "difficulty": "easy",
+    "task": "Log the kiln readings from this morning's firing run.",
+    "checker_key": "temperature_scale",
+    "key_source": "classifier",
+    "exclusivity": "The dual form contains a Celsius figure as well, so the Celsius-only label is granted only when no bracketed second figure follows it. Kelvin is separated from the two degree scales by the absent degree symbol rather than by the magnitude of the number, which on its own could be read either way.",
+    "options": [
+      {"id": "o1", "text": "Degrees Celsius, written with the degree symbol attached.", "checker": "temperature_scale==celsius_symbol"},
+      {"id": "o2", "text": "Degrees Fahrenheit, written with the degree symbol attached.", "checker": "temperature_scale==fahrenheit_symbol"},
+      {"id": "o3", "text": "Kelvin, written with no degree symbol at all.", "checker": "temperature_scale==kelvin_no_symbol"},
+      {"id": "o4", "text": "Celsius first, with the Fahrenheit figure in brackets.", "checker": "temperature_scale==celsius_then_fahrenheit"},
+      {"id": "o5", "text": "Bare numbers, the scale stated in the heading.", "checker": "temperature_scale==bare_number_scale_in_heading"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "production log keeping procedure", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0179",
+    "family": "format",
+    "seed_family": "footnote-marker-position",
+    "domain": "publishing",
+    "difficulty": "hard",
+    "task": "Place the reference markers in the chapter you are typesetting.",
+    "checker_key": "footnote_marker_position",
+    "key_source": "classifier",
+    "exclusivity": "The word-anchored marker coincides with both sentence-end markers whenever the cited word happens to close the sentence, so the label is read from a note whose subject sits mid-sentence. The inline bracketed marker is set at full size rather than raised, which separates it from every raised form before position is considered.",
+    "options": [
+      {"id": "o1", "text": "After the closing period, raised above the line.", "checker": "footnote_marker_position==after_terminal_period"},
+      {"id": "o2", "text": "Before the closing period, raised above the line.", "checker": "footnote_marker_position==before_terminal_period"},
+      {"id": "o3", "text": "Directly after the word the note actually concerns.", "checker": "footnote_marker_position==at_the_cited_word"},
+      {"id": "o4", "text": "At the end of the whole paragraph, once.", "checker": "footnote_marker_position==paragraph_end"},
+      {"id": "o5", "text": "Inline in round brackets, at full size, mid-sentence.", "checker": "footnote_marker_position==inline_bracketed"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "book typesetting specification", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0180",
+    "family": "format",
+    "seed_family": "address-block-order",
+    "domain": "logistics",
+    "difficulty": "hard",
+    "task": "Build the address block the label printer stamps on each parcel.",
+    "checker_key": "address_line_order",
+    "key_source": "classifier",
+    "exclusivity": "Four of the five order the same elements, so the label reads the sequence of all four rather than the presence of any one, and a block missing the country returns 'other'. The single-line form has no line order to read at all, which is what separates it from every multi-line ordering.",
+    "options": [
+      {"id": "o1", "text": "Street, then town, then postcode, then country last.", "checker": "address_line_order==street_town_postcode_country"},
+      {"id": "o2", "text": "Street, then postcode, then town, then country last.", "checker": "address_line_order==street_postcode_town_country"},
+      {"id": "o3", "text": "Country first, then postcode, then town, then street.", "checker": "address_line_order==country_first_descending"},
+      {"id": "o4", "text": "The whole address on one line, comma separated.", "checker": "address_line_order==single_line_joined"},
+      {"id": "o5", "text": "Postcode alone on the final line, below country.", "checker": "address_line_order==postcode_last_line"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "despatch labelling standard", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0181",
+    "family": "format",
+    "seed_family": "latin-abbreviation-policy",
+    "domain": "research",
+    "difficulty": "hard",
+    "task": "Copy-edit the methods write-up before it circulates internally.",
+    "checker_key": "latin_abbreviation_policy",
+    "key_source": "classifier",
+    "exclusivity": "The first three rules are decided by two independent character tests applied to the same token, the periods inside it and the comma after it, so one abbreviation cannot satisfy two of them at once. The mixed rule is granted only when both the Latin form and its English equivalent appear, each in the position it assigns; either alone falls to one of the other labels.",
+    "options": [
+      {"id": "o1", "text": "Latin abbreviations with periods and a following comma.", "checker": "latin_abbreviation_policy==periods_and_comma"},
+      {"id": "o2", "text": "Latin abbreviations with periods but no following comma.", "checker": "latin_abbreviation_policy==periods_no_comma"},
+      {"id": "o3", "text": "Latin abbreviations with no periods and no comma.", "checker": "latin_abbreviation_policy==no_periods_no_comma"},
+      {"id": "o4", "text": "The plain English equivalents in place of them.", "checker": "latin_abbreviation_policy==english_equivalents"},
+      {"id": "o5", "text": "Latin inside brackets, plain English in running prose.", "checker": "latin_abbreviation_policy==latin_in_brackets_only"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "research group publication style note", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0182",
+    "family": "format",
+    "seed_family": "rating-display",
+    "domain": "retail",
+    "difficulty": "easy",
+    "task": "Show the reviewer score on each item card in the listing grid.",
+    "checker_key": "rating_display",
+    "key_source": "classifier",
+    "exclusivity": "The fraction and the bare decimal print the same leading number, so the label requires the denominator to be present before the fraction is granted. A card showing stars with a decimal beside them returns 'other' rather than scoring as both.",
+    "options": [
+      {"id": "o1", "text": "The score over five, written as a fraction.", "checker": "rating_display==fraction_of_five"},
+      {"id": "o2", "text": "A row of star glyphs, filled and empty.", "checker": "rating_display==star_glyphs"},
+      {"id": "o3", "text": "The score converted into a plain percentage figure.", "checker": "rating_display==percentage"},
+      {"id": "o4", "text": "Just the bare decimal, with no label attached.", "checker": "rating_display==bare_decimal"},
+      {"id": "o5", "text": "A word band such as good or excellent.", "checker": "rating_display==word_band"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "storefront content standard", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0183",
+    "family": "format",
+    "seed_family": "discount-expression",
+    "domain": "retail",
+    "difficulty": "easy",
+    "task": "Word the promotion line for the seasonal offer going live tomorrow.",
+    "checker_key": "discount_expression",
+    "key_source": "classifier",
+    "exclusivity": "The struck-through pair and the new-price-only form both print the new price, so the label requires a second, superseded figure to be visible before the pair is granted. The percentage and the spelled fraction express the same reduction, and they are separated by whether any digit carries the percent sign.",
+    "options": [
+      {"id": "o1", "text": "The percentage taken off, with the percent sign.", "checker": "discount_expression==percent_off"},
+      {"id": "o2", "text": "The money taken off, as a cash amount.", "checker": "discount_expression==amount_off"},
+      {"id": "o3", "text": "The old price struck through beside the new.", "checker": "discount_expression==was_now_pair"},
+      {"id": "o4", "text": "The new price alone, with no comparison shown.", "checker": "discount_expression==new_price_only"},
+      {"id": "o5", "text": "The reduction as a fraction, spelled in words.", "checker": "discount_expression==fraction_in_words"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "promotional copy standard", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0184",
+    "family": "format",
+    "seed_family": "figure-scaling-statement",
+    "domain": "finance",
+    "difficulty": "hard",
+    "task": "Set out the figures in the quarterly summary table the board reads.",
+    "checker_key": "amount_scale_statement",
+    "key_source": "classifier",
+    "exclusivity": "Three rules shorten the same digits and differ only in where the scale is declared, so the label reads the location of that declaration and returns 'other' when it appears in two places at once. The unscaled rule is granted only when the widest figure carries its full digit count, which no shortened form does.",
+    "options": [
+      {"id": "o1", "text": "The scale stated in each column heading, once.", "checker": "amount_scale_statement==column_heading"},
+      {"id": "o2", "text": "The scale stated in the table caption instead.", "checker": "amount_scale_statement==table_caption"},
+      {"id": "o3", "text": "A suffix letter attached to every single figure.", "checker": "amount_scale_statement==per_figure_suffix"},
+      {"id": "o4", "text": "No scaling at all; every digit printed out.", "checker": "amount_scale_statement==unscaled_full_digits"},
+      {"id": "o5", "text": "The scale stated once in a closing footnote.", "checker": "amount_scale_statement==closing_footnote"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "management reporting presentation standard", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0185",
+    "family": "format",
+    "seed_family": "confirmation-wording",
+    "domain": "product",
+    "difficulty": "easy",
+    "task": "Write the message that appears once the export finishes.",
+    "checker_key": "confirmation_wording",
+    "key_source": "classifier",
+    "exclusivity": "A duration is read first, because a sentence saying how long the export took may also name the object or speak as we. Without one, the label reads the grammatical subject before the tense, since the first-person sentence is in the past tense too, and assigns the object label only when the thing exported is the subject. The participle fragment has no finite verb and runs to two to four words, which separates it from every full sentence here.",
+    "options": [
+      {"id": "o1", "text": "A past-tense sentence naming the object acted on.", "checker": "confirmation_wording==past_tense_object"},
+      {"id": "o2", "text": "A short noun phrase closing with a participle.", "checker": "confirmation_wording==participle_fragment"},
+      {"id": "o3", "text": "A sentence in which the product says we.", "checker": "confirmation_wording==first_person_plural"},
+      {"id": "o4", "text": "A sentence stating how long the export took.", "checker": "confirmation_wording==duration_stated"},
+      {"id": "o5", "text": "A sentence naming whatever the reader does next.", "checker": "confirmation_wording==next_step_sentence"}
+    ],
+    "note": "Rewritten 2026-09-11. o4 was 'A single word acknowledging that it is over.' (single_word). 'OK' and 'Done.' are also what a model says when it acknowledges a request without doing it, so a reply that did nothing scored as that option. The duration form asks for something the message itself has to show. See data/CHECKER-FINDINGS.md, section 9.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "product writing standard", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0186",
+    "family": "format",
+    "seed_family": "error-voice-and-person",
+    "domain": "product",
+    "difficulty": "medium",
+    "task": "Word the message shown when an upload does not go through.",
+    "checker_key": "error_voice_and_person",
+    "key_source": "classifier",
+    "exclusivity": "The two personal forms are read from the word the message opens with, you or your against we or our, and a message that opens as one and then uses the other's pronoun returns 'other', the realistic mixed case in this kind of copy. The agentless passive and the bare noun phrase both leave the actor out, so the label checks for a finite verb before choosing between them, and the noun phrase runs to three words at most.",
+    "options": [
+      {"id": "o1", "text": "Open with you or your, addressing the reader.", "checker": "error_voice_and_person==second_person"},
+      {"id": "o2", "text": "Open with we or our, speaking for the company.", "checker": "error_voice_and_person==first_person_plural"},
+      {"id": "o3", "text": "Name no actor at all, keeping it passive.", "checker": "error_voice_and_person==agentless_passive"},
+      {"id": "o4", "text": "Make the system itself the sentence's grammatical subject.", "checker": "error_voice_and_person==system_as_subject"},
+      {"id": "o5", "text": "A bare noun phrase, three words at most.", "checker": "error_voice_and_person==subjectless_noun_phrase"}
+    ],
+    "note": "Sharpened 2026-09-11. o1 and o2 accepted the pronoun anywhere and o5 a phrase of any length, so a reply asking the requester 'Could you clarify which you want?' scored as second person, and a sentence about the conflict as a noun phrase. They now say where the pronoun sits and how short the phrase is. See data/CHECKER-FINDINGS.md, section 9.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "product writing standard", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0187",
+    "family": "format",
+    "seed_family": "optional-step-marking",
+    "domain": "operations",
+    "difficulty": "easy",
+    "task": "Write the procedure for the weekly stock count.",
+    "checker_key": "optional_step_marking",
+    "key_source": "classifier",
+    "exclusivity": "The bracketed word and the opening label use the same word, so the label reads its position within the step rather than the word itself. The note beneath and the separate section both lift the step out of the numbered run, and they are separated by whether the numbered run continues after it.",
+    "options": [
+      {"id": "o1", "text": "The word optional in brackets, closing the step.", "checker": "optional_step_marking==trailing_parenthetical"},
+      {"id": "o2", "text": "The word Optional and a colon, opening it.", "checker": "optional_step_marking==leading_label_colon"},
+      {"id": "o3", "text": "An if clause opening the step's first sentence.", "checker": "optional_step_marking==if_clause"},
+      {"id": "o4", "text": "A separate note printed beneath the numbered sequence.", "checker": "optional_step_marking==note_beneath"},
+      {"id": "o5", "text": "Their own section, placed after the required steps.", "checker": "optional_step_marking==separate_section"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "operations procedure writing guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0188",
+    "family": "format",
+    "seed_family": "warning-presentation",
+    "domain": "docs",
+    "difficulty": "medium",
+    "task": "Flag the risky part of the decommissioning procedure for readers.",
+    "checker_key": "warning_presentation",
+    "key_source": "classifier",
+    "exclusivity": "The boxed callout and the indented block are both set apart from the column, so the label reads whether a border or a heading word encloses the text rather than the indentation alone. The glyph and the bold label both open the paragraph, and only one of the two is a word.",
+    "options": [
+      {"id": "o1", "text": "A bold label word opening the same paragraph.", "checker": "warning_presentation==bold_inline_label"},
+      {"id": "o2", "text": "A boxed callout carrying a heading word above.", "checker": "warning_presentation==boxed_callout"},
+      {"id": "o3", "text": "A symbol glyph placed before the warning sentence.", "checker": "warning_presentation==glyph_prefix"},
+      {"id": "o4", "text": "A numbered caution step inside the procedure sequence.", "checker": "warning_presentation==numbered_caution_step"},
+      {"id": "o5", "text": "An indented block set in noticeably smaller type.", "checker": "warning_presentation==indented_small_type"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "technical documentation style guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0189",
+    "family": "format",
+    "seed_family": "keyboard-shortcut-notation",
+    "domain": "product",
+    "difficulty": "easy",
+    "task": "Write the shortcut hints into the editor's help panel.",
+    "checker_key": "shortcut_notation",
+    "key_source": "classifier",
+    "exclusivity": "The plus and hyphen forms differ by one character in the same slot, so the label reads that separator directly and a shortcut written with both returns 'other'. The glyph form carries no spelled key names for a separator to sit between, which keeps it outside all three joining rules.",
+    "options": [
+      {"id": "o1", "text": "Key names joined by plus signs, no spaces.", "example": "Ctrl+S", "checker": "shortcut_notation==plus_joined"},
+      {"id": "o2", "text": "Key names joined by hyphens, no spaces either.", "example": "Ctrl-S", "checker": "shortcut_notation==hyphen_joined"},
+      {"id": "o3", "text": "Key names separated by the word then, spaced.", "example": "Ctrl then S", "checker": "shortcut_notation==then_word"},
+      {"id": "o4", "text": "The modifier glyphs alone, all run together unspaced.", "checker": "shortcut_notation==glyphs_only"},
+      {"id": "o5", "text": "A sentence describing which keys the reader holds.", "checker": "shortcut_notation==prose_sentence"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "in-product help writing standard", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0190",
+    "family": "format",
+    "seed_family": "menu-path-notation",
+    "domain": "product",
+    "difficulty": "easy",
+    "task": "Tell the reader where the export command lives in the interface.",
+    "checker_key": "menu_path_notation",
+    "key_source": "classifier",
+    "exclusivity": "All four symbol forms occupy the same slot between menu names, so the label reads the separating character alone; the drawn arrow and the angle bracket are compared as distinct code points rather than as the same shape. The prose form has no separator in that slot for the label to read.",
+    "options": [
+      {"id": "o1", "text": "Menu names split by a plain angle bracket.", "example": "File > Export", "checker": "menu_path_notation==angle_bracket"},
+      {"id": "o2", "text": "Menu names split by a drawn arrow character.", "checker": "menu_path_notation==arrow_glyph"},
+      {"id": "o3", "text": "Menu names split by an upright pipe character.", "example": "File | Export", "checker": "menu_path_notation==pipe_character"},
+      {"id": "o4", "text": "Menu names run as prose, each one named.", "checker": "menu_path_notation==prose_sequence"},
+      {"id": "o5", "text": "Menu names split by forward slashes, breadcrumb style.", "example": "File / Export", "checker": "menu_path_notation==forward_slash"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "in-product help writing standard", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0191",
+    "family": "format",
+    "seed_family": "filename-in-prose",
+    "domain": "education",
+    "difficulty": "medium",
+    "task": "Write the setup instructions for students starting the lab exercise.",
+    "checker_key": "filename_in_prose",
+    "key_source": "classifier",
+    "exclusivity": "Three rules keep the same characters and differ only in the styling wrapped around them, so the label reads that styling rather than the token, and a name carrying two styles at once returns 'other'. The capitalised form is the only one that alters the characters themselves, which is tested before any styling is looked at.",
+    "options": [
+      {"id": "o1", "text": "The name set in a monospaced code span.", "checker": "filename_in_prose==monospace_span"},
+      {"id": "o2", "text": "The name set in italics, extension and all.", "checker": "filename_in_prose==italicised"},
+      {"id": "o3", "text": "The name wrapped in plain double quotation marks.", "checker": "filename_in_prose==double_quoted"},
+      {"id": "o4", "text": "The name left plain, with nothing marking it.", "checker": "filename_in_prose==unmarked_plain"},
+      {"id": "o5", "text": "The name in capitals, the extension left off.", "checker": "filename_in_prose==capitals_no_extension"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "teaching materials style guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0192",
+    "family": "format",
+    "seed_family": "added-emphasis-signal",
+    "domain": "legal",
+    "difficulty": "hard",
+    "task": "Quote the clause in the brief with one phrase stressed.",
+    "checker_key": "added_emphasis_signal",
+    "key_source": "classifier",
+    "exclusivity": "The trailing parenthetical and the inline bracketed note carry near-identical words, so the label reads whether the note falls inside the quotation marks or after the closing one. The footnote label requires a marker in the text with its note elsewhere, and a passage carrying both a parenthetical and a footnote returns 'other'.",
+    "options": [
+      {"id": "o1", "text": "A parenthetical noting that the emphasis was added.", "checker": "added_emphasis_signal==trailing_parenthetical"},
+      {"id": "o2", "text": "A bracketed note inside the quotation itself, mid-sentence.", "checker": "added_emphasis_signal==bracketed_inline_note"},
+      {"id": "o3", "text": "A footnote carrying the acknowledgement below the quotation.", "checker": "added_emphasis_signal==footnote_note"},
+      {"id": "o4", "text": "A lead-in phrase announcing the stress before quoting.", "checker": "added_emphasis_signal==lead_in_phrase"},
+      {"id": "o5", "text": "A note appended to the citation that follows.", "checker": "added_emphasis_signal==note_in_citation"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "legal drafting style manual", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0193",
+    "family": "format",
+    "seed_family": "bullet-terminal-punctuation",
+    "domain": "marketing",
+    "difficulty": "hard",
+    "task": "Punctuate the bulleted claims on the product one-pager.",
+    "checker_key": "bullet_terminal_punctuation",
+    "key_source": "classifier",
+    "exclusivity": "The final-bullet rule and the every-bullet rule agree on the last item, so the label is read from the items before it and a list of one bullet returns 'other'. The semicolon run and the comma run both close with a period on the last item, and they are separated by the mark used on the earlier ones.",
+    "options": [
+      {"id": "o1", "text": "No mark at the end of any bullet.", "checker": "bullet_terminal_punctuation==no_terminal_mark"},
+      {"id": "o2", "text": "A period at the end of every bullet.", "checker": "bullet_terminal_punctuation==period_on_each"},
+      {"id": "o3", "text": "A period on the final bullet, none before.", "checker": "bullet_terminal_punctuation==period_on_last_only"},
+      {"id": "o4", "text": "Semicolons throughout, with a period closing the last.", "checker": "bullet_terminal_punctuation==semicolons_then_period"},
+      {"id": "o5", "text": "Commas throughout, with and before the last bullet.", "checker": "bullet_terminal_punctuation==commas_with_conjunction"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "marketing copy style guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0194",
+    "family": "format",
+    "seed_family": "definition-list-layout",
+    "domain": "education",
+    "difficulty": "medium",
+    "task": "Lay out the key terms at the start of the course module.",
+    "checker_key": "definition_list_layout",
+    "key_source": "classifier",
+    "exclusivity": "The dash and colon forms share the same single-line shape, so the label reads the joining character alone and an entry carrying both returns 'other'. The indented form and the heading form both put the term on a line of its own, and they are separated by whether the term carries heading markup.",
+    "options": [
+      {"id": "o1", "text": "Term on its own line, definition indented below.", "checker": "definition_list_layout==term_line_indented_definition"},
+      {"id": "o2", "text": "Term and definition on one line, dash between.", "checker": "definition_list_layout==dash_same_line"},
+      {"id": "o3", "text": "Term and definition on one line, colon between.", "checker": "definition_list_layout==colon_same_line"},
+      {"id": "o4", "text": "Terms in one column, definitions in the next.", "checker": "definition_list_layout==two_column_table"},
+      {"id": "o5", "text": "Term as a heading, definition in the paragraph.", "checker": "definition_list_layout==heading_and_paragraph"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "teaching materials style guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0195",
+    "family": "format",
+    "seed_family": "glossary-entry-ordering",
+    "domain": "education",
+    "difficulty": "hard",
+    "task": "Order the entries in the glossary at the back of the handbook.",
+    "checker_key": "glossary_ordering",
+    "key_source": "classifier",
+    "exclusivity": "Three of the rules sort alphabetically inside something, so the label reads the top-level partition first and grants the strict label only where there is no partition at all. Frequency order and first-appearance order can coincide by accident, so the label is read from a glossary whose commonest term is introduced late in the text.",
+    "options": [
+      {"id": "o1", "text": "Straight alphabetical order, ignoring what each term means.", "checker": "glossary_ordering==strict_alphabetical"},
+      {"id": "o2", "text": "Grouped by topic, then alphabetical inside each group.", "checker": "glossary_ordering==topic_grouped"},
+      {"id": "o3", "text": "Acronyms first, then the spelled-out terms after.", "checker": "glossary_ordering==acronyms_first"},
+      {"id": "o4", "text": "Grouped under a heading for each opening letter.", "checker": "glossary_ordering==letter_headings"},
+      {"id": "o5", "text": "Split into two alphabetical columns side by side.", "checker": "glossary_ordering==two_column_split"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "course materials production standard", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0196",
+    "family": "format",
+    "seed_family": "step-back-reference",
+    "domain": "education",
+    "difficulty": "medium",
+    "task": "Write the later steps of the lab procedure so they hang together.",
+    "checker_key": "step_back_reference",
+    "key_source": "classifier",
+    "exclusivity": "Restating the action and repeating the instruction both name the earlier work in words, so the label reads whether the earlier step's full instruction is reproduced or only its outcome named. The number reference and the heading reference are separated by whether a digit or a title follows the pointing word.",
+    "options": [
+      {"id": "o1", "text": "Name the earlier step by its printed number.", "checker": "step_back_reference==step_number"},
+      {"id": "o2", "text": "Restate the action the earlier step asked for.", "checker": "step_back_reference==action_restated"},
+      {"id": "o3", "text": "Point back with a pronoun and nothing else.", "checker": "step_back_reference==bare_pronoun"},
+      {"id": "o4", "text": "Name the section heading the step sits under.", "checker": "step_back_reference==section_heading"},
+      {"id": "o5", "text": "Quote a short fragment of the earlier step.", "checker": "step_back_reference==quoted_fragment"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "laboratory manual writing guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0197",
+    "family": "format",
+    "seed_family": "fraction-in-prose",
+    "domain": "education",
+    "difficulty": "easy",
+    "task": "Write the worked answer in the maths worksheet's explanation.",
+    "checker_key": "fraction_in_prose",
+    "key_source": "classifier",
+    "exclusivity": "The slash form and the glyph form print the same two numbers, so the label reads whether the fraction occupies one character cell or three. The decimal and the percentage both convert the value, and they are separated by the sign rather than by the digits, which differ only by a factor of a hundred.",
+    "options": [
+      {"id": "o1", "text": "Spelled out in words, hyphenated wherever that helps.", "example": "two-thirds", "checker": "fraction_in_prose==words"},
+      {"id": "o2", "text": "Digits split by a forward slash, no spaces.", "example": "2/3", "checker": "fraction_in_prose==slash_digits"},
+      {"id": "o3", "text": "A single typographic glyph for the whole fraction.", "checker": "fraction_in_prose==single_glyph"},
+      {"id": "o4", "text": "Converted to a decimal with two places shown.", "example": "0.67", "checker": "fraction_in_prose==decimal_two_places"},
+      {"id": "o5", "text": "Converted to a percentage, with the sign attached.", "example": "67%", "checker": "fraction_in_prose==percentage"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "teaching materials style guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0198",
+    "family": "format",
+    "seed_family": "relative-date-wording",
+    "domain": "support",
+    "difficulty": "medium",
+    "task": "Write the line telling the customer when their ticket was last updated.",
+    "checker_key": "relative_date_wording",
+    "key_source": "classifier",
+    "exclusivity": "The relative-only rule and the recent-word rule coincide for anything touched today, so the label is read from a ticket last updated a fortnight ago, where one still counts back and the other prints a date. The bracketed form is the only one carrying both renderings at once.",
+    "options": [
+      {"id": "o1", "text": "The full date alone, with no relative phrase.", "checker": "relative_date_wording==absolute_only"},
+      {"id": "o2", "text": "The relative phrase alone, with no date shown.", "checker": "relative_date_wording==relative_only"},
+      {"id": "o3", "text": "The relative phrase, the full date in brackets.", "checker": "relative_date_wording==relative_with_absolute"},
+      {"id": "o4", "text": "The weekday and the clock time, nothing else.", "checker": "relative_date_wording==weekday_and_time"},
+      {"id": "o5", "text": "The full date, the relative phrase in brackets.", "checker": "relative_date_wording==absolute_with_relative"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "support desk writing standard", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0199",
+    "family": "format",
+    "seed_family": "heading-phrasing",
+    "domain": "docs",
+    "difficulty": "easy",
+    "task": "Name the sections of the new integration walkthrough.",
+    "checker_key": "heading_phrasing",
+    "key_source": "classifier",
+    "exclusivity": "An imperative heading is a sentence too, so the full-sentence label is granted only where the heading carries a subject, which the imperative never does. The question label is read from the closing mark, and a question phrased as a gerund returns 'other' rather than scoring twice. The headings are the marked heading lines when there are any, and otherwise at least two short lines that do not close like a sentence. A line opening as talk to whoever asked, such as 'Could you' or 'I', is never given a phrasing: unmarked it is not a heading, and a marked one returns 'other', so a reply that only asks a question names no sections.",
+    "options": [
+      {"id": "o1", "text": "A plain noun phrase naming the topic covered.", "checker": "heading_phrasing==noun_phrase"},
+      {"id": "o2", "text": "A gerund phrase opening with an -ing verb.", "checker": "heading_phrasing==gerund_phrase"},
+      {"id": "o3", "text": "An imperative telling the reader what to do.", "checker": "heading_phrasing==imperative"},
+      {"id": "o4", "text": "A question the reader might plausibly be asking.", "checker": "heading_phrasing==question"},
+      {"id": "o5", "text": "A full sentence stating what the section shows.", "checker": "heading_phrasing==full_sentence"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "internal documentation style guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0200",
+    "family": "format",
+    "seed_family": "number-word-threshold",
+    "domain": "media",
+    "difficulty": "medium",
+    "task": "Set the figures in the news piece you are subbing.",
+    "checker_key": "number_word_threshold",
+    "key_source": "classifier",
+    "exclusivity": "The two threshold rules agree on everything below ten and everything above a hundred, so the label is read from a number falling between those bounds; a piece without one returns 'other'. The unit rule is decided by whether a unit follows the number rather than by its magnitude, so it never competes with either threshold.",
+    "options": [
+      {"id": "o1", "text": "Words below ten, then figures from ten upward.", "checker": "number_word_threshold==words_under_ten"},
+      {"id": "o2", "text": "Words at the start of a sentence only.", "checker": "number_word_threshold==words_sentence_initial"},
+      {"id": "o3", "text": "Figures everywhere, whatever the size of the number.", "checker": "number_word_threshold==figures_always"},
+      {"id": "o4", "text": "Words everywhere, however long the number turns out.", "checker": "number_word_threshold==words_always"},
+      {"id": "o5", "text": "Figures beside units, words in every other case.", "checker": "number_word_threshold==figures_with_units_only"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "newsroom style guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0201",
+    "family": "format",
+    "seed_family": "percent-in-prose",
+    "domain": "finance",
+    "difficulty": "hard",
+    "task": "Write the commentary paragraph beneath the yield table.",
+    "checker_key": "percent_in_prose",
+    "key_source": "classifier",
+    "exclusivity": "The two spelled forms use identical letters and are separated by the space inside them, exactly as the two symbol forms are separated by the space before the symbol; each test reads one character position. The fifth rule spells the number out as well, so a numeral anywhere in the paragraph rules it out.",
+    "options": [
+      {"id": "o1", "text": "The symbol closed up tight against the figure.", "example": "40%", "checker": "percent_in_prose==symbol_tight"},
+      {"id": "o2", "text": "The symbol set off with a space before.", "example": "40 %", "checker": "percent_in_prose==symbol_spaced"},
+      {"id": "o3", "text": "The word percent, spelled out as one word.", "example": "40 percent", "checker": "percent_in_prose==one_word_percent"},
+      {"id": "o4", "text": "The words per cent, spelled out as two.", "example": "40 per cent", "checker": "percent_in_prose==two_words_per_cent"},
+      {"id": "o5", "text": "Both the number and the word spelled out.", "example": "forty percent", "checker": "percent_in_prose==number_and_word_spelled"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "investment commentary style guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0202",
+    "family": "format",
+    "seed_family": "job-title-capitalisation",
+    "domain": "hr",
+    "difficulty": "hard",
+    "task": "Write the announcement about the team's new reporting lines.",
+    "checker_key": "job_title_capitalisation",
+    "key_source": "classifier",
+    "exclusivity": "The before-name rule and the full-title rule both capitalise some occurrences and not others, so the label is read from a shortened title standing before a name, which only the first of them capitalises. The recast label is granted only where no title token survives anywhere in the announcement.",
+    "options": [
+      {"id": "o1", "text": "Capitals on the title's first word only.", "checker": "job_title_capitalisation==capital_first_word"},
+      {"id": "o2", "text": "Capitals wherever the title appears in the text.", "checker": "job_title_capitalisation==capital_always"},
+      {"id": "o3", "text": "Lowercase everywhere, even directly before a person's name.", "checker": "job_title_capitalisation==lowercase_always"},
+      {"id": "o4", "text": "Capitals only for the full formal title, unshortened.", "checker": "job_title_capitalisation==capital_full_title_only"},
+      {"id": "o5", "text": "The title set in quotation marks throughout.", "checker": "job_title_capitalisation==quoted_title"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "internal communications style guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0203",
+    "family": "format",
+    "seed_family": "email-salutation-style",
+    "domain": "support",
+    "difficulty": "easy",
+    "task": "Open the reply going back to the customer this morning.",
+    "checker_key": "salutation_style",
+    "key_source": "classifier",
+    "exclusivity": "The label reads the first line and nothing after it. Three rules put a greeting word before a name and are separated by which parts of the name follow it rather than by the greeting word itself; the name-only rule has a name and no greeting word, and the generic greeting has a greeting word and no name. A first line that is neither a greeting nor a name returns 'other', so a reply that opens by saying something else wins none of them.",
+    "options": [
+      {"id": "o1", "text": "Hi plus the given name, with a comma.", "checker": "salutation_style==hi_given_name"},
+      {"id": "o2", "text": "Hello plus the full name, with a comma.", "checker": "salutation_style==hello_full_name"},
+      {"id": "o3", "text": "Dear plus honorific and surname, with a comma.", "checker": "salutation_style==dear_honorific_surname"},
+      {"id": "o4", "text": "The customer's name alone, with no greeting word.", "checker": "salutation_style==name_only"},
+      {"id": "o5", "text": "A generic greeting naming nobody, with a comma.", "checker": "salutation_style==generic_greeting"}
+    ],
+    "note": "Rewritten 2026-09-11. o4 was 'No greeting line; straight into the first sentence.' (no_salutation), an absence label: a reply that asks a question or says it cannot help has no greeting line either, and won that option. The name-only opening asks for something the reply has to show. It is the plainest of the five openings, and a real house style. See data/CHECKER-FINDINGS.md, section 9.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "support desk writing standard", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0204",
+    "family": "format",
+    "seed_family": "section-numbering-scheme",
+    "domain": "civic",
+    "difficulty": "hard",
+    "task": "Number the parts of the consultation document before it is published.",
+    "checker_key": "section_numbering",
+    "key_source": "classifier",
+    "exclusivity": "The two multilevel forms print identical digits and are separated by the character closing the number, so the label reads the position after the final digit rather than the digits themselves. The top-level rule agrees with both multilevel rules on first-level headings, so the label is read from a subhead.",
+    "options": [
+      {"id": "o1", "text": "Multilevel decimals, a digit for every nesting level.", "example": "3.2.1", "checker": "section_numbering==multilevel_decimal"},
+      {"id": "o2", "text": "Numbers on the top level only, subheads bare.", "checker": "section_numbering==top_level_only"},
+      {"id": "o3", "text": "Roman numerals on top, plain digits below them.", "checker": "section_numbering==roman_then_arabic"},
+      {"id": "o4", "text": "No numbers anywhere; the titles carry the structure.", "checker": "section_numbering==unnumbered"},
+      {"id": "o5", "text": "Multilevel decimals closed by a period each time.", "example": "3.2.1.", "checker": "section_numbering==multilevel_decimal_trailing_period"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "public consultation document template guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0205",
+    "family": "format",
+    "seed_family": "section-cross-reference",
+    "domain": "civic",
+    "difficulty": "medium",
+    "task": "Write the pointers between clauses in the by-law revision.",
+    "checker_key": "section_cross_reference",
+    "key_source": "classifier",
+    "exclusivity": "The number-and-title form contains a bare number too, so the number-only label is granted only where no title follows the digits. The clause number and the page number are both digits, and they are separated by the noun introducing them, which the label reads before it reads the figure.",
+    "options": [
+      {"id": "o1", "text": "The clause number on its own, nothing else.", "checker": "section_cross_reference==number_only"},
+      {"id": "o2", "text": "The clause title inside quotation marks, no number.", "checker": "section_cross_reference==title_quoted"},
+      {"id": "o3", "text": "The number and the title, in that order.", "checker": "section_cross_reference==number_and_title"},
+      {"id": "o4", "text": "The page number the clause is printed on.", "checker": "section_cross_reference==page_number"},
+      {"id": "o5", "text": "A phrase describing the clause without naming it.", "checker": "section_cross_reference==descriptive_phrase"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "legislative drafting conventions manual", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0206",
+    "family": "format",
+    "seed_family": "acronym-first-use",
+    "domain": "healthcare",
+    "difficulty": "medium",
+    "task": "Write the patient information leaflet for the new clinic pathway.",
+    "checker_key": "acronym_first_use",
+    "key_source": "classifier",
+    "exclusivity": "The two bracketed forms carry the same two strings and are separated by which of them sits inside the brackets, never by which appears first on the page. The glossary rule and the heading rule both leave the body text unexpanded, and they are separated by whether the expansion appears in the leaflet's own headings or only at the end.",
+    "options": [
+      {"id": "o1", "text": "Full words first, the short form in brackets.", "checker": "acronym_first_use==expansion_then_acronym"},
+      {"id": "o2", "text": "Short form first, the full words in brackets.", "checker": "acronym_first_use==acronym_then_expansion"},
+      {"id": "o3", "text": "Full words every time, the short form never.", "checker": "acronym_first_use==expansion_always"},
+      {"id": "o4", "text": "Short form throughout, explained in a footnote below.", "checker": "acronym_first_use==acronym_with_footnote"},
+      {"id": "o5", "text": "Full words in the heading, short form afterwards.", "checker": "acronym_first_use==expansion_in_heading"}
+    ],
+    "note": "Expanding on first use is the commoner instruction in patient-facing material, so it is the likeliest unprompted answer; the other four are all in live use and none is wrong on its own terms.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "patient information writing standard", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0207",
+    "family": "format",
+    "seed_family": "foreign-term-treatment",
+    "domain": "media",
+    "difficulty": "hard",
+    "task": "Handle the borrowed terms in the travel feature you are editing.",
+    "checker_key": "foreign_term_treatment",
+    "key_source": "classifier",
+    "exclusivity": "The two italic rules agree on the term's first appearance, so the label is read from its second appearance and a feature using the term once returns 'other'. The two upright rules are separated by the quotation marks, and the substitution label requires the borrowed term to be absent from the copy entirely.",
+    "options": [
+      {"id": "o1", "text": "Italicised at every appearance, however familiar it seems.", "checker": "foreign_term_treatment==italic_always"},
+      {"id": "o2", "text": "Capitalised but otherwise unmarked, like a proper name.", "checker": "foreign_term_treatment==capitalised_unmarked"},
+      {"id": "o3", "text": "Upright but wrapped in quotation marks every time.", "checker": "foreign_term_treatment==upright_quoted"},
+      {"id": "o4", "text": "Upright and unmarked, exactly like any English word.", "checker": "foreign_term_treatment==upright_unmarked"},
+      {"id": "o5", "text": "Replaced by an English equivalent wherever one exists.", "checker": "foreign_term_treatment==english_equivalent"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "magazine typographic style sheet", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0208",
+    "family": "format",
+    "seed_family": "quote-attribution-format",
+    "domain": "media",
+    "difficulty": "medium",
+    "task": "Credit the speakers under the pulled quotes in the layout.",
+    "checker_key": "attribution_format",
+    "key_source": "classifier",
+    "exclusivity": "The dashed credit and the name-and-role stack open with the same words, so the label reads what precedes the name and how many lines the credit occupies. A block carrying both a dashed credit and a prose introduction returns 'other' rather than scoring as either.",
+    "options": [
+      {"id": "o1", "text": "An em dash, then the speaker's name alone.", "checker": "attribution_format==dash_then_name"},
+      {"id": "o2", "text": "The name first, the role directly beneath it.", "checker": "attribution_format==name_then_role"},
+      {"id": "o3", "text": "The name in brackets, nothing else beside it.", "checker": "attribution_format==bracketed_name"},
+      {"id": "o4", "text": "The speaker introduced in the prose before it.", "checker": "attribution_format==introduced_in_prose"},
+      {"id": "o5", "text": "No credit in the block, a footnote instead.", "checker": "attribution_format==footnote_credit"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "magazine typographic style sheet", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0209",
+    "family": "format",
+    "seed_family": "contract-amount-expression",
+    "domain": "legal",
+    "difficulty": "medium",
+    "task": "Draft the payment clause for the services agreement.",
+    "checker_key": "contract_amount_expression",
+    "key_source": "classifier",
+    "exclusivity": "The two paired forms carry the same two renderings and are separated by which of them sits inside the brackets, not by which one reaches the reader first. The split rule keeps the two renderings in different documents, so a clause containing both falls to one of the paired labels instead.",
+    "options": [
+      {"id": "o1", "text": "Figures alone, with no words spelling them out.", "checker": "contract_amount_expression==figures_only"},
+      {"id": "o2", "text": "Words alone, with no figures printed beside them.", "checker": "contract_amount_expression==words_only"},
+      {"id": "o3", "text": "Words first, then the figures following in brackets.", "checker": "contract_amount_expression==words_then_figures"},
+      {"id": "o4", "text": "Figures first, then the words following in brackets.", "checker": "contract_amount_expression==figures_then_words"},
+      {"id": "o5", "text": "Figures in the clause, words in a schedule.", "checker": "contract_amount_expression==split_clause_and_schedule"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "contract drafting handbook", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0210",
+    "family": "format",
+    "seed_family": "defined-term-marking",
+    "domain": "legal",
+    "difficulty": "hard",
+    "task": "Mark the terms the definitions clause fixes in the agreement.",
+    "checker_key": "defined_term_marking",
+    "key_source": "classifier",
+    "exclusivity": "Initial capitals and small capitals both alter case, so the label reads the height of the letters after the first rather than the first letter alone. A term set bold and capitalised at once returns 'other', which is what keeps the styling labels from overlapping in a document that mixes them.",
+    "options": [
+      {"id": "o1", "text": "Initial capitals on the term, everywhere it appears.", "checker": "defined_term_marking==initial_capitals"},
+      {"id": "o2", "text": "Bold face on the term, everywhere it appears.", "checker": "defined_term_marking==bold_face"},
+      {"id": "o3", "text": "Quotation marks at the definition, plain text after.", "checker": "defined_term_marking==quoted_at_definition"},
+      {"id": "o4", "text": "Small capitals on the term, everywhere it appears.", "checker": "defined_term_marking==small_capitals"},
+      {"id": "o5", "text": "Underlining on the term, everywhere it appears.", "checker": "defined_term_marking==underlined_term"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "contract drafting handbook", "url": null}
+  }
+]

@@ -1,0 +1,202 @@
+[
+  {
+    "scenario_id": "fmt-0001",
+    "family": "format",
+    "seed_family": "incident-summary",
+    "domain": "devops",
+    "difficulty": "easy",
+    "task": "Summarise the open incident for the on-call channel.",
+    "checker_key": "output_format",
+    "key_source": "classifier",
+    "exclusivity": "One output gets exactly one output_format label. JSON is tested before YAML, so text that is valid JSON is never labelled yaml_mapping — this is the JSON-is-also-YAML trap the plan calls out, closed by ordering.",
+    "options": [
+      {"id": "o1", "text": "Return the summary as a JSON object.",         "checker": "output_format==json_object"},
+      {"id": "o2", "text": "Return the summary as a JSON array.",          "checker": "output_format==json_array"},
+      {"id": "o3", "text": "Return the summary as a YAML mapping.",        "checker": "output_format==yaml_mapping"},
+      {"id": "o4", "text": "Return the summary as a Markdown table.",      "checker": "output_format==md_table"},
+      {"id": "o5", "text": "Return the summary as CSV with headers.",      "checker": "output_format==csv_header"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "public incident-response runbook", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0002",
+    "family": "format",
+    "seed_family": "api-response-style",
+    "domain": "coding",
+    "difficulty": "easy",
+    "task": "Emit the response body for the /accounts endpoint.",
+    "checker_key": "key_casing",
+    "key_source": "classifier",
+    "exclusivity": "A field name matches at most one casing pattern. Mixed casing across fields returns 'other', so a hedged output cannot score as two.",
+    "options": [
+      {"id": "o1", "text": "Name every field in snake_case.",           "checker": "key_casing==snake_case"},
+      {"id": "o2", "text": "Name every field in camelCase.",            "checker": "key_casing==camel_case"},
+      {"id": "o3", "text": "Name every field in PascalCase.",           "checker": "key_casing==pascal_case"},
+      {"id": "o4", "text": "Name every field in kebab-case.",           "checker": "key_casing==kebab_case"},
+      {"id": "o5", "text": "Name every field in SCREAMING_SNAKE_CASE.", "checker": "key_casing==screaming_snake"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "repository AGENTS.md / CONTRIBUTING.md style section", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0003",
+    "family": "format",
+    "seed_family": "ticket-export",
+    "domain": "support",
+    "difficulty": "medium",
+    "task": "Export the tickets that closed last week.",
+    "checker_key": "date_encoding",
+    "key_source": "classifier",
+    "exclusivity": "The five date patterns cannot co-occur in one rendering of one date. If more than one pattern appears anywhere in the output the label is 'other', which fails all five.",
+    "options": [
+      {"id": "o1", "text": "Write every date in ISO 8601 style.",   "example": "2026-03-09",  "checker": "date_encoding==iso_8601"},
+      {"id": "o2", "text": "Write every date in US slash style.",   "example": "03/09/2026",  "checker": "date_encoding==us_slash"},
+      {"id": "o3", "text": "Write every date in European dot style.","example": "09.03.2026", "checker": "date_encoding==eu_dot"},
+      {"id": "o4", "text": "Write every date as Unix epoch seconds.","example": "1772582400",  "checker": "date_encoding==unix_epoch"},
+      {"id": "o5", "text": "Write every date in RFC 2822 style.",   "example": "9 Mar 2026",  "checker": "date_encoding==rfc_2822"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "helpdesk data-export specification", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0004",
+    "family": "format",
+    "seed_family": "metrics-report",
+    "domain": "data",
+    "difficulty": "medium",
+    "task": "Report the conversion rate for each of the five cohorts.",
+    "checker_key": "numeric_precision",
+    "key_source": "classifier",
+    "exclusivity": "A number has one fractional-digit count, or a percent sign, or an exponent — never two. Four-digit bare integers are excluded first so years are not read as data.",
+    "options": [
+      {"id": "o1", "text": "Round every number to a whole integer.",         "checker": "numeric_precision==integer"},
+      {"id": "o2", "text": "Give every number to one decimal place.",        "checker": "numeric_precision==one_dp"},
+      {"id": "o3", "text": "Give every number to three decimal places.",     "checker": "numeric_precision==three_dp"},
+      {"id": "o4", "text": "Give every number in full scientific notation.", "checker": "numeric_precision==scientific"},
+      {"id": "o5", "text": "Give every number as a signed percentage.",      "checker": "numeric_precision==percent_sign"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "analytics reporting standard", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0005",
+    "family": "format",
+    "seed_family": "tabular-export",
+    "domain": "data",
+    "difficulty": "easy",
+    "task": "Dump the lookup table so the loader can read it.",
+    "checker_key": "delimiter",
+    "key_source": "classifier",
+    "exclusivity": "The label requires one delimiter to appear a constant number of times on every line. Two delimiters both satisfying that returns 'other', so a comma-and-pipe hybrid fails both.",
+    "options": [
+      {"id": "o1", "text": "Separate the columns with commas.",     "checker": "delimiter==comma"},
+      {"id": "o2", "text": "Separate the columns with tabs.",       "checker": "delimiter==tab"},
+      {"id": "o3", "text": "Separate the columns with pipes.",      "checker": "delimiter==pipe"},
+      {"id": "o4", "text": "Separate the columns with semicolons.", "checker": "delimiter==semicolon"},
+      {"id": "o5", "text": "Separate the columns with two spaces.", "checker": "delimiter==double_space"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "ETL loader input specification", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0006",
+    "family": "format",
+    "seed_family": "identifier-minting",
+    "domain": "coding",
+    "difficulty": "hard",
+    "task": "Mint an identifier for each new job record.",
+    "checker_key": "id_format",
+    "key_source": "classifier",
+    "exclusivity": "The five patterns are disjoint by length and character class. Note hex8 and bare_integer overlap on strings like 12345678, so hex8 is tested first and the fixture set includes exactly that string.",
+    "options": [
+      {"id": "o1", "text": "Mint each id as a lowercase UUID v4.",          "checker": "id_format==uuid4"},
+      {"id": "o2", "text": "Mint each id as eight lowercase hexadecimal characters.", "checker": "id_format==hex8"},
+      {"id": "o3", "text": "Mint each id as job- plus a counter.",          "checker": "id_format==prefixed_counter"},
+      {"id": "o4", "text": "Mint each id as a bare decimal integer.",       "checker": "id_format==bare_integer"},
+      {"id": "o5", "text": "Mint each id as a hyphenated word slug.",       "checker": "id_format==word_slug"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "internal service naming convention", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0007",
+    "family": "format",
+    "seed_family": "doc-section-style",
+    "domain": "coding",
+    "difficulty": "medium",
+    "task": "Write the section titles for the migration guide.",
+    "checker_key": "heading_style",
+    "key_source": "classifier",
+    "exclusivity": "A title line has one leading marker. Deeper hashes are tested before shallower ones so '### x' is never read as h1.",
+    "options": [
+      {"id": "o1", "text": "Mark every section title as a level-1 heading.", "checker": "heading_style==h1"},
+      {"id": "o2", "text": "Mark every section title as a level-2 heading.", "checker": "heading_style==h2"},
+      {"id": "o3", "text": "Mark every section title as a level-3 heading.", "checker": "heading_style==h3"},
+      {"id": "o4", "text": "Mark every section title as a bold line.",       "checker": "heading_style==bold_line"},
+      {"id": "o5", "text": "Mark every section title as an ALL CAPS line.",  "checker": "heading_style==caps_line"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "documentation style guide", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0008",
+    "family": "format",
+    "seed_family": "invoice-amounts",
+    "domain": "support",
+    "difficulty": "hard",
+    "task": "List the amount outstanding on each of the accounts.",
+    "checker_key": "currency_format",
+    "key_source": "classifier",
+    "exclusivity": "Brackets, symbol prefix and code suffix are tested before the bare forms, so '$12.40' never counts as bare_decimal. integer_cents requires no decimal point at all.",
+    "options": [
+      {"id": "o1", "text": "Show each amount with a leading dollar sign.",      "checker": "currency_format==symbol_prefix"},
+      {"id": "o2", "text": "Show each amount with a trailing currency code.",   "checker": "currency_format==code_suffix"},
+      {"id": "o3", "text": "Show each amount as an integer of cents.",          "checker": "currency_format==integer_cents"},
+      {"id": "o4", "text": "Show each amount as a bare two-decimal number.",    "checker": "currency_format==bare_decimal"},
+      {"id": "o5", "text": "Show each negative amount in accounting style brackets.", "checker": "currency_format==accounting_parens"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "published billing and refund policy", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0009",
+    "family": "format",
+    "seed_family": "checklist-style",
+    "domain": "devops",
+    "difficulty": "easy",
+    "task": "Write out the pre-deploy checklist steps.",
+    "checker_key": "list_marker",
+    "key_source": "classifier",
+    "exclusivity": "Every line gets one marker label and the whole output must agree. Roman numerals are tested before prose so 'iv. check certs' is not read as prose.",
+    "options": [
+      {"id": "o1", "text": "Start every item with a hyphen bullet.",    "checker": "list_marker==hyphen"},
+      {"id": "o2", "text": "Start every item with an asterisk bullet.", "checker": "list_marker==asterisk"},
+      {"id": "o3", "text": "Start every item with an arabic number.",   "checker": "list_marker==arabic"},
+      {"id": "o4", "text": "Start every item with a roman numeral.",    "checker": "list_marker==roman"},
+      {"id": "o5", "text": "Write the items as prose with no markers.", "checker": "list_marker==prose"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "release checklist template", "url": null}
+  },
+  {
+    "scenario_id": "fmt-0010",
+    "family": "format",
+    "seed_family": "timestamp-policy",
+    "domain": "devops",
+    "difficulty": "hard",
+    "task": "Stamp each log line you emit for the audit trail.",
+    "checker_key": "timezone_encoding",
+    "key_source": "classifier",
+    "exclusivity": "A stamp carries a Z, or a numeric offset, or a named zone, or none. date_only requires the line to be a date and nothing else, so it cannot co-occur with a time-of-day form.",
+    "options": [
+      {"id": "o1", "text": "Stamp each line in UTC with a trailing Z.",  "checker": "timezone_encoding==utc_z"},
+      {"id": "o2", "text": "Stamp each line with a numeric UTC offset.", "checker": "timezone_encoding==numeric_offset"},
+      {"id": "o3", "text": "Stamp each line with a named IANA zone.",    "checker": "timezone_encoding==named_zone"},
+      {"id": "o4", "text": "Stamp each line as epoch seconds, no zone.", "checker": "timezone_encoding==epoch_seconds"},
+      {"id": "o5", "text": "Stamp each line with the date and no zone.", "checker": "timezone_encoding==date_only"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "logging and audit configuration reference", "url": null}
+  }
+]

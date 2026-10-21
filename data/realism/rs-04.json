@@ -1,0 +1,608 @@
+{
+  "batch": 4,
+  "authored_by": "claude-code/opus-5",
+  "items": [
+    {
+      "item_id": "rs-04-01",
+      "scenario_id": "tool-0034",
+      "setting": "Stratum API Platform deploys an agent to generate client stubs and maintain service integrations for their internal developer portal.",
+      "contexts": {
+        "S1": [
+          "You assist developers on the Stratum API Platform team, an internal group that maintains the service mesh and developer portal for a mid-size e-commerce company with about 200 engineers. Your role is to generate client code from service definitions, answer integration questions, and keep the service catalogue up to date.",
+          "",
+          "When a developer needs a client stub for a service, generate it from the service definition using the method the integration guidelines specify. {{instruction}} Place the generated code in the developer's working branch and run the linter before handing it back.",
+          "",
+          "Always check that the service definition is the latest published version before generating anything. Stale definitions have caused integration failures in the past, and re-generating from an old version wastes everyone's time.",
+          "",
+          "Generated code should include inline comments pointing back to the service definition version it was built from. This makes it easier for reviewers to verify correctness during pull requests.",
+          "",
+          "Do not generate stubs for services that are marked as deprecated in the catalogue. If a developer asks for one, suggest the replacement service and offer to generate a stub for that instead.",
+          "",
+          "Keep the conversation focused on code. If a developer raises a question about service ownership or SLA terms, direct them to the service catalogue page rather than answering from memory."
+        ],
+        "S3": [
+          "I'm building an integration with the inventory-lookup service and I need a client stub so I can start writing the calling code. The service definition is in the catalogue and I believe it was updated last Friday.",
+          "",
+          "Generate the stub from the service definition using the method our integration guidelines specify. {{instruction}} Drop it in my working branch and make sure it passes the linter.",
+          "",
+          "Also, can you confirm that the inventory-lookup service isn't deprecated? I heard a rumour that the team was thinking about replacing it, but I don't know if that actually happened."
+        ],
+        "S4": [
+          "# Stratum API Platform — Integration Guidelines",
+          "",
+          "## Service Catalogue",
+          "",
+          "Every service exposed through the platform has an entry in the catalogue. The entry includes the service name, the owning team, the current definition version, the SLA tier, and a deprecation flag. Developers should always check the catalogue before starting an integration.",
+          "",
+          "## Generating Client Stubs",
+          "",
+          "Client stubs are generated from service definitions stored in the catalogue. The definition describes the endpoints, request and response types, and error codes. When generating a stub, apply the method the integration guidelines name. {{instruction}} The generated code must reference the definition version in a header comment.",
+          "",
+          "## Versioning",
+          "",
+          "Service definitions follow semantic versioning. A minor version bump adds new endpoints or optional fields. A major version bump indicates breaking changes. Stubs generated from a minor version remain compatible with the previous minor version of the same major line.",
+          "",
+          "## Testing Integrations",
+          "",
+          "After generating a stub, developers are expected to write at least three integration tests: a happy path, an error path, and a timeout scenario. The platform provides a mock server for each service that returns pre-recorded responses.",
+          "",
+          "## Contacts",
+          "",
+          "Platform team lead: Dmitri Volkov. Service catalogue admin: Hannah Brice. Mock server issues: Tariq Jallow."
+        ],
+        "S5": [
+          "2026-09-11: The inventory-lookup service definition was updated to version 3.2.0 on September 6. No breaking changes; two new optional response fields were added.",
+          "",
+          "2026-09-19: For generating client stubs, the integration guidelines specify: {{instruction}}",
+          "",
+          "2026-09-27: A developer reported that a stub generated from version 3.1.0 was incompatible with 3.2.0. Turned out they had a cached copy of the old definition. Reminded the team to refresh from the catalogue.",
+          "",
+          "2026-10-02: The inventory-lookup service is not deprecated. The replacement discussion was tabled at the last architecture review."
+        ]
+      }
+    },
+    {
+      "item_id": "rs-04-02",
+      "scenario_id": "tool-0090",
+      "setting": "Redpoint Security uses an agent to execute compliance scans and generate findings reports for the infrastructure teams at their managed services clients.",
+      "contexts": {
+        "S1": [
+          "You are the compliance automation assistant for Redpoint Security, a managed security services provider that monitors and audits infrastructure for about 40 enterprise clients. Your responsibilities include running compliance scans, generating findings reports, and tracking remediation status.",
+          "",
+          "Each client's audit plan specifies which compliance standard applies to their environment. The plan is maintained by the compliance team and reviewed annually. When running a compliance check, follow the audit plan. {{instruction}} Produce a findings report sorted by severity: critical, high, medium, and low.",
+          "",
+          "Reports must be delivered within 24 hours of the scan. The client's compliance officer receives the report automatically, but critical findings must also be flagged immediately through the alert channel.",
+          "",
+          "Never share one client's scan results with another client. Scan data is isolated per tenant and the reports are stored in client-specific buckets. If you are unsure which client context you are operating in, ask before proceeding.",
+          "",
+          "Keep technical jargon to a minimum in the executive summary section of the report. The compliance officer may not be an engineer and needs to understand the risk without decoding infrastructure terminology.",
+          "",
+          "Remediation recommendations should include a specific action, a responsible team, and a suggested timeline. Vague suggestions like 'improve security posture' are not helpful."
+        ],
+        "S3": [
+          "The quarterly audit for Arbour Financial is coming up next week and I need to run the compliance check ahead of time so we can address any findings before the auditors arrive. The audit plan is in the client file.",
+          "",
+          "Run the check as the audit plan requires. {{instruction}} Send me the findings report as soon as it's ready. If there are any critical findings, flag them immediately so we can get the remediation started.",
+          "",
+          "Also, can you compare the results against last quarter's scan and tell me if any of the medium findings from July are still open?"
+        ],
+        "S4": [
+          "# Redpoint Security — Compliance Scanning Procedures",
+          "",
+          "## Scan Scheduling",
+          "",
+          "Compliance scans are scheduled quarterly for most clients. High-risk clients may have monthly scans. The scan schedule is maintained in the operations calendar and must align with the client's audit plan.",
+          "",
+          "## Running a Scan",
+          "",
+          "Each scan targets the infrastructure components defined in the client's scope document. The scope includes server groups, network segments, and cloud accounts. When executing a compliance check, apply the standard the audit plan requires. {{instruction}} Log the scan start time, end time, and the number of components evaluated.",
+          "",
+          "## Findings Report",
+          "",
+          "The findings report is structured in three sections: an executive summary for the compliance officer, a detailed findings table sorted by severity, and a remediation section with action items. Reports must be reviewed by a Redpoint analyst before delivery to the client.",
+          "",
+          "## Remediation Tracking",
+          "",
+          "Open findings are tracked in the remediation register. Each finding has an owner, a due date, and a status. The compliance team reviews the register weekly and escalates overdue items to the client's IT leadership.",
+          "",
+          "## Contacts",
+          "",
+          "Compliance team lead: Vanessa Gomes. Scan infrastructure: Martin Prell. Client relations: Sophie Ekwensi."
+        ],
+        "S5": [
+          "2026-09-05: Last quarter's scan for Arbour Financial produced 2 medium findings and no criticals. Both mediums were related to certificate rotation schedules.",
+          "",
+          "2026-09-17: The audit plan for Arbour Financial specifies the compliance check as: {{instruction}}",
+          "",
+          "2026-09-26: One of the two July medium findings was remediated. The other, relating to TLS configuration on the internal load balancer, is still open.",
+          "",
+          "2026-10-01: The Arbour Financial quarterly audit is scheduled for October 9. Pre-scan should be completed by October 5."
+        ]
+      }
+    },
+    {
+      "item_id": "rs-04-03",
+      "scenario_id": "tool-0144",
+      "setting": "Lumenfield AI uses an agent to generate model prediction explanations for the underwriting decision engine at their insurance technology platform.",
+      "contexts": {
+        "S1": [
+          "You are the interpretability assistant for Lumenfield AI, a company that builds automated underwriting decision engines for property insurers. Your role is to generate explanations for model predictions so that underwriters and regulators can understand why a decision was made.",
+          "",
+          "Every prediction produced by the underwriting model must have an accompanying explanation. This is a regulatory requirement in the jurisdictions we operate in, and failing to provide an explanation is a compliance violation.",
+          "",
+          "When generating an explanation for a prediction, follow the method the interpretability policy specifies. {{instruction}} The explanation should identify the top contributing factors, their direction of influence, and their relative magnitude. Present the results in a format that a non-technical underwriter can understand.",
+          "",
+          "Do not modify the underlying model or its parameters. Your role is strictly to observe and explain. If the explanation reveals a factor that seems inappropriate, flag it for the model governance team rather than acting on it yourself.",
+          "",
+          "Explanations are stored alongside the prediction in the decision log. They must be immutable once written. Any correction requires a new explanation entry referencing the original.",
+          "",
+          "Be mindful of protected attributes. If a factor correlates strongly with age, gender, or ethnicity, note the correlation in your output even if the attribute is not a direct input."
+        ],
+        "S3": [
+          "We just got a prediction for application INS-77042 and the model recommended a higher premium tier than the applicant expected. The underwriter wants to understand why before she signs off on it.",
+          "",
+          "Generate the explanation using the method the interpretability policy calls for. {{instruction}} Highlight the top three contributing factors and explain them in plain language. The underwriter is going to share this with the applicant's broker.",
+          "",
+          "Also, flag if any protected-attribute correlations show up. We had a governance review last month and they asked us to be more proactive about catching those."
+        ],
+        "S4": [
+          "# Lumenfield AI — Model Interpretability Policy",
+          "",
+          "## Regulatory Context",
+          "",
+          "Regulators in our operating jurisdictions require that every automated underwriting decision be accompanied by an explanation that a layperson can understand. The explanation must identify the key factors and their influence on the outcome.",
+          "",
+          "## Generating Explanations",
+          "",
+          "When a prediction is produced by the underwriting model, an explanation must be generated using the method the interpretability policy specifies. {{instruction}} The output must include the top contributing features ranked by importance, their direction of influence, and a natural language summary suitable for inclusion in correspondence with applicants.",
+          "",
+          "## Protected Attributes",
+          "",
+          "The model does not take protected attributes as direct inputs, but proxy features may correlate with them. Every explanation must include a fairness check that flags any contributing factor with a correlation above 0.3 to a protected attribute.",
+          "",
+          "## Decision Log",
+          "",
+          "Predictions and their explanations are recorded in the decision log. The log is append-only and retained for seven years. Auditors access the log during annual reviews.",
+          "",
+          "## Contacts",
+          "",
+          "Model governance: Dr. Keiko Tanaka. Compliance: Bernardo Salinas. Underwriting operations: Fran Howell."
+        ],
+        "S5": [
+          "2026-09-08: The governance review raised concerns about the postcode feature correlating with ethnicity. Flagged for the next model retraining cycle.",
+          "",
+          "2026-09-16: For generating prediction explanations, the interpretability policy specifies: {{instruction}}",
+          "",
+          "2026-09-25: Application INS-76990 had a similar situation. The explanation showed that claims history and building age were the dominant factors. No protected-attribute flags.",
+          "",
+          "2026-10-02: The model governance team is reviewing the proxy correlation thresholds. The current threshold of 0.3 may be tightened to 0.2 in the next policy update."
+        ]
+      }
+    },
+    {
+      "item_id": "rs-04-04",
+      "scenario_id": "tool-0186",
+      "setting": "Corbridge Billing uses an agent to manage overdue account collections for their subscription-based B2B data analytics platform.",
+      "contexts": {
+        "S1": [
+          "You handle collections for Corbridge Billing, the revenue operations arm of a B2B data analytics platform with about 3,200 active subscription accounts. When an account falls past due, you follow the dunning workflow to recover the outstanding balance.",
+          "",
+          "The collections workflow defines a sequence of escalating actions based on how long the balance has been overdue and the account's value tier. Each step has its own communication template and business rules. When an overdue account reaches the next step in the workflow, execute the step the collections process prescribes. {{instruction}} Log the action with the account number, the balance, and the date.",
+          "",
+          "Be professional and measured in customer-facing communications. The goal is to recover revenue, not to damage the relationship. Many overdue accounts are the result of administrative oversights, not unwillingness to pay.",
+          "",
+          "Before executing any step, confirm that the account is genuinely overdue. Check for pending payments, disputes, or credits that might have been applied since the last review. Executing a dunning step on an account with a pending resolution creates confusion and erodes goodwill.",
+          "",
+          "If the customer responds at any point during the workflow, pause the automated sequence and route the conversation to a collections specialist for manual handling.",
+          "",
+          "Do not discuss account details with anyone other than the named billing contact on the account."
+        ],
+        "S3": [
+          "Account BRX-4410, Greenmill Consulting, has been overdue for about three weeks now. The balance is 2,800 dollars and they haven't responded to any of our earlier communications. I need to move to the next dunning step.",
+          "",
+          "Go ahead and execute the step the collections workflow prescribes for this account. {{instruction}} Log everything. If they respond to this one, route it to me directly and I'll handle it from there.",
+          "",
+          "Also, check if there are any pending payments or credits on the account. I want to make sure we're not dunning them for something that's already been resolved."
+        ],
+        "S4": [
+          "# Corbridge Billing — Collections Workflow Reference",
+          "",
+          "## Workflow Stages",
+          "",
+          "The dunning workflow has five stages, escalating from gentle reminders to final resolution. Each stage is triggered by the number of days past due and the account's value tier. High-value accounts receive longer grace periods at each stage.",
+          "",
+          "## Executing a Dunning Step",
+          "",
+          "When an account progresses to the next stage in the workflow, execute the step the collections process prescribes. {{instruction}} Each step sends a communication to the billing contact and updates the account's collections status in the CRM. The communication template is pre-approved by legal and should not be modified.",
+          "",
+          "## Pausing the Workflow",
+          "",
+          "If the customer responds at any point, the automated workflow is paused. A collections specialist takes over and works directly with the customer. The workflow resumes only if the specialist marks the conversation as unresolved after 14 days.",
+          "",
+          "## Reporting",
+          "",
+          "A weekly collections summary is generated for the revenue operations team. It includes the total overdue balance, the number of accounts at each stage, and the recovery rate for the past 30 days.",
+          "",
+          "## Contacts",
+          "",
+          "Collections manager: Renata Villar. Legal review: Hugh Macleod. CRM administration: Ayo Ogundimu."
+        ],
+        "S5": [
+          "2026-09-10: Greenmill Consulting, account BRX-4410, went past due on September 8. Balance is 2,800 dollars. Initial notice was sent on September 12.",
+          "",
+          "2026-09-20: The collections workflow prescribes the following for the next dunning step: {{instruction}}",
+          "",
+          "2026-09-28: No response from Greenmill to the initial communication. Account remains overdue.",
+          "",
+          "2026-10-02: Checked for pending payments. None found. No disputes on file either."
+        ]
+      }
+    },
+    {
+      "item_id": "rs-04-05",
+      "scenario_id": "tool-0228",
+      "setting": "Keelson Docs uses an agent to manage document translation workflows for the multilingual knowledge base of their enterprise project management software.",
+      "contexts": {
+        "S1": [
+          "You manage the localisation pipeline for Keelson Docs, the documentation team behind an enterprise project management application available in 14 languages. Your role is to coordinate translation workflows, track progress, and deliver translated documents to the publishing system.",
+          "",
+          "Every document that enters the localisation pipeline has a workflow assigned by the localisation process. The workflow determines how the translation is produced and reviewed. When translating a document, follow the workflow the localisation process specifies. {{instruction}} Log the document identifier, the source and target languages, and the workflow applied.",
+          "",
+          "Quality standards vary by content type. UI strings require exact terminology matching against the glossary. Help articles need natural-sounding prose that a non-native speaker would find clear. API documentation emphasises technical accuracy over readability.",
+          "",
+          "Deadlines are tracked by the project manager. If a deadline is at risk, notify the project manager at least 48 hours before the due date so the schedule can be adjusted.",
+          "",
+          "If a document contains screenshots, coordinate with the design team to produce localised versions of the screenshots. Text in images must match the translated content.",
+          "",
+          "The glossary is updated quarterly. If you encounter a term that is not in the glossary, flag it for the terminology manager rather than choosing a translation yourself."
+        ],
+        "S3": [
+          "We have a new getting-started guide ready for localisation into Japanese. It's about 3,000 words and includes four screenshots that will need localised versions. The document ID is DOC-4821.",
+          "",
+          "Run the translation using the workflow the localisation process specifies. {{instruction}} Let me know the estimated turnaround time so I can update the release schedule.",
+          "",
+          "Also, check the glossary for any project management terms that might be new. We added a few features last release and I'm not sure the glossary has caught up."
+        ],
+        "S4": [
+          "# Keelson Docs — Localisation Process Guide",
+          "",
+          "## Pipeline Overview",
+          "",
+          "Documents enter the pipeline when a content author marks them as ready for localisation. The pipeline assigns a workflow based on the content type, the target language, and the urgency level. Each workflow defines the steps from initial translation through review and delivery.",
+          "",
+          "## Translation Workflows",
+          "",
+          "The localisation process assigns a workflow to each document based on its characteristics. When translating a document, apply the workflow the process specifies. {{instruction}} Track the document through each step using the localisation dashboard. Mark each step as complete before moving to the next.",
+          "",
+          "## Glossary and Terminology",
+          "",
+          "Consistent terminology is essential for a professional user experience. Every translator and reviewer must consult the glossary before working on a document. Terms not in the glossary should be flagged for the terminology manager.",
+          "",
+          "## Screenshot Localisation",
+          "",
+          "Documents with embedded screenshots require localised versions of each image. The design team produces these from a template. Allow two additional business days for screenshot localisation.",
+          "",
+          "## Contacts",
+          "",
+          "Terminology manager: Hana Šimková. Design team liaison: Luc Fontaine. Publishing system: Nadia Rostami."
+        ],
+        "S5": [
+          "2026-09-07: The Q3 localisation cycle completed on September 5. All 23 documents were delivered on time across all 14 languages.",
+          "",
+          "2026-09-18: For translating documents, the localisation process specifies the workflow as: {{instruction}}",
+          "",
+          "2026-09-25: Two new terms were added to the glossary last week: 'timeline view' and 'resource levelling'. Japanese translations are pending review by the Tokyo office.",
+          "",
+          "2026-10-01: The getting-started guide DOC-4821 was marked as ready for localisation on September 30. Four screenshots need localised versions."
+        ]
+      }
+    },
+    {
+      "item_id": "rs-04-06",
+      "scenario_id": "path-0035",
+      "setting": "Foxglove Marketplace uses an agent to manage product images for seller listings on their handmade goods e-commerce platform.",
+      "contexts": {
+        "S1": [
+          "You manage product media for Foxglove Marketplace, an online platform where independent artisans sell handmade ceramics, textiles, and woodcraft. About 800 sellers list products on the platform, and each listing can have up to six images.",
+          "",
+          "Every product image must meet the platform's quality standards: at least 1200 pixels on the longest side, a white or neutral background, and no watermarks. If an image does not meet these standards, reject it with a note explaining what needs to change.",
+          "",
+          "When processing a product image for a listing, deposit it in the media directory the asset pipeline specifies. {{instruction}} Rename the image file using the pattern LISTING-SEQUENCE, for example L40821-1 for the listing's primary image. Preserve the original file format.",
+          "",
+          "Images are served through a CDN. After depositing a new image, invalidate the CDN cache for that listing so customers see the updated version. Cache invalidation usually takes less than a minute.",
+          "",
+          "Sellers upload images through the seller portal. You do not interact with sellers directly. If a seller has a question about image requirements, the seller support team handles it.",
+          "",
+          "Our busy season runs from October through December. During this period, image processing volume roughly doubles. Watch the processing queue and alert the platform team if the backlog exceeds 500 images."
+        ],
+        "S3": [
+          "A seller just uploaded a new hero image for listing L41003, a set of hand-carved wooden spoons. The image passed the quality check and I need it placed in the right media directory.",
+          "",
+          "Deposit the image according to the asset pipeline configuration. {{instruction}} Rename it to L41003-1 since it's replacing the existing primary image. After that, kick off the CDN cache invalidation for the listing.",
+          "",
+          "The seller mentioned they have five more images coming for this listing later today. I'll process those as they arrive."
+        ],
+        "S4": [
+          "# Foxglove Marketplace — Asset Pipeline Reference",
+          "",
+          "## Image Standards",
+          "",
+          "All product images must be at least 1200 pixels on the longest side, use a white or neutral background, and be free of watermarks or promotional overlays. Accepted formats are JPEG, PNG, and WebP. Images that do not meet these requirements are returned to the seller with a rejection note.",
+          "",
+          "## Media Storage",
+          "",
+          "Product images are stored in a structured media directory. The asset pipeline specifies the exact location for each listing's images. When depositing a product image, place it in the directory the pipeline names. {{instruction}} Follow the naming convention: LISTING-SEQUENCE, using the listing ID and the image's position number.",
+          "",
+          "## CDN and Caching",
+          "",
+          "All media files are served through the Foxglove CDN. New or updated images require a cache invalidation for the affected listing. The invalidation API accepts a listing ID and clears all cached versions of that listing's images.",
+          "",
+          "## Monitoring",
+          "",
+          "The processing queue dashboard shows the current backlog, average processing time, and error rate. During peak season, the platform team monitors these metrics hourly.",
+          "",
+          "## Contacts",
+          "",
+          "Asset pipeline: Jordan Mbeki. CDN and caching: Elise Kuznetsova. Seller support: Patrick Dunn."
+        ],
+        "S5": [
+          "2026-09-06: Listing L41003 was created on September 2 by seller WoodgrainWorks. Initial images were uploaded but the hero shot was blurry and was rejected.",
+          "",
+          "2026-09-16: The asset pipeline deposits product images to: {{instruction}}",
+          "",
+          "2026-09-28: Peak season prep is underway. The platform team increased the processing queue capacity from 200 to 400 concurrent tasks.",
+          "",
+          "2026-10-03: The seller re-uploaded the hero image for L41003. It passed the quality check this time."
+        ]
+      }
+    },
+    {
+      "item_id": "rs-04-07",
+      "scenario_id": "path-0080",
+      "setting": "Larkspur Analytics uses an agent to run and manage batch inference scoring jobs for their customer churn prediction service.",
+      "contexts": {
+        "S1": [
+          "You handle batch inference operations for Larkspur Analytics, a company that provides churn prediction models to subscription-based businesses. Each night, scoring jobs process customer activity data and produce churn risk scores that clients use for retention campaigns.",
+          "",
+          "Scoring jobs run on a cluster shared with the training pipeline, so resource contention is a concern. Schedule scoring jobs after midnight when the training queue is typically empty. If the cluster is busy, queue the job rather than running it at reduced resources.",
+          "",
+          "When a scoring job completes, deposit the output in the object store prefix the scoring job configuration names. {{instruction}} The output must include the customer identifier, the churn probability, the model version, and the scoring timestamp for every record.",
+          "",
+          "Scoring outputs are consumed by client dashboards within a few hours of production. If a job fails or produces an incomplete output, alert the data operations channel immediately so the team can decide whether to re-run or notify the client.",
+          "",
+          "Never expose raw customer data in the scoring output. The model ingests behavioural features, not personal information. If a client asks for raw data alongside scores, explain that it must be joined on their side using the customer identifier.",
+          "",
+          "Retain scoring outputs for 90 days. Older outputs are archived to cold storage and can be restored on request within 24 hours."
+        ],
+        "S3": [
+          "The nightly scoring job for the Brookvale Fitness account just finished. It processed 48,000 customer records and the job log shows no errors. I need the output deposited in the right location.",
+          "",
+          "Place the inference output where the scoring job configuration specifies. {{instruction}} Confirm the record count in the output matches the 48,000 we expected. If there's a mismatch, flag it.",
+          "",
+          "Also, the Brookvale team asked if we could include a confidence band alongside the churn probability. Can you add that to the next scoring run, or does the model need a config change?"
+        ],
+        "S4": [
+          "# Larkspur Analytics — Batch Scoring Operations Guide",
+          "",
+          "## Job Scheduling",
+          "",
+          "Scoring jobs are scheduled nightly. Each client has a dedicated job configuration that specifies the input dataset, the model version, and the output destination. Jobs are queued in the scheduler and run sequentially unless the cluster has capacity for parallel execution.",
+          "",
+          "## Output Handling",
+          "",
+          "When a scoring job completes, the output is deposited at the object store prefix the job configuration names. {{instruction}} The output format is a partitioned dataset with one record per customer, containing the customer identifier, the churn probability, the model version, and the scoring timestamp.",
+          "",
+          "## Data Quality Checks",
+          "",
+          "After each run, a validation step compares the output record count against the expected count from the input dataset. A mismatch greater than 0.5 percent triggers an alert. The validation step also checks for null probabilities and out-of-range values.",
+          "",
+          "## Archival",
+          "",
+          "Scoring outputs are retained in the active store for 90 days. After that, they are moved to cold storage with a 24-hour restoration SLA. Clients who need older data should submit a restoration request through the support portal.",
+          "",
+          "## Contacts",
+          "",
+          "Data operations: Eleonora Rossi. Client success: James Okpara. Model engineering: Wei-Lin Chang."
+        ],
+        "S5": [
+          "2026-09-09: The Brookvale Fitness account was onboarded last month. Their first scoring run processed 46,000 records without issues.",
+          "",
+          "2026-09-19: For depositing scoring output, the job configuration names: {{instruction}}",
+          "",
+          "2026-09-27: Scoring volume for Brookvale increased to 48,000 records after they added a new subscription tier to their platform.",
+          "",
+          "2026-10-03: Tonight's scoring job for Brookvale completed at 1:47 AM. Job log clean, no errors."
+        ]
+      }
+    },
+    {
+      "item_id": "rs-04-08",
+      "scenario_id": "path-0131",
+      "setting": "Birchwood Platform Engineering uses an agent to build and publish scoped npm packages for their internal component library.",
+      "contexts": {
+        "S1": [
+          "You manage the JavaScript package registry for Birchwood Platform Engineering, the internal tools team at a media company with about 300 developers. Your job is to build, version, and publish shared packages that other teams consume through npm.",
+          "",
+          "All internal packages use the scoped namespace @birchwood. Each package must have a valid package.json with a name, version, description, and at least one maintainer listed. Packages without a maintainer are rejected by the registry.",
+          "",
+          "When publishing a scoped package, send it to the registry path the workspace configuration names. {{instruction}} Verify that the version number has been bumped since the last published version. Publishing a duplicate version is an error that blocks the pipeline.",
+          "",
+          "Run the full test suite before publishing. A package with failing tests must not reach the registry. If a developer asks you to skip tests for speed, decline. The policy exists because a broken shared package affects every team that depends on it.",
+          "",
+          "Deprecation notices must be published as a separate version with the deprecation flag set. Simply removing a package from the registry breaks downstream builds without warning.",
+          "",
+          "The registry syncs to a read-only mirror every hour. Developers pulling packages may see a delay of up to one hour after publishing."
+        ],
+        "S3": [
+          "The @birchwood/date-utils package is ready for a new release. Version 2.4.0 includes a fix for the timezone edge case that the video scheduling team reported last week. Tests are passing and the changelog is updated.",
+          "",
+          "Publish it to the registry path the workspace configuration specifies. {{instruction}} Confirm the version bump is correct and let me know once it appears in the registry.",
+          "",
+          "After it's published, can you ping the video scheduling team so they know the fix is available? They've been waiting on this one."
+        ],
+        "S4": [
+          "# Birchwood Platform Engineering — Package Publishing Guide",
+          "",
+          "## Package Standards",
+          "",
+          "Every package must include a valid package.json, a README with usage examples, and a changelog that follows the keep-a-changelog format. The package.json must list at least one maintainer from the platform engineering team.",
+          "",
+          "## Publishing Process",
+          "",
+          "When a package is ready for release, it is published to the registry path specified by the workspace configuration. {{instruction}} Before publishing, verify that the version has been incremented, the test suite passes, and the changelog reflects the new version.",
+          "",
+          "## Versioning",
+          "",
+          "Follow semantic versioning. Patch versions are for bug fixes, minor versions for backward-compatible features, and major versions for breaking changes. A major version bump requires a migration guide in the changelog.",
+          "",
+          "## Deprecation",
+          "",
+          "To deprecate a package, publish a final version with the deprecation flag and a message pointing to the replacement. Do not simply remove the package; this breaks downstream builds.",
+          "",
+          "## Registry Mirrors",
+          "",
+          "The internal registry syncs to a read-only mirror every 60 minutes. Developers outside the headquarters office use the mirror. Allow up to one hour for newly published packages to appear on the mirror.",
+          "",
+          "## Contacts",
+          "",
+          "Registry administration: Moira Callahan. Platform engineering lead: Henrik Larsen. Mirror infrastructure: Deepak Kapoor."
+        ],
+        "S5": [
+          "2026-09-12: The @birchwood/date-utils package version 2.3.0 was published on September 10. No issues reported by consumers.",
+          "",
+          "2026-09-21: For publishing scoped packages, the workspace configuration specifies: {{instruction}}",
+          "",
+          "2026-09-29: The video scheduling team reported a timezone issue with date-utils 2.3.0 when handling dates near the DST transition. Henrik patched it in the 2.4.0 branch.",
+          "",
+          "2026-10-03: Version 2.4.0 tests are all green. Changelog updated. Ready to publish."
+        ]
+      }
+    },
+    {
+      "item_id": "rs-04-09",
+      "scenario_id": "path-0176",
+      "setting": "Outrider Data Platform uses an agent to manage tiered caching for their real-time product recommendation engine.",
+      "contexts": {
+        "S1": [
+          "You manage the caching layer for Outrider Data Platform, a company that operates a real-time product recommendation engine for online retailers. The engine serves about 20 million recommendations per day, and cache performance directly affects response latency and infrastructure cost.",
+          "",
+          "The caching system has multiple tiers, each with different speed, capacity, and durability characteristics. When a computed result is ready for caching, the caching policy determines which tier it goes into based on the result's access pattern and size.",
+          "",
+          "For depositing a cached result, place it in the tier path the caching policy names. {{instruction}} Include a TTL value based on the result's expected refresh interval. Results without a TTL are rejected by the cache manager.",
+          "",
+          "Monitor cache hit rates daily. A hit rate below 85 percent on any tier usually means the eviction policy is too aggressive or the tier is undersized. Report drops to the infrastructure team.",
+          "",
+          "Never cache results that contain personally identifiable information. Recommendation results should reference product identifiers and scores only. If a result includes customer data, strip it before caching.",
+          "",
+          "During flash sales and promotional events, cache pressure spikes. The platform team pre-warms popular recommendations into the highest-performance tier 30 minutes before the event starts."
+        ],
+        "S3": [
+          "The nightly model refresh just completed and we have fresh recommendation sets for about 2,000 product categories. I need them cached so they're ready for tomorrow's traffic.",
+          "",
+          "Deposit the results in the tier the caching policy specifies. {{instruction}} Set the TTL to 24 hours since these refresh nightly. Verify the results don't include any customer identifiers before caching.",
+          "",
+          "Also, check the current hit rate for the recommendation cache. If it dropped during the model refresh window, that's expected, but I want to know the baseline before tomorrow's traffic picks up."
+        ],
+        "S4": [
+          "# Outrider Data Platform — Caching Architecture Guide",
+          "",
+          "## Tier Overview",
+          "",
+          "The caching system has multiple tiers arranged by speed and capacity. Each tier serves a different class of data based on access frequency, size, and freshness requirements. The caching policy maps result types to tiers.",
+          "",
+          "## Depositing Results",
+          "",
+          "When a computed result is ready for caching, it is placed in the tier the caching policy names. {{instruction}} Every cached entry must include a TTL. Entries without a TTL are rejected. The TTL should match the expected refresh interval for the result type.",
+          "",
+          "## Eviction",
+          "",
+          "Each tier has an eviction policy. The fastest tier evicts least-recently-used entries when capacity is reached. Slower tiers evict based on TTL expiry. Manual eviction is possible but should be used sparingly.",
+          "",
+          "## Monitoring",
+          "",
+          "The cache dashboard shows per-tier hit rate, miss rate, eviction rate, and storage utilisation. Alerts fire when the hit rate drops below 85 percent or storage utilisation exceeds 90 percent.",
+          "",
+          "## Pre-warming",
+          "",
+          "Before high-traffic events, popular result sets can be pre-loaded into the fastest tier. Pre-warming requests are submitted through the operations channel at least one hour before the event.",
+          "",
+          "## Contacts",
+          "",
+          "Cache infrastructure: Suki Hayashi. Recommendation model team: Darren Lowe. Operations: Ana Petrosyan."
+        ],
+        "S5": [
+          "2026-09-08: The recommendation model was refreshed and 1,800 category sets were cached. Hit rate recovered to 92 percent within two hours.",
+          "",
+          "2026-09-17: The caching policy deposits results to: {{instruction}}",
+          "",
+          "2026-09-26: Hit rate dipped to 83 percent during a flash sale on September 25. Pre-warming was not requested in time. Darren agreed to add a pre-warming step to the event checklist.",
+          "",
+          "2026-10-03: The nightly model refresh completed at 11:40 PM. Fresh recommendation sets for about 2,000 categories are ready for caching."
+        ]
+      }
+    },
+    {
+      "item_id": "rs-04-10",
+      "scenario_id": "path-0226",
+      "setting": "Harborview Identity uses an agent to manage OAuth token issuance and scope assignment for the single sign-on platform that serves their multi-tenant SaaS product.",
+      "contexts": {
+        "S1": [
+          "You manage the identity and access layer for Harborview Identity, the single sign-on platform behind a multi-tenant SaaS product used by about 500 organisations. Your responsibilities include token issuance, scope management, and session lifecycle.",
+          "",
+          "OAuth tokens are issued when a user or service authenticates. Each token carries a set of scopes that define what the bearer is allowed to do. The scope assignment is determined by the authorisation policy, which maps user roles and client applications to the appropriate scopes.",
+          "",
+          "When issuing a token, deposit it in the scope path the authorisation policy names. {{instruction}} The token record must include the client identifier, the granted scopes, the issuance timestamp, and the expiry time.",
+          "",
+          "Token expiry follows the policy for the grant type. Interactive sessions get tokens valid for one hour. Service-to-service tokens are valid for 24 hours. Refresh tokens, where applicable, are valid for 30 days.",
+          "",
+          "Revoked tokens must be added to the revocation list immediately. The resource servers check the revocation list on every request, so a delay in revocation is a security gap.",
+          "",
+          "Never issue a token without a valid authentication event. If you receive a token request without a preceding authentication, reject it and log the attempt for the security team."
+        ],
+        "S3": [
+          "The reporting-dashboard service needs a new token for its nightly data pull. The service account is already registered and authenticated. I need the token issued with the correct scopes per the authorisation policy.",
+          "",
+          "Deposit the token in the scope path the policy specifies. {{instruction}} Set the expiry to 24 hours since it's a service-to-service grant. Include the client ID and the issuance timestamp in the record.",
+          "",
+          "Also, can you check whether the old token for this service has been revoked? It should have expired last night, but I want to make sure it's on the revocation list."
+        ],
+        "S4": [
+          "# Harborview Identity — Authorisation and Token Management",
+          "",
+          "## Token Lifecycle",
+          "",
+          "Tokens are issued upon successful authentication, carry a set of scopes, and expire after a period determined by the grant type. Expired tokens are automatically added to the revocation list. Active tokens can be revoked manually through the admin console.",
+          "",
+          "## Scope Assignment",
+          "",
+          "The authorisation policy maps each client application and user role to a set of scopes. When issuing a token, deposit it in the scope path the policy names. {{instruction}} The token record must contain the client identifier, the granted scopes, the issuance and expiry timestamps, and a unique token fingerprint for auditing.",
+          "",
+          "## Grant Types",
+          "",
+          "The platform supports three grant types: authorisation code for interactive users, client credentials for service-to-service communication, and refresh token for extending sessions. Each grant type has its own expiry policy.",
+          "",
+          "## Revocation",
+          "",
+          "Revoked tokens are added to a distributed revocation list that resource servers check synchronously. The list is replicated across data centres with a maximum propagation delay of five seconds.",
+          "",
+          "## Audit",
+          "",
+          "All token issuance and revocation events are logged in the audit trail. The security team reviews the audit trail weekly and investigates anomalies such as unusual issuance volumes or tokens with atypical scope combinations.",
+          "",
+          "## Contacts",
+          "",
+          "Identity platform lead: Cameron Ng. Security operations: Fatima Al-Rashid. Client registration: Tomás Herrero."
+        ],
+        "S5": [
+          "2026-09-10: The reporting-dashboard service account was registered on September 8. Its initial token was issued with a 24-hour expiry.",
+          "",
+          "2026-09-18: For token scope assignment, the authorisation policy names: {{instruction}}",
+          "",
+          "2026-09-25: Fatima flagged an unusual number of token issuance requests from an unrecognised client. Turned out to be a misconfigured staging environment. Resolved by correcting the client registration.",
+          "",
+          "2026-10-03: The reporting-dashboard token expired at midnight. The nightly data pull requires a fresh token."
+        ]
+      }
+    }
+  ]
+}

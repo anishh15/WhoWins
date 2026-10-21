@@ -1,0 +1,8 @@
+{
+  "_about": "The test fixture's one batch: one item, written by hand for the suite.",
+  "batches": {
+    "rs-01": [
+      "tool-0009"
+    ]
+  }
+}

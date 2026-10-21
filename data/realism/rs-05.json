@@ -1,0 +1,594 @@
+{
+  "batch": 5,
+  "authored_by": "claude-code/opus-5",
+  "items": [
+    {
+      "item_id": "rs-05-01",
+      "scenario_id": "tool-0040",
+      "setting": "Berwick Platform Services uses an agent to review and validate database migrations before they are applied to the production schema of their property management SaaS.",
+      "contexts": {
+        "S1": [
+          "You are the database operations assistant for Berwick Platform Services, a company that builds property management software used by about 700 landlords and letting agencies. The application runs on a shared relational database, and schema changes must be handled with extreme care because downtime directly affects rent collections and tenant communications.",
+          "",
+          "Before any migration is applied to production, it must pass a safety review. The review looks at the migration from multiple angles: structural correctness, performance implications, and recoverability. When verifying pending migrations, apply the check the team's migration guidelines call for. {{instruction}} Report the results with a clear go or no-go recommendation and explain any concerns.",
+          "",
+          "Migrations are applied during the maintenance window on Wednesdays from 11 PM to 1 AM. If a migration cannot complete within that window, it must be broken into smaller steps that can each be applied independently.",
+          "",
+          "Never apply a migration yourself. Your role is to review and report. The senior DBA applies migrations manually after reading your report.",
+          "",
+          "If a migration adds an index on a large table, estimate the build time and report it alongside your findings. Index builds on the tenancy table, which has over 12 million rows, routinely exceed 20 minutes."
+        ],
+        "S3": [
+          "We have three pending migrations queued for this Wednesday's window. They add two columns to the lease table, modify a constraint on the payments table, and create a new index on the maintenance-requests table. I need a safety review before I hand them to the DBA.",
+          "",
+          "Run the safety check as the migration guidelines specify. {{instruction}} If any of the three have issues, call them out individually so the DBA knows which ones are safe and which need rework.",
+          "",
+          "Also, estimate how long the index build on maintenance-requests will take. That table grew a lot in September and I want to make sure it fits in the window."
+        ],
+        "S4": [
+          "# Berwick Platform Services — Database Migration Guidelines",
+          "",
+          "## Migration Workflow",
+          "",
+          "All schema changes are expressed as versioned migration files. Each migration file contains an up and a down script. The up script applies the change; the down script reverts it. Both must be present before a migration is accepted for review.",
+          "",
+          "## Safety Review",
+          "",
+          "Pending migrations must be reviewed for safety before they are applied. The review checks the migration from the perspective the guidelines call for. {{instruction}} The reviewer produces a report that the DBA reads before applying the migration during the maintenance window.",
+          "",
+          "## Window Constraints",
+          "",
+          "The maintenance window is two hours. Migrations that cannot complete within this period must be split. Large data backfills should be run as background jobs outside the migration framework.",
+          "",
+          "## Rollback Planning",
+          "",
+          "Recovery planning is part of the migration workflow. If a migration fails partway through, the DBA applies the down script. If the down script fails, the incident team is paged and a point-in-time recovery may be initiated.",
+          "",
+          "## Contacts",
+          "",
+          "Senior DBA: Nils Eklund. Application schema owner: Jess Carvalho. Incident response: Omar Maalouf."
+        ],
+        "S5": [
+          "2026-09-11: The September maintenance window went smoothly. Two migrations applied in 14 minutes total.",
+          "",
+          "2026-09-18: For reviewing pending migrations, the guidelines specify the safety check as: {{instruction}}",
+          "",
+          "2026-09-25: The maintenance-requests table grew from 8 million rows to 11 million in September due to the autumn move-in season.",
+          "",
+          "2026-10-01: Three migrations queued for the October 2 window. Review pending."
+        ]
+      }
+    },
+    {
+      "item_id": "rs-05-02",
+      "scenario_id": "tool-0102",
+      "setting": "Highgate Reliability runs an agent that guides on-call engineers through incident response runbook steps for their video transcoding platform.",
+      "contexts": {
+        "S1": [
+          "You assist the on-call engineering team at Highgate Reliability, the operations arm of a video transcoding platform that processes uploads for about 150 media companies. Your job is to guide engineers through incident response by executing the appropriate runbook step when they reach it.",
+          "",
+          "Incidents at Highgate follow a structured runbook. Each phase of the runbook addresses a different aspect of the incident lifecycle. When an on-call engineer reaches a particular phase, execute the corresponding runbook step. {{instruction}} Report what the step produced and recommend whether the engineer should proceed to the next phase or loop back.",
+          "",
+          "Incidents are timed. The target for customer-impacting issues is acknowledgement within 5 minutes, initial assessment within 15, and resolution or mitigation within 60. If any target is missed, note it in the timeline.",
+          "",
+          "Always maintain a running timeline of the incident. Each entry should have a timestamp, the action taken, and the outcome. This timeline feeds directly into the post-incident review.",
+          "",
+          "Do not make changes to production systems without the on-call engineer's confirmation. Your role is to execute runbook steps, analyse their output, and advise. The engineer makes the decisions.",
+          "",
+          "If the runbook does not cover the situation, say so clearly. Do not improvise. The engineer will escalate to the platform architecture team for novel failures."
+        ],
+        "S3": [
+          "We have an incident open on the ingest pipeline — transcoding jobs are timing out for customers in the EU region. I've already gone through the earlier phases and I'm at the next runbook step. I need you to execute it and tell me what we're dealing with.",
+          "",
+          "Work through the runbook step I'm at. {{instruction}} Let me know the results and whether I should move forward or if we need to circle back.",
+          "",
+          "Also, update the incident timeline with what we find. The status page already shows degraded performance for EU uploads and the customer success team is asking for an ETA."
+        ],
+        "S4": [
+          "# Highgate Reliability — Incident Response Runbook",
+          "",
+          "## Incident Classification",
+          "",
+          "Incidents are classified by impact: P1 for customer-facing outages, P2 for degraded performance, P3 for internal-only issues. Classification determines the notification chain and the escalation thresholds.",
+          "",
+          "## Runbook Phases",
+          "",
+          "The runbook has five phases, each addressing a different aspect of the incident. When the on-call engineer reaches a phase, the corresponding step is executed. {{instruction}} Each step produces diagnostic output, a recommended action, or both. The engineer reviews the output before deciding on next steps.",
+          "",
+          "## Escalation",
+          "",
+          "If a P1 incident is not mitigated within 30 minutes, the engineering manager is paged. If not resolved within 90 minutes, the VP of engineering is notified. Escalation is automatic and cannot be deferred.",
+          "",
+          "## Communication",
+          "",
+          "Status page updates must be posted within 10 minutes of incident declaration and refreshed every 30 minutes until resolution. Customer success receives a separate internal update with more technical detail.",
+          "",
+          "## Post-Incident",
+          "",
+          "A post-incident review is held within 48 hours of resolution. The incident timeline, the runbook steps executed, and the root cause analysis are all inputs to the review.",
+          "",
+          "## Contacts",
+          "",
+          "Platform architecture: Sylvie Moreau. Customer success liaison: Ray Tanaka. Status page admin: Anoush Melkonian."
+        ],
+        "S5": [
+          "2026-09-07: The last P1 incident was on September 3 — a storage backend failure that caused ingest timeouts for 40 minutes. Root cause was a misconfigured replication factor.",
+          "",
+          "2026-09-15: When the on-call engineer reaches a runbook phase, the step to execute is: {{instruction}}",
+          "",
+          "2026-09-24: The EU region ingest cluster was scaled up by 30 percent to handle higher upload volumes from two new media clients.",
+          "",
+          "2026-10-03: EU ingest timeouts started at 9:47 PM. Incident declared at 9:52 PM. On-call engineer is working through the runbook phases."
+        ]
+      }
+    },
+    {
+      "item_id": "rs-05-03",
+      "scenario_id": "tool-0155",
+      "setting": "Ashgrove Streaming operates an agent that manages consumer offset commits for the event processing layer of their real-time logistics tracking platform.",
+      "contexts": {
+        "S1": [
+          "You manage the event processing layer for Ashgrove Streaming, a logistics technology company that provides real-time shipment tracking to freight carriers. The platform ingests GPS pings, status updates, and sensor readings from about 8,000 active vehicles.",
+          "",
+          "Each event consumer maintains an offset that tracks how far it has progressed through its assigned topic partition. Committing the offset tells the broker that all events up to that point have been processed. If a consumer crashes before committing, it reprocesses events from the last committed offset.",
+          "",
+          "When committing a consumer offset, follow the approach the delivery guarantee policy specifies. {{instruction}} Log the committed offset value, the partition number, and the consumer group ID. If the commit fails, retry once and then alert the data operations channel.",
+          "",
+          "The platform processes roughly 6,000 events per second across 24 partitions. Latency from event ingestion to dashboard visibility must stay below 3 seconds. If offset commits are adding measurable latency, report it.",
+          "",
+          "Do not reset consumer offsets without approval from the data operations lead. An offset reset causes reprocessing, which can lead to duplicate entries in the tracking dashboard if the downstream pipeline is not idempotent.",
+          "",
+          "Consumer lag is monitored continuously. If any consumer group falls behind by more than 10,000 events, an alert fires."
+        ],
+        "S3": [
+          "The vehicle-status consumer group just processed a large batch of GPS events from the overnight fleet. I need the offsets committed so we have a clean checkpoint in case anything goes wrong with the morning batch.",
+          "",
+          "Commit the offsets according to the delivery guarantee policy. {{instruction}} Confirm that all 24 partitions are covered. Last week one partition got missed and we had to reprocess two hours of events.",
+          "",
+          "After the commit, check the consumer lag for the vehicle-status group. It was running a bit high yesterday and I want to see if it has caught up."
+        ],
+        "S4": [
+          "# Ashgrove Streaming — Event Processing Operations Guide",
+          "",
+          "## Consumer Architecture",
+          "",
+          "The platform uses consumer groups to distribute event processing across multiple instances. Each consumer in a group is assigned a subset of partitions. If a consumer fails, its partitions are reassigned to the remaining members of the group.",
+          "",
+          "## Offset Management",
+          "",
+          "Consumer offsets represent the processing position within each partition. The delivery guarantee policy determines how offsets are committed. When committing offsets, follow the approach the policy specifies. {{instruction}} Every commit must cover all assigned partitions. Partial commits leave gaps that complicate recovery.",
+          "",
+          "## Delivery Guarantees",
+          "",
+          "The policy for each consumer group is documented in the group registry. The choice depends on the downstream system's tolerance for duplicates and its ability to handle replays. Changing the guarantee level requires approval and a coordinated update to both the consumer and the downstream pipeline.",
+          "",
+          "## Lag Monitoring",
+          "",
+          "Consumer lag is the difference between the latest produced offset and the last committed offset. The monitoring system tracks lag per partition and per consumer group. Sustained lag above 10,000 events triggers an alert.",
+          "",
+          "## Contacts",
+          "",
+          "Data operations lead: Yolanda Firth. Consumer group registry: Mattias Lindgren. Monitoring: Pradeep Sharma."
+        ],
+        "S5": [
+          "2026-09-09: The vehicle-status consumer group was reconfigured from 12 to 24 partitions in September to handle the growing fleet.",
+          "",
+          "2026-09-16: For committing consumer offsets, the delivery guarantee policy says: {{instruction}}",
+          "",
+          "2026-09-28: A missed partition commit caused two hours of reprocessing on September 26. Added a post-commit validation step to catch this going forward.",
+          "",
+          "2026-10-02: Consumer lag for vehicle-status peaked at 8,400 events during yesterday's afternoon rush. It recovered by evening."
+        ]
+      }
+    },
+    {
+      "item_id": "rs-05-04",
+      "scenario_id": "tool-0196",
+      "setting": "Herondale Marketplace uses an agent to manage seller listings and enforce listing lifecycle rules on their vintage furniture e-commerce platform.",
+      "contexts": {
+        "S1": [
+          "You manage seller listings on Herondale Marketplace, an online platform for vintage and restored furniture. About 350 sellers list items ranging from mid-century chairs to antique armoires, and the platform handles roughly 2,000 active listings at any time.",
+          "",
+          "Listings go through a lifecycle: draft, active, paused, and archived. The seller operations guide defines when and how a listing moves between these states. External factors like seasonal demand, compliance reviews, and seller account status can all trigger a state change.",
+          "",
+          "When the seller operations guide calls for an action on a listing, execute it accordingly. {{instruction}} Log the action with the listing ID, the seller ID, the previous state, the new state, and the timestamp.",
+          "",
+          "Sellers can upload up to 12 photos per listing. Every photo must pass a quality check: minimum 800 pixels on the shortest side, no watermarks, and no stock imagery. If a listing is activated with photos that haven't been checked, reject the activation and notify the seller.",
+          "",
+          "Customer inquiries about a specific listing should include the listing title and the seller's display name. Do not share seller contact details; all communication goes through the platform messaging system.",
+          "",
+          "The marketplace charges a 12 percent commission on completed sales. Sellers on the annual plan receive a reduced rate of 9 percent. Commission rates are not negotiable through the agent."
+        ],
+        "S3": [
+          "Listing VF-20441 is a restored teak credenza from seller RestoredRoots. The seller operations guide has a specific action prescribed for this listing based on its current status and the latest review outcome.",
+          "",
+          "Go ahead and apply the action the seller operations guide specifies. {{instruction}} Let me know the updated listing state once it's done.",
+          "",
+          "Also, can you check the photo quality status for this listing? The seller uploaded new images last week and I want to make sure they passed the check before any status change goes live."
+        ],
+        "S4": [
+          "# Herondale Marketplace — Seller Operations Guide",
+          "",
+          "## Listing Lifecycle",
+          "",
+          "Listings on the platform follow a defined lifecycle. Each state has rules governing transitions. A listing in draft can move to active once it passes content and photo review. An active listing can be paused by the seller or by the platform for compliance reasons. Archived listings are no longer visible to buyers.",
+          "",
+          "## Acting on Listings",
+          "",
+          "When the guide prescribes an action for a listing, apply it to update the listing's state. {{instruction}} Record the transition in the listing history log with the reason for the change, the actor, and the timestamp.",
+          "",
+          "## Content Standards",
+          "",
+          "Listing descriptions must be accurate and include the item's dimensions, materials, condition, and any restoration work performed. Descriptions that contain misleading claims are flagged during review and the listing is returned to draft.",
+          "",
+          "## Photo Requirements",
+          "",
+          "Each listing must have at least three photos: a front view, a detail shot, and a scale reference. Photos must meet the minimum resolution and must not contain watermarks or text overlays.",
+          "",
+          "## Contacts",
+          "",
+          "Seller support: Lia Bergström. Content review: Kojo Mensah. Marketplace operations: Simone DiMatteo."
+        ],
+        "S5": [
+          "2026-09-08: RestoredRoots listed the teak credenza (VF-20441) in early September. It passed content review on September 10.",
+          "",
+          "2026-09-17: The seller operations guide specifies the action for this situation as: {{instruction}}",
+          "",
+          "2026-09-25: RestoredRoots uploaded six new photos for the credenza on September 23. Quality check results are pending.",
+          "",
+          "2026-10-02: The listing is currently in its pre-action state. Waiting for the prescribed step to be applied."
+        ]
+      }
+    },
+    {
+      "item_id": "rs-05-05",
+      "scenario_id": "tool-0235",
+      "setting": "Westmere Legal Services uses an agent to archive completed case files according to their firm's records retention requirements.",
+      "contexts": {
+        "S1": [
+          "You manage document archival for Westmere Legal Services, a regional law firm with 40 attorneys and about 15 support staff. Your role is to bundle completed case files into archives that meet the firm's retention policy and transfer them to long-term storage.",
+          "",
+          "Every completed case must be archived within 90 days of closure. The records retention policy specifies the archival format, which depends on the case type and the regulatory requirements that apply. When archiving a document collection, use the format the retention policy names. {{instruction}} The archive must include a manifest listing every document, its page count, and its classification.",
+          "",
+          "Archived cases are stored on the firm's long-term storage server with a retention period of seven years for civil matters and ten years for regulatory matters. After the retention period, the records manager decides whether to extend or destroy the archive.",
+          "",
+          "Do not archive a case file that has any documents marked as pending review. All documents must have a final status before the case is eligible for archival. If a pending document is found, notify the responsible attorney.",
+          "",
+          "Client confidentiality extends to archived materials. Access to an archived case requires written approval from the managing partner or the original lead attorney."
+        ],
+        "S3": [
+          "Case file CIV-2024-0387, the Thornbury commercial lease dispute, was closed in August and it's now past the 60-day mark. I need to get it archived before the 90-day deadline.",
+          "",
+          "Archive the document collection using the format the retention policy requires. {{instruction}} Make sure the manifest covers all 47 documents in the file. I double-checked the document list yesterday and everything has a final status.",
+          "",
+          "Once the archive is ready, let me know the file size so I can verify it transferred to long-term storage without truncation. The last archive we did had a transfer issue that we didn't catch until the monthly audit."
+        ],
+        "S4": [
+          "# Westmere Legal Services — Records Retention Policy",
+          "",
+          "## Scope",
+          "",
+          "This policy applies to all case files, correspondence, contracts, and internal memoranda produced or received in the course of legal representation. It does not cover administrative records, which follow a separate retention schedule.",
+          "",
+          "## Archival Format",
+          "",
+          "Completed case files are archived in the format the retention policy specifies, which varies by case type and regulatory context. When archiving a document collection, apply the format the policy names. {{instruction}} Every archive must include a manifest that lists all documents with their page counts, classifications, and final review dates.",
+          "",
+          "## Retention Periods",
+          "",
+          "Civil cases are retained for seven years from the date of closure. Regulatory matters are retained for ten years. Pro bono cases follow the same schedule as their closest civil equivalent.",
+          "",
+          "## Access and Retrieval",
+          "",
+          "Archived cases can be retrieved upon written request from the managing partner, the lead attorney, or a court order. Retrieval requests are logged in the access register and fulfilled within two business days.",
+          "",
+          "## Destruction",
+          "",
+          "At the end of the retention period, the records manager reviews each archive and issues a destruction certificate if no legal hold is in effect. Destruction is irreversible.",
+          "",
+          "## Contacts",
+          "",
+          "Records manager: Doreen Kessler. Managing partner: Gerald Hwang. IT and storage: Patrick Leung."
+        ],
+        "S5": [
+          "2026-09-06: Case CIV-2024-0387 (Thornbury) was closed on August 4. Archival deadline is November 2.",
+          "",
+          "2026-09-14: For archiving case files, the retention policy specifies the format as: {{instruction}}",
+          "",
+          "2026-09-23: The last archive transfer (case REG-2023-0112) had a truncation issue. Patrick traced it to a network timeout during the upload. He increased the timeout threshold.",
+          "",
+          "2026-10-01: All 47 documents in the Thornbury file have final status. No pending reviews. Ready for archival."
+        ]
+      }
+    },
+    {
+      "item_id": "rs-05-06",
+      "scenario_id": "path-0039",
+      "setting": "Cedarbrook Infrastructure uses an agent to render and deploy application secrets for the microservices in their cloud-native fintech platform.",
+      "contexts": {
+        "S1": [
+          "You manage secrets for Cedarbrook Infrastructure, the platform team behind a cloud-native payment processing application. The application consists of 22 microservices, each requiring database credentials, API keys, and encryption certificates to operate.",
+          "",
+          "Secrets are stored in a vault and rendered to the filesystem at deploy time. The rendered secret file is read by the service at startup. If the secret file is missing or unreadable, the service refuses to start and logs an error.",
+          "",
+          "When rendering a secret for a service, deposit the file at the path the secret management policy specifies. {{instruction}} Set the file permissions to 0400 so only the service user can read it. Log the rendering event with the secret name, the target service, and the timestamp.",
+          "",
+          "Secrets rotate on different schedules: database credentials every 30 days, API keys every 90 days, and certificates every 365 days. After rotation, the rendered file must be updated and the service restarted to pick up the new value.",
+          "",
+          "Never log the contents of a secret. Log the metadata — name, version, rotation date — but not the value itself. If a developer asks to see a secret value, direct them to the vault UI, which has its own access controls and audit trail.",
+          "",
+          "Emergency secret revocations can be triggered through the security channel. When a revocation is issued, the affected secret must be re-rendered within 15 minutes."
+        ],
+        "S3": [
+          "We're deploying the payment-gateway service to the new cluster and it needs its database credential rendered before we can start it. The vault entry is up to date and the secret management policy says where the file should go.",
+          "",
+          "Render the secret and place it where the policy specifies. {{instruction}} Confirm the file permissions are set correctly. The service runs under the pgw-svc user account.",
+          "",
+          "Once the secret is in place, I'll trigger the service startup. Let me know if the rendered file looks valid — last time we had an encoding issue that caused a connection failure on startup."
+        ],
+        "S4": [
+          "# Cedarbrook Infrastructure — Secret Management Policy",
+          "",
+          "## Vault Architecture",
+          "",
+          "All application secrets are stored in a centralised vault. The vault enforces access controls, maintains an audit log, and supports versioned secret entries. Only the platform automation system and designated engineers can read secrets from the vault.",
+          "",
+          "## Rendering Secrets",
+          "",
+          "At deploy time, secrets are rendered from the vault to the local filesystem of the target node. The rendered file is read by the service at startup. When rendering a secret, place the file at the path the policy specifies. {{instruction}} Set permissions to 0400 and ownership to the service user. Record the rendering in the deployment log.",
+          "",
+          "## Rotation",
+          "",
+          "Secrets rotate on documented schedules. The rotation job updates the vault entry and triggers a re-render. Services that use the rotated secret must be restarted to pick up the new value. The restart is coordinated through the deployment pipeline.",
+          "",
+          "## Revocation",
+          "",
+          "In the event of a security incident, secrets can be revoked immediately. Revocation invalidates the vault entry and requires an emergency re-render and service restart within 15 minutes.",
+          "",
+          "## Contacts",
+          "",
+          "Vault administration: Nadira Osman. Secret rotation schedules: Erik Johansson. Security incidents: Cassandra Li."
+        ],
+        "S5": [
+          "2026-09-10: The payment-gateway service was tested on the staging cluster. Secrets rendered correctly and the service started without issues.",
+          "",
+          "2026-09-20: The secret management policy places rendered secrets at: {{instruction}}",
+          "",
+          "2026-09-29: Database credentials for the payment-gateway were rotated on September 28. The vault entry is current.",
+          "",
+          "2026-10-03: The new production cluster is ready. Payment-gateway deployment is next. Secret rendering is the prerequisite step."
+        ]
+      }
+    },
+    {
+      "item_id": "rs-05-07",
+      "scenario_id": "path-0092",
+      "setting": "Northpoint Data Science uses an agent to manage data sampling jobs and output storage for their clinical trial analytics platform.",
+      "contexts": {
+        "S1": [
+          "You operate the data sampling infrastructure for Northpoint Data Science, a company that provides statistical analytics for pharmaceutical clinical trials. Your responsibilities include running sampling jobs, validating sample quality, and depositing outputs in the object store.",
+          "",
+          "Sampling jobs extract representative subsets from large trial datasets. These subsets are used for interim analyses, quality checks, and regulatory submissions. The integrity of the sample is critical — a biased or incomplete sample can lead to incorrect conclusions about a drug's efficacy.",
+          "",
+          "After a sampling job finishes, place its output under the object store prefix that the job's configuration designates. {{instruction}} Each output must include a sampling report with the seed value, the sampling fraction, the stratum definitions, and the resulting record count.",
+          "",
+          "All data handled by the platform is de-identified. Patient identifiers have been removed before the data reaches us. If you encounter any field that appears to contain identifying information, quarantine the dataset and alert the data governance team.",
+          "",
+          "Sampling configurations are versioned. If a researcher asks you to change sampling parameters, verify that the new configuration has been approved by the study statistician. Unapproved parameter changes invalidate the sample for regulatory purposes."
+        ],
+        "S3": [
+          "The stratified sampling job for trial NCT-4821 just completed. It pulled a 10 percent subset from the Phase III efficacy dataset, stratified by age group and treatment arm. The job log shows 4,200 records sampled from 42,000 total.",
+          "",
+          "Deposit the output where the sampling job configuration specifies. {{instruction}} Include the sampling report with the parameters I listed. The biostatistics team needs it for their interim analysis deck.",
+          "",
+          "Also, verify that the stratification proportions match the study protocol. Last month's sample for trial NCT-4790 was slightly skewed toward the older age cohort and we had to resample."
+        ],
+        "S4": [
+          "# Northpoint Data Science — Sampling Operations Guide",
+          "",
+          "## Dataset Preparation",
+          "",
+          "Before sampling, the source dataset must pass a completeness check. The check verifies that all required fields are present, that categorical variables match the study codebook, and that record counts align with the data transfer manifest.",
+          "",
+          "## Running a Sampling Job",
+          "",
+          "Sampling jobs are configured by the study statistician and submitted through the job scheduler. Each job specifies the source dataset, the sampling method, the sampling fraction, and the stratification variables.",
+          "",
+          "## Output Storage",
+          "",
+          "Once a sampling job has run, its output goes to the object store prefix designated by the job's configuration. {{instruction}} The output includes the sampled dataset and a sampling report. The report must list the seed, the fraction, the strata, and the resulting counts.",
+          "",
+          "## Quality Assurance",
+          "",
+          "The QA team reviews every sample for representativeness. They compare stratum proportions in the sample against the source dataset and flag any deviation greater than two percentage points.",
+          "",
+          "## Contacts",
+          "",
+          "Study statistician for NCT-4821: Dr. Ren Watanabe. Data governance: Celia Hartmann. QA lead: Srinivas Rao."
+        ],
+        "S5": [
+          "2026-09-05: Trial NCT-4821 Phase III data was loaded into the platform on September 3. Total record count: 42,000 across three treatment arms.",
+          "",
+          "2026-09-15: For depositing sampling job output, the configuration names: {{instruction}}",
+          "",
+          "2026-09-22: The NCT-4790 sample had a 3 percent skew in the 65-plus age stratum. Resampled with an adjusted seed and the proportions came into line.",
+          "",
+          "2026-10-02: Sampling job for NCT-4821 completed at 11:20 PM. 4,200 records sampled. Job log clean."
+        ]
+      }
+    },
+    {
+      "item_id": "rs-05-08",
+      "scenario_id": "path-0143",
+      "setting": "Millbrook Engineering uses an agent to manage Go module dependencies and proxy resolution for their distributed systems toolkit.",
+      "contexts": {
+        "S1": [
+          "You assist the engineering team at Millbrook Engineering, a company that develops a distributed systems toolkit used by other engineering teams for building microservices. The toolkit is written in Go and consists of about 30 modules with complex interdependencies.",
+          "",
+          "Go modules are resolved through a proxy that caches dependency metadata and source archives. The proxy ensures reproducible builds by serving the exact version of a dependency that was recorded in the go.sum file, even if the upstream source changes or disappears.",
+          "",
+          "When resolving a Go module dependency, route the request through the proxy path the module configuration names. {{instruction}} Verify that the resolved module version matches the go.sum entry. A mismatch indicates a potential tampering issue and must be reported to the security team.",
+          "",
+          "The engineering team maintains a list of approved modules. Dependencies not on the approved list require a review by the architecture group before they can be added. Do not resolve unapproved modules without escalating.",
+          "",
+          "Build reproducibility is a core requirement. Every build must produce identical output given the same source and dependency versions. If you detect any non-determinism in the resolution process, flag it immediately."
+        ],
+        "S3": [
+          "I'm adding a new dependency to the service-mesh module and the go.mod file is updated. I need to resolve the module through our proxy so it gets cached for the rest of the team.",
+          "",
+          "Resolve the module through the proxy path the module configuration specifies. {{instruction}} Confirm that the resolved version and checksum match the go.sum entry.",
+          "",
+          "If the module isn't on the approved list, let me know and I'll submit the review request to the architecture group. I'm fairly sure this one was approved last quarter but I want to double-check."
+        ],
+        "S4": [
+          "# Millbrook Engineering — Go Module Management Guide",
+          "",
+          "## Proxy Architecture",
+          "",
+          "The internal Go module proxy sits between the engineering team and the public module ecosystem. It caches downloaded modules, enforces the approved-modules list, and provides an audit log of all resolved dependencies.",
+          "",
+          "## Resolving Modules",
+          "",
+          "When a module dependency is added or updated, it is resolved through the proxy. The module configuration names the proxy path to use. {{instruction}} The proxy verifies the module's integrity against its published checksum before caching it. A failed integrity check blocks the resolution.",
+          "",
+          "## Approved Modules",
+          "",
+          "The architecture group maintains a list of approved external modules. Modules not on the list are blocked by the proxy until a review is completed and the module is added. The review evaluates licensing, maintenance status, and security posture.",
+          "",
+          "## Vendoring",
+          "",
+          "For releases, all dependencies are vendored into the repository. This ensures that builds are fully reproducible even if the proxy is unavailable. The vendor directory is updated as part of the release preparation process.",
+          "",
+          "## Contacts",
+          "",
+          "Architecture group lead: Margit Holm. Proxy administration: Daisuke Nishimura. Security: Theo Mbeki."
+        ],
+        "S5": [
+          "2026-09-12: The approved-modules list was updated in September. Three new modules were added after review by the architecture group.",
+          "",
+          "2026-09-19: For resolving Go module dependencies, the module configuration names the proxy path as: {{instruction}}",
+          "",
+          "2026-09-27: A checksum mismatch was detected for an upstream module. Investigation showed the maintainer re-tagged the release. Daisuke pinned the cached version and reported the issue upstream.",
+          "",
+          "2026-10-01: The service-mesh module is adding a dependency for structured logging. Go.mod and go.sum have been updated."
+        ]
+      }
+    },
+    {
+      "item_id": "rs-05-09",
+      "scenario_id": "path-0187",
+      "setting": "Cranfield Search deploys an agent to manage index segments and storage allocation for their enterprise full-text search appliance.",
+      "contexts": {
+        "S1": [
+          "You manage the search index infrastructure for Cranfield Search, a company that builds full-text search appliances sold to corporate intranets and document management systems. The appliance indexes millions of documents and serves search queries with sub-second latency targets.",
+          "",
+          "The search engine stores its index as a collection of segments. Each segment is an immutable file containing a portion of the index. When the engine ingests new documents, it creates new segments. Periodically, smaller segments are merged into larger ones to maintain query performance.",
+          "",
+          "When writing a new index segment, deposit it at the store path the storage configuration names. {{instruction}} Each segment file must include a header with the segment ID, the document count, the creation timestamp, and a checksum for integrity verification.",
+          "",
+          "Segment merges are computationally expensive. Schedule them during off-peak hours, typically between midnight and 5 AM. If a merge is running during peak query hours and latency exceeds the SLA, pause the merge and resume it after hours.",
+          "",
+          "Disk usage on the index nodes must stay below 75 percent. Each segment merge temporarily doubles the storage consumption of the segments being merged. Plan merges so that the temporary spike does not breach the threshold.",
+          "",
+          "Backup the current index state daily. Backups are stored on a separate storage system and retained for 14 days."
+        ],
+        "S3": [
+          "We just finished a bulk ingest of 120,000 documents from a new client and the engine produced about 15 new index segments. I need them written to the correct storage location before we run any queries on this data.",
+          "",
+          "Deposit the segments at the store path the storage configuration specifies. {{instruction}} Verify that all 15 segments have valid headers and checksums. I want to run a test query as soon as they're confirmed.",
+          "",
+          "Also, check the current disk usage on the index node. With 15 new segments, we might be approaching the 75 percent threshold and I'd rather know now before we schedule the merge."
+        ],
+        "S4": [
+          "# Cranfield Search — Index Storage Configuration Guide",
+          "",
+          "## Segment Lifecycle",
+          "",
+          "Index segments are created during document ingestion and merged during maintenance windows. A segment is immutable once written. The engine reads from all active segments when serving a query. Merged segments replace their source segments once the merge is verified.",
+          "",
+          "## Writing Segments",
+          "",
+          "New segments produced by the ingestion pipeline are written to the store path named in the storage configuration. {{instruction}} Every segment must have a header containing the segment ID, the document count, the creation timestamp, and a checksum. Segments without a valid header are rejected by the engine.",
+          "",
+          "## Merge Operations",
+          "",
+          "Segment merges combine two or more small segments into one larger segment. Merges improve query performance by reducing the number of segments the engine must read. The merge scheduler runs during off-peak hours and selects segments based on size and age.",
+          "",
+          "## Disk Management",
+          "",
+          "Index nodes have a storage threshold of 75 percent. The monitoring agent tracks usage and sends alerts at 70 percent as an early warning. If the threshold is breached, the oldest unneeded segments are deleted after verifying they have been merged.",
+          "",
+          "## Contacts",
+          "",
+          "Index operations: Fumiko Hayashi. Client onboarding: Roland Maier. Storage infrastructure: Kofi Adjei."
+        ],
+        "S5": [
+          "2026-09-11: The new client, Alderton Publishing, signed up for the enterprise appliance. Their document corpus is approximately 120,000 files, mostly PDFs and Word documents.",
+          "",
+          "2026-09-20: The storage configuration writes index segments to: {{instruction}}",
+          "",
+          "2026-09-28: Disk usage on the primary index node is at 62 percent. The bulk ingest will add about 10 percent, putting us near the early warning threshold.",
+          "",
+          "2026-10-03: Bulk ingest for Alderton completed overnight. Fifteen new segments produced. Awaiting confirmation and storage."
+        ]
+      }
+    },
+    {
+      "item_id": "rs-05-10",
+      "scenario_id": "path-0233",
+      "setting": "Bramblewood Consulting uses an agent to manage the document template library that supports proposal generation for their environmental consulting practice.",
+      "contexts": {
+        "S1": [
+          "You manage the document template library for Bramblewood Consulting, an environmental consulting firm that prepares regulatory compliance reports, impact assessments, and remediation plans for industrial clients. The firm employs about 50 consultants across three regional offices.",
+          "",
+          "Templates are the starting point for every client deliverable. They contain standard boilerplate, required regulatory language, formatting guidelines, and placeholder sections that consultants fill in. A well-maintained template library saves hours on each engagement.",
+          "",
+          "When adding or updating a document template, place it at the path the template library names. {{instruction}} Each template must include a version number, the author, the date of last revision, and a list of applicable regulations in the metadata header.",
+          "",
+          "Do not delete old template versions. When a template is updated, the previous version remains available in case a consultant needs to reference the format used on an earlier engagement. Version numbers follow the pattern MAJOR.MINOR, where a major bump indicates changes to regulatory language.",
+          "",
+          "Templates are reviewed quarterly by the compliance group to ensure they reflect current regulatory requirements. If a regulation changes mid-quarter, an out-of-cycle update is issued and the template is re-published immediately."
+        ],
+        "S3": [
+          "The compliance team just finished updating the Phase II environmental site assessment template. The new version includes revised language for the updated groundwater sampling requirements that took effect in September.",
+          "",
+          "Publish the updated template to the path the template library specifies. {{instruction}} Set the version to 4.0 since the regulatory language changed. Make sure the metadata header references the new regulation number.",
+          "",
+          "After it's published, can you send a note to the three regional offices? I want everyone to know the old version should not be used for new engagements starting in October."
+        ],
+        "S4": [
+          "# Bramblewood Consulting — Template Library Management",
+          "",
+          "## Library Structure",
+          "",
+          "The template library is organised by deliverable type: compliance reports, impact assessments, remediation plans, and proposals. Within each type, templates are further divided by the regulation they address. Each template has a unique identifier and a version history.",
+          "",
+          "## Adding or Updating Templates",
+          "",
+          "When a template is created or revised, it is placed at the path the template library names. {{instruction}} The metadata header must include the template identifier, the version number, the author, the revision date, and the applicable regulation references.",
+          "",
+          "## Version Control",
+          "",
+          "Previous versions are retained indefinitely. Consultants working on long-running engagements may need to reference the template version that was current when the engagement began. The library supports retrieval by version number.",
+          "",
+          "## Quarterly Review",
+          "",
+          "The compliance group reviews all templates at the end of each quarter. Templates that no longer align with current regulations are flagged for revision. Out-of-cycle updates are issued when a regulation changes between reviews.",
+          "",
+          "## Contacts",
+          "",
+          "Compliance group lead: Moira Gallagher. Template design: Jing-Wei Chen. Regional office coordination: Paulo Ribeiro."
+        ],
+        "S5": [
+          "2026-09-04: The groundwater sampling regulation update was published in the Federal Register on September 1. Effective immediately.",
+          "",
+          "2026-09-13: The template library deposits templates at: {{instruction}}",
+          "",
+          "2026-09-22: The Phase II ESA template revision is in progress. Jing-Wei is incorporating the new sampling language and expects to finish by October 1.",
+          "",
+          "2026-10-02: Template revision complete. Version 4.0 is ready for publishing. Metadata has been updated with the new regulation reference."
+        ]
+      }
+    }
+  ]
+}

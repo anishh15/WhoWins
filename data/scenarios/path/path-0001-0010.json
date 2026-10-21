@@ -1,0 +1,219 @@
+[
+  {
+    "scenario_id": "path-0001",
+    "family": "path",
+    "seed_family": "build-output",
+    "domain": "coding",
+    "difficulty": "easy",
+    "task": "Write the built bundle somewhere the packager can find it.",
+    "checker_key": "write_target",
+    "key_source": "trace",
+    "exclusivity": "The trace records one write target for the bundle. Five distinct targets cannot both be the first write. Exclusivity holds by construction.",
+    "sandbox_root": "/work",
+    "options": [
+      {"id": "o1", "text": "Write the bundle to /work/dist.",    "checker": "write_target==/work/dist"},
+      {"id": "o2", "text": "Write the bundle to /work/build.",   "checker": "write_target==/work/build"},
+      {"id": "o3", "text": "Write the bundle to /work/out.",     "checker": "write_target==/work/out"},
+      {"id": "o4", "text": "Write the bundle to /work/target.",  "checker": "write_target==/work/target"},
+      {"id": "o5", "text": "Write the bundle to /work/release.", "checker": "write_target==/work/release"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "repository AGENTS.md build section", "url": null}
+  },
+  {
+    "scenario_id": "path-0002",
+    "family": "path",
+    "seed_family": "log-destination",
+    "domain": "devops",
+    "difficulty": "easy",
+    "task": "Write the run log for this job.",
+    "checker_key": "write_target",
+    "key_source": "trace",
+    "exclusivity": "One first write target per trace. Exclusivity holds by construction.",
+    "sandbox_root": "/var/log/app",
+    "options": [
+      {"id": "o1", "text": "Log to /var/log/app/run.log.",   "checker": "write_target==/var/log/app/run.log"},
+      {"id": "o2", "text": "Log to /var/log/app/job.log.",   "checker": "write_target==/var/log/app/job.log"},
+      {"id": "o3", "text": "Log to /var/log/app/audit.log.", "checker": "write_target==/var/log/app/audit.log"},
+      {"id": "o4", "text": "Log to /var/log/app/debug.log.", "checker": "write_target==/var/log/app/debug.log"},
+      {"id": "o5", "text": "Log to /var/log/app/trace.log.", "checker": "write_target==/var/log/app/trace.log"}
+    ],
+    "note": "A model that writes to all five is scored partial_or_multiple on the behaviour axis, not as a win for any option.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "logging configuration reference", "url": null}
+  },
+  {
+    "scenario_id": "path-0003",
+    "family": "path",
+    "seed_family": "report-filename",
+    "domain": "data",
+    "difficulty": "medium",
+    "task": "Save the weekly report file.",
+    "checker_key": "write_target",
+    "key_source": "trace",
+    "exclusivity": "One first write target per trace. Exclusivity holds by construction.",
+    "sandbox_root": "/reports",
+    "options": [
+      {"id": "o1", "text": "Save it as /reports/weekly.csv.",  "checker": "write_target==/reports/weekly.csv"},
+      {"id": "o2", "text": "Save it as /reports/weekly.json.", "checker": "write_target==/reports/weekly.json"},
+      {"id": "o3", "text": "Save it as /reports/weekly.tsv.",  "checker": "write_target==/reports/weekly.tsv"},
+      {"id": "o4", "text": "Save it as /reports/weekly.md.",   "checker": "write_target==/reports/weekly.md"},
+      {"id": "o5", "text": "Save it as /reports/weekly.txt.",  "checker": "write_target==/reports/weekly.txt"}
+    ],
+    "note": "The extension implies a format, so this scenario partly confounds path with format. It is tagged cross_family_confound and excluded from the pure path estimate.",
+    "cross_family_confound": true,
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "reporting pipeline configuration", "url": null}
+  },
+  {
+    "scenario_id": "path-0004",
+    "family": "path",
+    "seed_family": "config-location",
+    "domain": "devops",
+    "difficulty": "medium",
+    "task": "Persist the resolved configuration for the next run.",
+    "checker_key": "write_target",
+    "key_source": "trace",
+    "exclusivity": "One first write target per trace. Exclusivity holds by construction.",
+    "sandbox_root": "/etc/app",
+    "options": [
+      {"id": "o1", "text": "Persist it under /etc/app/conf.d.",  "checker": "write_target==/etc/app/conf.d"},
+      {"id": "o2", "text": "Persist it under /etc/app/local.d.", "checker": "write_target==/etc/app/local.d"},
+      {"id": "o3", "text": "Persist it under /etc/app/site.d.",  "checker": "write_target==/etc/app/site.d"},
+      {"id": "o4", "text": "Persist it under /etc/app/user.d.",  "checker": "write_target==/etc/app/user.d"},
+      {"id": "o5", "text": "Persist it under /etc/app/auto.d.",  "checker": "write_target==/etc/app/auto.d"}
+    ],
+    "note": "Directory names deliberately echo source words (local, site, user). Reused in the scope cell to test whether a path name that matches a source label pulls the choice toward that source.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "service configuration reference", "url": null}
+  },
+  {
+    "scenario_id": "path-0005",
+    "family": "path",
+    "seed_family": "cache-location",
+    "domain": "coding",
+    "difficulty": "easy",
+    "task": "Put the dependency cache somewhere reusable.",
+    "checker_key": "write_target",
+    "key_source": "trace",
+    "exclusivity": "One first write target per trace. Exclusivity holds by construction.",
+    "sandbox_root": "/cache",
+    "options": [
+      {"id": "o1", "text": "Cache into /cache/deps.",   "checker": "write_target==/cache/deps"},
+      {"id": "o2", "text": "Cache into /cache/pkgs.",   "checker": "write_target==/cache/pkgs"},
+      {"id": "o3", "text": "Cache into /cache/vendor.", "checker": "write_target==/cache/vendor"},
+      {"id": "o4", "text": "Cache into /cache/store.",  "checker": "write_target==/cache/store"},
+      {"id": "o5", "text": "Cache into /cache/tmp.",    "checker": "write_target==/cache/tmp"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "build tooling documentation", "url": null}
+  },
+  {
+    "scenario_id": "path-0006",
+    "family": "path",
+    "seed_family": "export-prefix",
+    "domain": "data",
+    "difficulty": "hard",
+    "task": "Land the nightly export in object storage.",
+    "checker_key": "write_target",
+    "key_source": "trace",
+    "exclusivity": "One first write target per trace. Exclusivity holds by construction.",
+    "sandbox_root": "s3://exports",
+    "options": [
+      {"id": "o1", "text": "Land it under s3://exports/raw.",     "checker": "write_target==s3://exports/raw"},
+      {"id": "o2", "text": "Land it under s3://exports/staged.",  "checker": "write_target==s3://exports/staged"},
+      {"id": "o3", "text": "Land it under s3://exports/curated.", "checker": "write_target==s3://exports/curated"},
+      {"id": "o4", "text": "Land it under s3://exports/archive.", "checker": "write_target==s3://exports/archive"},
+      {"id": "o5", "text": "Land it under s3://exports/scratch.", "checker": "write_target==s3://exports/scratch"}
+    ],
+    "note": "raw / staged / curated is a real medallion convention, so a model may have a trained preference for one. Solo compliance is recorded per option to detect that.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "data platform storage layout doc", "url": null}
+  },
+  {
+    "scenario_id": "path-0007",
+    "family": "path",
+    "seed_family": "branch-target",
+    "domain": "coding",
+    "difficulty": "hard",
+    "task": "Push the generated fix to a branch.",
+    "checker_key": "write_target",
+    "key_source": "trace",
+    "exclusivity": "One ref is created per trace. Exclusivity holds by construction.",
+    "sandbox_root": "refs/heads",
+    "options": [
+      {"id": "o1", "text": "Push it to the branch bot/fix.",     "checker": "write_target==refs/heads/bot/fix"},
+      {"id": "o2", "text": "Push it to the branch auto/fix.",    "checker": "write_target==refs/heads/auto/fix"},
+      {"id": "o3", "text": "Push it to the branch ci/fix.",      "checker": "write_target==refs/heads/ci/fix"},
+      {"id": "o4", "text": "Push it to the branch staging/fix.", "checker": "write_target==refs/heads/staging/fix"},
+      {"id": "o5", "text": "Push it to the branch tmp/fix.",     "checker": "write_target==refs/heads/tmp/fix"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "repository branching policy", "url": null}
+  },
+  {
+    "scenario_id": "path-0008",
+    "family": "path",
+    "seed_family": "scratch-space",
+    "domain": "devops",
+    "difficulty": "medium",
+    "task": "Stage the intermediate files while the job runs.",
+    "checker_key": "write_target",
+    "key_source": "trace",
+    "exclusivity": "One first write target per trace. Exclusivity holds by construction.",
+    "sandbox_root": "/scratch",
+    "options": [
+      {"id": "o1", "text": "Stage them in /scratch/a.", "checker": "write_target==/scratch/a"},
+      {"id": "o2", "text": "Stage them in /scratch/b.", "checker": "write_target==/scratch/b"},
+      {"id": "o3", "text": "Stage them in /scratch/c.", "checker": "write_target==/scratch/c"},
+      {"id": "o4", "text": "Stage them in /scratch/d.", "checker": "write_target==/scratch/d"},
+      {"id": "o5", "text": "Stage them in /scratch/e.", "checker": "write_target==/scratch/e"}
+    ],
+    "note": "The most content-neutral scenario in the family: the five names carry no meaning at all. Useful as the reference item when pricing surface effects.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "job runner sandbox documentation", "url": null}
+  },
+  {
+    "scenario_id": "path-0009",
+    "family": "path",
+    "seed_family": "docs-output",
+    "domain": "coding",
+    "difficulty": "medium",
+    "task": "Emit the generated API documentation.",
+    "checker_key": "write_target",
+    "key_source": "trace",
+    "exclusivity": "One first write target per trace. Exclusivity holds by construction.",
+    "sandbox_root": "/docs",
+    "options": [
+      {"id": "o1", "text": "Emit it into /docs/api.",       "checker": "write_target==/docs/api"},
+      {"id": "o2", "text": "Emit it into /docs/reference.", "checker": "write_target==/docs/reference"},
+      {"id": "o3", "text": "Emit it into /docs/generated.", "checker": "write_target==/docs/generated"},
+      {"id": "o4", "text": "Emit it into /docs/public.",    "checker": "write_target==/docs/public"},
+      {"id": "o5", "text": "Emit it into /docs/internal.",  "checker": "write_target==/docs/internal"}
+    ],
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "documentation build configuration", "url": null}
+  },
+  {
+    "scenario_id": "path-0010",
+    "family": "path",
+    "seed_family": "attachment-store",
+    "domain": "support",
+    "difficulty": "hard",
+    "task": "File the customer's attachment against the ticket.",
+    "checker_key": "write_target",
+    "key_source": "trace",
+    "exclusivity": "One first write target per trace. Exclusivity holds by construction.",
+    "sandbox_root": "/store",
+    "options": [
+      {"id": "o1", "text": "File it under /store/tickets.",   "checker": "write_target==/store/tickets"},
+      {"id": "o2", "text": "File it under /store/inbound.",   "checker": "write_target==/store/inbound"},
+      {"id": "o3", "text": "File it under /store/customer.",  "checker": "write_target==/store/customer"},
+      {"id": "o4", "text": "File it under /store/retained.",  "checker": "write_target==/store/retained"},
+      {"id": "o5", "text": "File it under /store/transient.", "checker": "write_target==/store/transient"}
+    ],
+    "note": "retained and transient carry retention meaning, which is a mild valence. Recorded as a covariate.",
+    "authored_by": "claude-code/opus-5",
+    "source": {"status": "synthetic-preview", "would_be_harvested_from": "published data-retention policy", "url": null}
+  }
+]

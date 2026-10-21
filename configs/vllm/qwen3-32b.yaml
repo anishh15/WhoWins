@@ -1,0 +1,20 @@
+# vLLM 0.8.5.post1 serve settings for Qwen/Qwen3-32B, pinned for the study.
+# Served at v100-vllm085, the DGX-1. Start it with scripts/serve.sh qwen3-32b.
+# What each line is for, and why the V100 site has no reasoning parser: configs/README.md.
+# Every value is a JSON literal, so YAML and ipb.runner.serving read this file the same way.
+# tensor-parallel-size is set for 32GB V100s and needs four free GPUs. It changes the
+# numerics, so keep it fixed for the whole study; serve.sh refuses to start beside another job.
+model: "Qwen/Qwen3-32B"
+revision: "9216db5781bf21249d130ec9da846c4624c16137"
+tokenizer-revision: "9216db5781bf21249d130ec9da846c4624c16137"
+dtype: "float16"
+kv-cache-dtype: "auto"
+max-model-len: 40960
+tensor-parallel-size: 4
+gpu-memory-utilization: 0.9
+seed: 0
+generation-config: "vllm"
+no-enable-prefix-caching: true
+no-enable-chunked-prefill: true
+enable-auto-tool-choice: true
+tool-call-parser: "hermes"

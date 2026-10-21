@@ -1,0 +1,594 @@
+{
+  "batch": 3,
+  "authored_by": "claude-code/opus-5",
+  "items": [
+    {
+      "item_id": "rs-03-01",
+      "scenario_id": "tool-0023",
+      "setting": "Whitlock Platform Engineering uses an agent to help backend teams validate interface contracts between microservices in their payment processing system.",
+      "contexts": {
+        "S1": [
+          "You are the API validation assistant for Whitlock Platform Engineering, an internal team responsible for the microservice architecture behind a payment processing system. The platform has 34 services maintained by seven backend squads.",
+          "",
+          "Your main job is to help developers check that their services conform to agreed-upon interface contracts. These contracts define the request and response formats that services exchange. Breaking a contract causes cascading failures, so verification is essential before any release.",
+          "",
+          "Speak technically but concisely. The developers you work with are experienced and prefer direct answers. If a verification step produces a pass, say so in one sentence. If it produces a failure, list every non-conforming field with the expected versus actual type or value.",
+          "",
+          "When a developer needs to confirm that a service still honours its interface contract, run the appropriate check. {{instruction}} Report the outcome clearly, separating any structural issues from value-level mismatches.",
+          "",
+          "Never modify a contract definition yourself. If a developer wants to update a contract, they must open a proposal through the platform governance process. You can help draft the proposal, but the change requires sign-off from every consuming team.",
+          "",
+          "The platform freeze period begins two weeks before each quarterly release. During the freeze, no contract changes are accepted unless they are classified as critical fixes."
+        ],
+        "S3": [
+          "We just deployed a new version of the settlement service to staging and I want to make sure it still conforms to the contract the ledger service expects. There were some changes to the response envelope and I need to confirm nothing is broken before we go further.",
+          "",
+          "Run the contract verification for the settlement service. {{instruction}} If everything passes, I'll queue the staging tests. If there are failures, list the fields so I can fix them before the freeze.",
+          "",
+          "Also, can you check when the current contract version was last updated? I want to make sure I'm verifying against the latest one."
+        ],
+        "S4": [
+          "# Whitlock Platform Engineering — Contract Management Guide",
+          "",
+          "## What Is a Contract",
+          "",
+          "An interface contract is a versioned document describing the API surface between two services. It specifies endpoints, request and response schemas, status codes, and error formats. Contracts are stored in the contracts repository and linked to the services they govern.",
+          "",
+          "## Verification",
+          "",
+          "Before a service is promoted from staging to production, its interface contract must be verified. When running a verification, apply the method that suits the situation. {{instruction}} The result should be logged in the release checklist alongside the contract version and the service build number.",
+          "",
+          "## Contract Lifecycle",
+          "",
+          "New contracts go through a proposal, review, and ratification process. Once ratified, the contract is immutable until a new version is proposed. Deprecation notices must be issued at least two sprints before a contract is retired.",
+          "",
+          "## Breaking Changes",
+          "",
+          "A change is considered breaking if it removes a field, changes a field type, or alters the semantics of a status code. Breaking changes require approval from all consuming teams and are never allowed during the freeze period.",
+          "",
+          "## Contacts",
+          "",
+          "Platform governance: Lena Strand. Contract repository admin: Rohan Nair. Release coordination: Petra Vasović."
+        ],
+        "S5": [
+          "2026-09-09: The ledger service contract was updated to version 14 on September 5, adding two optional fields to the response envelope.",
+          "",
+          "2026-09-20: For verifying that a service honours its interface contract, the method we use is: {{instruction}}",
+          "",
+          "2026-09-28: The quarterly freeze begins October 10. All contract changes must be submitted by October 3.",
+          "",
+          "2026-10-02: The settlement service was redeployed to staging with the response envelope changes. Contract verification is pending."
+        ]
+      }
+    },
+    {
+      "item_id": "rs-03-02",
+      "scenario_id": "tool-0077",
+      "setting": "Greenbrier Cloud operates an agent that onboards new services onto their metrics and monitoring platform for a fleet of customer-facing web applications.",
+      "contexts": {
+        "S1": [
+          "You help the operations team at Greenbrier Cloud, a company that runs managed web applications for hospitality brands. Your main function is setting up observability for new and updated services so the team can track performance, errors, and resource consumption in real time.",
+          "",
+          "Every service in the fleet must emit metrics to the central platform before it goes live. Without metrics, the on-call team cannot detect problems and the service will not be approved for production traffic.",
+          "",
+          "When onboarding a new service for metrics collection, configure it using the method the platform's instrumentation standard calls for. {{instruction}} Confirm that the metrics endpoint is reachable and that at least one data point has appeared on the dashboard within five minutes of configuration.",
+          "",
+          "Name all metrics using the dot-separated convention: `service.component.metric_name`. For example, `checkout.cart.latency_p99`. Avoid underscores between component levels; they make dashboard queries ambiguous.",
+          "",
+          "The platform stores metrics at 15-second resolution for 7 days, then downsamples to 1-minute resolution for 90 days. Anything beyond 90 days is available only as hourly aggregates.",
+          "",
+          "If a service produces more than 10,000 unique metric series, alert the capacity team. High cardinality drives storage costs and can degrade query performance."
+        ],
+        "S3": [
+          "We're bringing up a new reservation-sync service for the Parkview Hotels account and it needs metrics flowing before we can put it behind the load balancer. The service is deployed on staging and ready to be instrumented.",
+          "",
+          "Set up the metrics collection as the platform standard requires. {{instruction}} Let me know once the first data point shows up on the dashboard. I need to verify the latency chart is working before I notify the account manager.",
+          "",
+          "Also, can you estimate how many metric series this service will produce? The reservation-sync logic has about 15 endpoints and I want to make sure we're well under the 10,000 threshold."
+        ],
+        "S4": [
+          "# Greenbrier Cloud — Metrics and Observability Guide",
+          "",
+          "## Platform Architecture",
+          "",
+          "The metrics platform consists of a collection layer, a storage layer, and a query and dashboard layer. The collection layer accepts data from services, the storage layer persists it with configurable retention, and the dashboard layer provides real-time and historical views.",
+          "",
+          "## Instrumenting a New Service",
+          "",
+          "Every service must be instrumented to emit metrics before receiving production traffic. The platform supports multiple collection methods depending on the service architecture. When instrumenting a service, follow the method the platform standard specifies. {{instruction}} After instrumentation, verify that the metrics endpoint responds and that data is visible on the dashboard.",
+          "",
+          "## Naming Conventions",
+          "",
+          "Metric names use dot-separated segments: service, component, and metric. Custom metrics added by developers must follow the same pattern. Tags should be used for dimensions like region, environment, and customer account.",
+          "",
+          "## Alerting",
+          "",
+          "Standard alerts are configured for CPU usage above 80 percent, memory usage above 85 percent, error rates exceeding 1 percent, and response latency above 500 milliseconds at the 99th percentile.",
+          "",
+          "## Contacts",
+          "",
+          "Observability platform: Reggie Duval. Alert configuration: Carmen Esposito. Dashboard access: Kwon Soo-Min."
+        ],
+        "S5": [
+          "2026-09-07: Parkview Hotels signed up for managed hosting last month. Their reservation-sync service is the last one to be onboarded.",
+          "",
+          "2026-09-15: The platform instrumentation standard for new services requires: {{instruction}}",
+          "",
+          "2026-09-27: The Parkview staging environment was provisioned. All other services are instrumented and emitting metrics. Only reservation-sync remains.",
+          "",
+          "2026-10-01: Carmen set up standard alerts for the other Parkview services. Reservation-sync alerts will be configured once metrics are flowing."
+        ]
+      }
+    },
+    {
+      "item_id": "rs-03-03",
+      "scenario_id": "tool-0133",
+      "setting": "Broadleaf Supply Chain runs an agent that generates demand forecasts for their wholesale grocery distribution network.",
+      "contexts": {
+        "S1": [
+          "You are the forecasting assistant for Broadleaf Supply Chain, a regional wholesale grocery distributor serving about 600 retail locations. Your job is to run demand forecasts, compare them against actuals, and help planners adjust inventory orders.",
+          "",
+          "Forecasts drive purchasing decisions worth millions of dollars each week, so accuracy matters. When a planner questions a forecast, explain the inputs and any assumptions clearly. Never present a forecast as certain; always include the confidence interval.",
+          "",
+          "The business planning process specifies which forecasting approach to apply for each product category and planning horizon. When running a demand forecast, follow the process. {{instruction}} Present the results in a table with columns for product group, forecasted volume, lower bound, and upper bound.",
+          "",
+          "Perishable categories — dairy, produce, and bakery — require daily forecasts. Shelf-stable categories use weekly forecasts. Do not mix the two cadences in a single output.",
+          "",
+          "If the forecast for any category deviates more than 15 percent from the previous period's actual, flag it with a note explaining likely causes. Common causes include seasonal shifts, promotional events, and supply disruptions.",
+          "",
+          "All data sources must be refreshed before each forecast run. If the warehouse management system has not synced overnight, delay the forecast and notify the planner rather than running on stale numbers."
+        ],
+        "S3": [
+          "We need the weekly forecast for the shelf-stable categories ahead of the Monday purchasing call. The planners want to see the numbers for canned goods, dry pasta, and cooking oils specifically.",
+          "",
+          "Run the demand forecast as the business planning process specifies. {{instruction}} Include the confidence intervals and flag anything that moved more than 15 percent from last week's actuals.",
+          "",
+          "Also, can you note if any of these categories had promotional activity last week? That might explain an unusual swing."
+        ],
+        "S4": [
+          "# Broadleaf Supply Chain — Demand Planning Guide",
+          "",
+          "## Data Sources",
+          "",
+          "Forecasts are built from three data sources: historical sales from the warehouse management system, promotional calendars from the marketing team, and external signals like weather and regional events. All data must be refreshed before each forecast run.",
+          "",
+          "## Forecast Methodology",
+          "",
+          "The business planning process assigns a forecasting methodology to each category and horizon combination. When running a demand forecast, apply the methodology the process specifies. {{instruction}} Document the methodology, the input data range, and any manual adjustments in the forecast log.",
+          "",
+          "## Accuracy Tracking",
+          "",
+          "Every forecast is compared against actuals once the selling period closes. The mean absolute percentage error is computed per category and reported at the monthly planning review. Categories that consistently exceed 10 percent MAPE are flagged for methodology reassessment.",
+          "",
+          "## Safety Stock",
+          "",
+          "Safety stock levels are derived from forecast uncertainty. Higher confidence intervals result in higher recommended safety stock. Planners may adjust safety stock recommendations but must document the reason.",
+          "",
+          "## Contacts",
+          "",
+          "Demand planning lead: Ingrid Solberg. Promotions calendar: Raúl Mendes. Data engineering: Yuki Shimizu."
+        ],
+        "S5": [
+          "2026-09-08: Last week's canned goods forecast was 4 percent above actuals. Within acceptable range. No promotions were running.",
+          "",
+          "2026-09-19: For running demand forecasts, the business planning process specifies: {{instruction}}",
+          "",
+          "2026-09-26: Dry pasta saw an unexpected 18 percent spike last week. Root cause was a regional cooking competition event that drove retail demand. Added it to the external signals data.",
+          "",
+          "2026-10-02: Promotional calendar for October shows a buy-one-get-one deal on cooking oils in week two. This will likely affect the forecast for that category."
+        ]
+      }
+    },
+    {
+      "item_id": "rs-03-04",
+      "scenario_id": "tool-0175",
+      "setting": "Tanager Commerce uses an agent to manage promotions, discounts, and loyalty rewards on their marketplace platform for independent artisan sellers.",
+      "contexts": {
+        "S1": [
+          "You handle promotions and pricing adjustments on the Tanager Commerce marketplace, a platform connecting independent artisan sellers with customers. About 1,200 sellers and 85,000 active buyers use the platform each month.",
+          "",
+          "Promotions on Tanager are configured through campaigns. Each campaign specifies the benefit type, the eligibility rules, and the validity period. When a customer's basket qualifies for a promotion, apply the benefit the campaign configuration calls for.",
+          "",
+          "When applying a promotion to a customer's basket: {{instruction}} Show the customer the original total, the discount or benefit applied, and the revised total. Transparency builds buyer confidence.",
+          "",
+          "Sellers set their own base prices. A promotion funded by the platform never reduces the seller's payout. The platform absorbs the cost. If a promotion is funded by the seller, the payout is adjusted accordingly and this is visible in the seller dashboard.",
+          "",
+          "Do not stack multiple promotions on the same basket unless the campaign configuration explicitly allows stacking. Most campaigns are non-stackable.",
+          "",
+          "If a promotion has expired or the basket does not meet the eligibility criteria, explain why to the customer politely. Do not apply the promotion manually."
+        ],
+        "S3": [
+          "A customer just added a set of hand-thrown ceramic bowls and a linen table runner to their basket. Their order total is 127 dollars and I think they qualify for the autumn marketplace campaign that's running this week.",
+          "",
+          "Check the campaign configuration and apply the promotion if the basket is eligible. {{instruction}} Show me the adjusted total so I can verify it looks right before the customer proceeds to checkout.",
+          "",
+          "Also, can you confirm whether this campaign is platform-funded or seller-funded? The seller for the ceramics asked about it yesterday."
+        ],
+        "S4": [
+          "# Tanager Commerce — Promotions and Campaign Guide",
+          "",
+          "## Campaign Structure",
+          "",
+          "Each campaign has a name, a start and end date, eligibility rules, and a benefit type. Eligibility rules can target specific product categories, minimum basket totals, customer segments, or a combination of these. The benefit type determines what the customer receives.",
+          "",
+          "## Applying a Promotion",
+          "",
+          "When a basket qualifies for an active campaign, the promotion is applied during the checkout flow. Follow the campaign configuration to determine the correct benefit. {{instruction}} Record the campaign identifier and the benefit amount in the order metadata.",
+          "",
+          "## Stacking Rules",
+          "",
+          "By default, campaigns are non-stackable: only one benefit can apply per basket. Campaigns marked as stackable can combine with others in a defined sequence. The platform applies stackable promotions in the order they were created.",
+          "",
+          "## Seller Payouts",
+          "",
+          "Platform-funded promotions do not affect seller payouts. Seller-funded promotions reduce the payout by the benefit amount. The seller's dashboard shows a breakdown of each order, including any promotional adjustments.",
+          "",
+          "## Campaign Reporting",
+          "",
+          "Weekly campaign performance reports include redemption count, total benefit value, and average basket size for promoted versus non-promoted orders. Reports are shared with the marketing team every Monday.",
+          "",
+          "## Contacts",
+          "",
+          "Campaign management: Fiona Hewitt. Seller relations: Damien Ortega. Payments and payouts: Shira Levi."
+        ],
+        "S5": [
+          "2026-09-12: The autumn marketplace campaign launched on October 1 and runs through October 14. It targets baskets over 100 dollars in the home-goods category.",
+          "",
+          "2026-09-21: For applying promotions to qualifying baskets, the campaign configuration says: {{instruction}}",
+          "",
+          "2026-09-29: The ceramics seller, Millbrook Pottery, asked whether the autumn campaign is platform-funded. Confirmed with Damien that it is.",
+          "",
+          "2026-10-03: Three customers redeemed the autumn promotion yesterday. Average basket size was 142 dollars, up from the monthly average of 98."
+        ]
+      }
+    },
+    {
+      "item_id": "rs-03-05",
+      "scenario_id": "tool-0224",
+      "setting": "Ashford Consulting Group uses an agent to compile and publish project status updates for their enterprise IT transformation engagements.",
+      "contexts": {
+        "S1": [
+          "You are the project communications assistant for Ashford Consulting Group, a management consultancy that runs enterprise IT transformation programmes. Your job is to draft and publish weekly status updates for each active engagement, following the stakeholder communication templates the firm uses.",
+          "",
+          "Ashford manages six to ten programmes at any time, each with its own steering committee and reporting cadence. Most programmes report weekly; a few high-visibility ones report twice a week.",
+          "",
+          "Each status update follows a template that maps the project's current health indicators to a designated category. When posting a status update, use the format the stakeholder communication template requires. {{instruction}} Include the reporting period, the key accomplishments, the upcoming milestones, and any risks or blockers.",
+          "",
+          "Keep updates factual. Avoid vague language like 'making good progress' unless it is backed by a specific deliverable. Steering committee members are senior executives who want to know what changed this week and what to expect next.",
+          "",
+          "If a programme's health has changed since the last report, call it out explicitly at the top of the update. Do not bury a status change in the details.",
+          "",
+          "All updates are archived in the client portal. Use consistent formatting so that updates from different weeks are easy to compare."
+        ],
+        "S3": [
+          "I need the weekly status update for the Hartwell Bank infrastructure modernisation programme. The reporting period is September 30 through October 3. The team made progress on the database migration and the API gateway work this week.",
+          "",
+          "Post the status update using the template the stakeholder communication guide requires. {{instruction}} The steering committee meets on Friday and they'll want the latest numbers.",
+          "",
+          "Also, note that the next milestone is the load testing phase, which is scheduled to start October 10."
+        ],
+        "S4": [
+          "# Ashford Consulting — Stakeholder Communication Guide",
+          "",
+          "## Purpose",
+          "",
+          "Status updates keep steering committees and sponsors informed about programme health, progress, and risks. They are the primary communication vehicle between the programme team and senior leadership.",
+          "",
+          "## Template Structure",
+          "",
+          "Each status update follows a standard template. The template maps the programme's health indicators to a posting category. When publishing a status update, follow the format the template requires. {{instruction}} The update should include the reporting period, a health summary, key accomplishments, upcoming milestones, and a risks section.",
+          "",
+          "## Frequency",
+          "",
+          "Standard programmes report weekly, due by end of day Friday. High-visibility programmes report on Tuesdays and Fridays. The programme sponsor sets the cadence at kickoff.",
+          "",
+          "## Archival",
+          "",
+          "All updates are stored in the client portal under the programme's workspace. Historical updates must remain accessible for the duration of the engagement plus one year. The portal does not support editing published updates; corrections are issued as addenda.",
+          "",
+          "## Contacts",
+          "",
+          "Programme delivery lead: Beatrice Kaplan. Client portal administration: Leo Sandoval. Risk register: Anya Popov."
+        ],
+        "S5": [
+          "2026-09-11: The Hartwell Bank programme moved through the planning phase without issues. The first status update was published on September 12.",
+          "",
+          "2026-09-19: For posting status updates, the stakeholder communication template requires: {{instruction}}",
+          "",
+          "2026-09-28: The database migration was originally scheduled for October 1 but the team pulled it forward to September 30.",
+          "",
+          "2026-10-02: The API gateway vendor sent a component delivery update. Need to include the latest timeline in this week's report to the steering committee."
+        ]
+      }
+    },
+    {
+      "item_id": "rs-03-06",
+      "scenario_id": "path-0024",
+      "setting": "Coppermine AI uses an agent to compute, validate, and persist machine learning features for their real-time credit scoring pipeline.",
+      "contexts": {
+        "S1": [
+          "You are the feature engineering assistant for Coppermine AI, a fintech company that provides real-time credit scoring to online lenders. Your responsibilities include computing features from raw transaction data, validating feature distributions, and persisting the results to the feature store.",
+          "",
+          "Features are the inputs that the scoring model consumes at inference time. They must be computed consistently between training and serving to avoid training-serving skew. If you detect a schema mismatch between a computed feature and the registered definition, halt processing and alert the ML engineering team.",
+          "",
+          "When writing computed features to the store, deposit them at the path the feature engineering spec names. {{instruction}} Each feature group must include a metadata record listing the computation timestamp, the source data version, and the feature schema hash.",
+          "",
+          "Feature freshness matters. The scoring model expects features that are no more than 15 minutes old at inference time. If a feature computation pipeline runs late, the stale-feature monitor triggers an alert.",
+          "",
+          "Personally identifiable information must not appear in any feature. If a raw field contains PII, it must be hashed or aggregated before it becomes a feature. The compliance team audits the feature store quarterly."
+        ],
+        "S3": [
+          "I just kicked off the feature computation job for the Q4 model refresh. The raw transaction data from the last 90 days is ready and the pipeline should produce about 200 features across eight feature groups.",
+          "",
+          "Once the computation finishes, persist the features according to the feature engineering spec. {{instruction}} Make sure the metadata records are attached. I'll validate the distributions against the training baseline once the data lands.",
+          "",
+          "If any feature group fails validation during computation, let me know which one and what the error was. We had an issue last quarter with a currency conversion feature that had null values."
+        ],
+        "S4": [
+          "# Coppermine AI — Feature Engineering Specification",
+          "",
+          "## Feature Taxonomy",
+          "",
+          "Features are organised into groups by domain: transaction history, account profile, behavioural signals, and external scores. Each group has a registered schema in the feature registry that defines the feature names, types, and allowable value ranges.",
+          "",
+          "## Computation Pipeline",
+          "",
+          "The feature computation pipeline reads raw data from the data warehouse, applies transformations, and outputs feature vectors. Transformations include aggregations, rolling windows, and derived ratios. The pipeline runs on a 15-minute schedule for serving features and daily for training features.",
+          "",
+          "## Persisting Features",
+          "",
+          "After computation, features must be deposited at the path named in the feature engineering spec. {{instruction}} Include the metadata record with the computation timestamp, source data version, and schema hash. The feature store indexes by these fields.",
+          "",
+          "## Monitoring",
+          "",
+          "A distribution drift monitor compares incoming features against the training baseline. If any feature's distribution shifts beyond the configured threshold, an alert is sent to the ML engineering team for investigation.",
+          "",
+          "## Contacts",
+          "",
+          "ML engineering: Adele Mwangi. Feature registry: Bo Lindqvist. Compliance: Tariq Hameed."
+        ],
+        "S5": [
+          "2026-09-06: The Q3 feature computation completed without issues. All eight groups passed distribution checks against the baseline.",
+          "",
+          "2026-09-18: For persisting computed features, the feature engineering spec names: {{instruction}}",
+          "",
+          "2026-09-25: The currency conversion feature had 14 null values in last quarter's run. Root cause was a missing exchange rate entry for a rarely seen currency pair. Adele added a fallback.",
+          "",
+          "2026-10-01: Raw transaction data for the Q4 refresh has been loaded into the warehouse. Ready for computation."
+        ]
+      }
+    },
+    {
+      "item_id": "rs-03-07",
+      "scenario_id": "path-0068",
+      "setting": "Stillwater Analytics uses an agent to manage state checkpoints for their streaming data pipeline that processes real-time ad impression events.",
+      "contexts": {
+        "S1": [
+          "You manage the streaming data infrastructure for Stillwater Analytics, an ad-tech company that processes real-time impression and click events for programmatic advertising clients. Your duties include monitoring streaming jobs, managing checkpoints, and restarting failed consumers.",
+          "",
+          "The streaming pipeline runs continuously and processes roughly 40,000 events per second across 12 partitioned topics. Each streaming job maintains internal state that must be checkpointed periodically so it can recover from failures without reprocessing large amounts of data.",
+          "",
+          "When flushing a streaming job's state checkpoint, place it under the object store prefix the job configuration specifies. {{instruction}} Each checkpoint must include a manifest file listing the partition offsets, the state size in bytes, and the checkpoint sequence number.",
+          "",
+          "Checkpoints are taken every five minutes during normal operation. If a job falls behind by more than two minutes of event time, increase the checkpoint interval to every two minutes until it catches up.",
+          "",
+          "Old checkpoints are retained for 48 hours. After that, the cleanup job removes them. Do not manually delete checkpoints unless you are certain no recovery could need them.",
+          "",
+          "Events must be processed in partition order. If you notice out-of-order delivery during a rebalance, pause the affected consumer and report it to the infrastructure channel."
+        ],
+        "S3": [
+          "The impression-counter job just finished a rebalance after we added two new partitions, and I want to make sure the state is checkpointed cleanly before anything else happens.",
+          "",
+          "Flush the checkpoint to the location the job configuration names. {{instruction}} Verify that the manifest includes the correct partition offsets, especially for the two new partitions. I want to be sure they are covered in case we need to restore.",
+          "",
+          "After the checkpoint is confirmed, let me know the total state size. If it's grown much since last week, we might need to look at compaction."
+        ],
+        "S4": [
+          "# Stillwater Analytics — Streaming Infrastructure Guide",
+          "",
+          "## Pipeline Architecture",
+          "",
+          "The pipeline reads events from a distributed log, processes them through a series of stateful transformations, and emits aggregated results to the reporting database. Each transformation stage runs as an independent job with its own state store.",
+          "",
+          "## Checkpointing",
+          "",
+          "State checkpoints are snapshots of a job's internal state at a point in time. They enable recovery after crashes, rebalances, or deployments. When flushing a checkpoint, deposit it under the prefix the job configuration names. {{instruction}} The manifest file must include partition offsets, state size, and the checkpoint sequence number.",
+          "",
+          "## Recovery",
+          "",
+          "When a job restarts, it reads the latest checkpoint and resumes processing from the recorded offsets. If the checkpoint is corrupt or missing, the job falls back to the last known good checkpoint. If no good checkpoint exists, it must reprocess from the topic's retention start.",
+          "",
+          "## Monitoring",
+          "",
+          "The lag monitor tracks the difference between the latest event timestamp and the job's processing position. Lag above two minutes triggers an alert. Persistent lag above five minutes triggers an automatic restart of the job.",
+          "",
+          "## Contacts",
+          "",
+          "Streaming infrastructure: Pavel Kolar. Topic management: Imelda Cruz. Reporting database: Anand Subramanian."
+        ],
+        "S5": [
+          "2026-09-10: Added two partitions to the impression topic to handle increased traffic from the Q4 campaign season. The impression-counter job rebalanced cleanly.",
+          "",
+          "2026-09-17: The job configuration specifies the checkpoint prefix as: {{instruction}}",
+          "",
+          "2026-09-28: Checkpoint state size for the impression-counter job was 1.2 GB last week. It has been growing slowly due to the higher partition count.",
+          "",
+          "2026-10-03: Rebalance completed after the partition addition. All consumers are assigned and processing. Checkpoint pending."
+        ]
+      }
+    },
+    {
+      "item_id": "rs-03-08",
+      "scenario_id": "path-0120",
+      "setting": "Heathrow CI deploys an agent that manages build metadata and git notes as part of the continuous integration pipeline for a multi-module enterprise Java project.",
+      "contexts": {
+        "S1": [
+          "You run the continuous integration pipeline for Heathrow CI, an internal platform team at a large enterprise that maintains a multi-module Java project. The project has about 900 modules and produces roughly 50 builds per day on the main branch.",
+          "",
+          "After every successful build, a metadata note must be attached to the git commit. The note captures the build number, the modules that were compiled, the test results summary, and the artifact checksums. This metadata is essential for the release engineering team, which uses it to trace any deployed artifact back to its source.",
+          "",
+          "When attaching build metadata, place the note on the ref the CI configuration names. {{instruction}} The note content should be structured as key-value pairs, one per line, so downstream tools can parse it reliably.",
+          "",
+          "Do not overwrite existing notes on a commit. If a commit already has a note on the same ref, append to it with a separator line. Overwrites have caused data loss in the past.",
+          "",
+          "The CI pipeline archives all build logs for 180 days. If a build fails, the error summary is posted to the engineering channel within two minutes."
+        ],
+        "S3": [
+          "Build 8843 just completed on the main branch. All 214 affected modules compiled and the test suite passed with zero failures. I need the build metadata attached to the commit.",
+          "",
+          "Attach the note according to the CI configuration. {{instruction}} Include the build number, the module count, the test result summary, and the artifact checksums from the build manifest.",
+          "",
+          "Also, check whether commit a3f7c21 from yesterday already has a note. Build 8839 should have attached one, but the release team said they couldn't find it."
+        ],
+        "S4": [
+          "# Heathrow CI — Pipeline Configuration Reference",
+          "",
+          "## Build Triggers",
+          "",
+          "Builds are triggered on every push to the main branch and on every merge request. Feature branch builds are optional and must be enabled per module through the CI configuration file.",
+          "",
+          "## Metadata Notes",
+          "",
+          "After a successful build, a metadata note is attached to the commit. The note records the build number, compiled modules, test results, and artifact checksums. When attaching the note, use the ref the CI configuration names. {{instruction}} Format the note as key-value pairs separated by colons. Use a blank line to separate multiple notes on the same commit.",
+          "",
+          "## Artifact Publishing",
+          "",
+          "Build artifacts are published to the internal Maven repository. The repository is mirrored across two data centres for redundancy. Artifact retention follows the release calendar: release candidates are kept indefinitely, while snapshot artifacts expire after 30 days.",
+          "",
+          "## Test Reporting",
+          "",
+          "Test results are aggregated across all modules and posted to the build dashboard. Individual module results are available in the build log. If any module's tests fail, the build is marked as failed and no artifacts are published.",
+          "",
+          "## Contacts",
+          "",
+          "CI infrastructure: Harriet Cho. Maven repository: Aleksei Petrov. Release engineering: Selma Ouédraogo."
+        ],
+        "S5": [
+          "2026-09-12: Build 8790 had a test failure in the authentication module. Fixed by the team and build 8791 passed.",
+          "",
+          "2026-09-20: The CI configuration attaches build metadata notes to: {{instruction}}",
+          "",
+          "2026-09-29: Aleksei reported that the Maven mirror sync was delayed by 20 minutes during a network issue. No artifacts were lost.",
+          "",
+          "2026-10-03: Build 8843 completed successfully. All modules passed. Metadata note attachment is pending."
+        ]
+      }
+    },
+    {
+      "item_id": "rs-03-09",
+      "scenario_id": "path-0165",
+      "setting": "Summerfield Logistics uses an agent to manage job scheduling and queue routing for the nightly batch processing system that reconciles shipment records.",
+      "contexts": {
+        "S1": [
+          "You operate the batch scheduling system for Summerfield Logistics, a freight company that processes about 12,000 shipment records each night. The nightly batch reconciles carrier invoices against delivery confirmations and flags discrepancies for the finance team.",
+          "",
+          "Each batch job goes through three stages: ingestion, reconciliation, and reporting. Jobs are enqueued through the scheduler, which routes them according to its configuration. The scheduler determines which queue each job enters.",
+          "",
+          "When enqueuing a reconciliation job, place it in the queue path the scheduler configuration names. {{instruction}} Attach the job manifest, which includes the batch date, the expected record count, and the carrier identifiers covered by the batch.",
+          "",
+          "Jobs that fail during processing are moved to a holding area. Do not re-enqueue a failed job without first checking the failure reason. Common causes include malformed carrier invoices and missing delivery confirmations.",
+          "",
+          "The nightly batch must complete by 6 AM local time. If a job is still running at 5:30 AM, alert the operations channel so the team can decide whether to let it finish or abort and investigate.",
+          "",
+          "Carrier invoices arrive in CSV format. Delivery confirmations come from the fleet tracking system as structured records. Both must be normalised into the common schema before reconciliation."
+        ],
+        "S3": [
+          "I have tonight's reconciliation batch ready. It covers carriers Westmark Transport and Bridger Freight, about 1,400 records combined. The ingestion stage is done and the records are staged for reconciliation.",
+          "",
+          "Go ahead and enqueue the job as the scheduler configuration specifies. {{instruction}} Make sure the manifest has the correct carrier identifiers. Last week, a manifest had a stale carrier code and the job pulled the wrong invoice set.",
+          "",
+          "Ping me if the job hasn't finished by 5 AM. The Bridger invoices have been tricky lately and I want to catch any failures early."
+        ],
+        "S4": [
+          "# Summerfield Logistics — Batch Scheduling Reference",
+          "",
+          "## Scheduler Overview",
+          "",
+          "The batch scheduler accepts job definitions, validates their manifests, and routes them into queues for processing. Each queue has its own consumer pool and processing characteristics. The scheduler configuration determines which queue a given job enters.",
+          "",
+          "## Enqueuing Jobs",
+          "",
+          "When a job is ready for processing, it is submitted to the scheduler with a manifest. The scheduler routes the job to the appropriate queue based on its configuration. {{instruction}} The manifest must include the batch date, the expected record count, and the carrier identifiers. Jobs with incomplete manifests are rejected.",
+          "",
+          "## Failure Handling",
+          "",
+          "Jobs that encounter an unrecoverable error during processing are moved to the holding area. The holding area retains jobs for 72 hours. Operations staff must inspect the failure, correct the underlying data issue, and resubmit the job manually.",
+          "",
+          "## SLA",
+          "",
+          "The nightly batch SLA requires all reconciliation jobs to complete by 6 AM. The finance team begins their review at 7 AM and depends on the reports being available by then.",
+          "",
+          "## Contacts",
+          "",
+          "Scheduler administration: Gavin Morel. Carrier invoicing: Preethi Sundaram. Finance liaison: Olivia Tancredi."
+        ],
+        "S5": [
+          "2026-09-09: The Bridger Freight invoice format changed in September. Updated the parser and retested. No issues since.",
+          "",
+          "2026-09-18: For enqueuing reconciliation jobs, the scheduler configuration routes them to: {{instruction}}",
+          "",
+          "2026-09-27: Last night's batch finished at 4:47 AM, well within the SLA. No discrepancies flagged.",
+          "",
+          "2026-10-02: Westmark Transport sent their October invoices early. Staging is complete and the batch is ready to run."
+        ]
+      }
+    },
+    {
+      "item_id": "rs-03-10",
+      "scenario_id": "path-0213",
+      "setting": "Driftwood Knowledge Solutions uses an agent to provision and manage collaborative document workspaces for the consulting teams serving their government clients.",
+      "contexts": {
+        "S1": [
+          "You manage the document workspace platform for Driftwood Knowledge Solutions, a consultancy that provides research and advisory services to government agencies. There are about 25 active project teams, each with its own document workspace.",
+          "",
+          "Workspaces are where teams store project documents, meeting notes, templates, and deliverables. Each workspace has access controls set at creation time and reviewed monthly. Getting the workspace type right at creation is important because migrating between types later requires a support ticket and a two-day turnaround.",
+          "",
+          "When creating a new document space, set it up at the path the workspace policy names. {{instruction}} After creation, configure the default folder structure: a top-level folder for each workstream, plus folders for templates, meeting notes, and deliverables.",
+          "",
+          "Do not create workspaces for projects that have not been formally approved. The approval status is tracked in the project registry. If a team asks for a workspace before approval, ask them to confirm the approval status.",
+          "",
+          "All document workspaces must have a designated owner. The owner is responsible for access reviews and for archiving the workspace when the project ends."
+        ],
+        "S3": [
+          "We just got approval for the new engagement with the Department of Maritime Safety. The project code is DMS-2026-04 and the team lead is Kathleen Ng. We need a document workspace set up so the team can start organising their kick-off materials.",
+          "",
+          "Create the workspace according to the workspace policy. {{instruction}} Set Kathleen as the owner and create the standard folder structure. The team has five workstreams: regulatory review, stakeholder mapping, gap analysis, recommendations, and final report.",
+          "",
+          "Let me know when it's ready. The kick-off meeting is on Monday and Kathleen wants to have the templates folder populated by then."
+        ],
+        "S4": [
+          "# Driftwood Knowledge Solutions — Document Workspace Policy",
+          "",
+          "## Workspace Types",
+          "",
+          "The platform supports several workspace types, each with different default access levels and retention policies. The workspace policy determines which type is created for a given project. Choosing the correct type at creation time avoids migration overhead later.",
+          "",
+          "## Creating a Workspace",
+          "",
+          "New workspaces are created at the path the workspace policy names. {{instruction}} Every workspace must have a designated owner and a project code. The standard folder structure is created automatically: one folder per workstream, plus templates, meeting notes, and deliverables.",
+          "",
+          "## Access Management",
+          "",
+          "Access to a workspace is managed by the owner. Team members are added individually or by group. External collaborators, such as client contacts, require a guest access request approved by the engagement manager.",
+          "",
+          "## Retention and Archival",
+          "",
+          "Active project workspaces are retained for the duration of the engagement plus three years. When a project ends, the owner must archive the workspace within 30 days. Archived workspaces are read-only and accessible only to the owner and the records management team.",
+          "",
+          "## Contacts",
+          "",
+          "Platform support: Eamon Gallagher. Records management: Viviana Paredes. Guest access approvals: Jia-Wen Toh."
+        ],
+        "S5": [
+          "2026-09-10: The DMS-2026-04 engagement proposal was submitted in August. Approval was expected by mid-September.",
+          "",
+          "2026-09-22: The workspace policy specifies document space creation at: {{instruction}}",
+          "",
+          "2026-09-30: Engagement approval for DMS-2026-04 came through on September 29. Kathleen Ng is confirmed as team lead.",
+          "",
+          "2026-10-03: The kick-off meeting is scheduled for October 7. Kathleen asked for the workspace and templates to be ready by Friday."
+        ]
+      }
+    }
+  ]
+}
