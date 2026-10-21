@@ -1,0 +1,180 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Theme tokens as RGB triplets, so Tailwind can add opacity. Light follows the paper's pale red;
+   dark is a deep wine with the paper's mid red as its accent. */
+:root {
+  color-scheme: light;
+  --bg: 255 252 251;
+  --surface: 255 255 255;
+  --raised: 253 247 245;
+  --tint: 248 226 221;
+  --wash: 253 240 238;
+  --line: 241 228 226;
+  --rule: 229 196 190;
+  --ink: 38 38 38;
+  --soft: 74 64 62;
+  --muted: 104 98 97;
+  --accent: 122 59 52;
+  --rose: 201 120 110;
+  --blush: 237 185 177;
+  --steel: 111 135 166;
+  --shadow: 122 59 52;
+
+  /* Heat shading of the results table: the paper's red and blue over the page. */
+  --heat-red: 201 120 110;
+  --heat-blue: 111 135 166;
+  --heat-base: 255 255 255;
+
+  /* Model families, as in the paper's figures. */
+  --fam-qwen3: #3F5A7C;
+  --fam-qwen35: #A65752;
+  --fam-gptoss: #BB9951;
+  --fam-gptoss-edge: #AA863E;
+  --fam-text-qwen3: #3F5A7C;
+  --fam-text-qwen35: #7A3B34;
+  --fam-text-gptoss: #8A6A2C;
+  --fam-tint-qwen3: #D8E2EF;
+  --fam-tint-qwen35: #F6D8D3;
+  --fam-tint-gptoss: #F4E5C4;
+  --chart-ref: #C9A09A;
+  --chart-grid: #F1E4E2;
+  --chart-faded: #8F8F8F;
+  --chart-bar: #F7DCD7;
+}
+
+.dark {
+  color-scheme: dark;
+  --bg: 24 17 18;
+  --surface: 34 25 26;
+  --raised: 42 30 31;
+  --tint: 64 39 40;
+  --wash: 46 32 33;
+  --line: 61 44 45;
+  --rule: 98 66 63;
+  --ink: 244 235 233;
+  --soft: 222 207 204;
+  --muted: 186 167 164;
+  --accent: 237 185 177;
+  --rose: 214 140 130;
+  --blush: 140 82 76;
+  --steel: 143 168 200;
+  --shadow: 0 0 0;
+
+  --heat-red: 214 120 110;
+  --heat-blue: 120 150 196;
+  --heat-base: 34 25 26;
+
+  --fam-qwen3: #6F96D6;
+  --fam-qwen35: #E2716A;
+  --fam-gptoss: #C9A243;
+  --fam-gptoss-edge: #D9B65A;
+  --fam-text-qwen3: #9DB8E2;
+  --fam-text-qwen35: #F0A49C;
+  --fam-text-gptoss: #E2C77E;
+  --fam-tint-qwen3: rgba(111, 150, 214, 0.16);
+  --fam-tint-qwen35: rgba(226, 113, 106, 0.16);
+  --fam-tint-gptoss: rgba(201, 162, 67, 0.16);
+  --chart-ref: #8C6560;
+  --chart-grid: #3A2A2B;
+  --chart-faded: #8E8280;
+  --chart-bar: #5A3A38;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-bg text-ink font-sans antialiased;
+    font-feature-settings: 'cv11', 'ss01';
+    overflow-x: hidden;
+  }
+  ::selection {
+    background: rgb(var(--blush) / 0.55);
+  }
+  :focus-visible {
+    outline: 2px solid rgb(var(--accent));
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  h1, h2, h3 {
+    @apply font-serif text-ink;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+}
+
+@layer components {
+  .page {
+    @apply mx-auto w-full max-w-page px-4 sm:px-6 lg:px-8;
+  }
+  .card {
+    @apply rounded-2xl border border-line bg-surface shadow-card;
+  }
+  .eyebrow {
+    @apply font-sans text-xs font-semibold uppercase tracking-[0.14em] text-accent;
+  }
+  .claim {
+    @apply font-serif text-accent;
+    font-variant-caps: small-caps;
+    letter-spacing: 0.02em;
+  }
+  .link {
+    @apply font-medium text-accent underline decoration-rose/50 underline-offset-[3px] transition-colors hover:decoration-accent;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition;
+  }
+  .btn-primary {
+    @apply btn bg-accent text-surface shadow-card hover:shadow-lift hover:brightness-110;
+  }
+  .btn-quiet {
+    @apply btn border border-rule bg-surface text-ink hover:border-rose hover:bg-wash;
+  }
+  .chip {
+    @apply inline-flex items-center rounded-full border border-line bg-raised px-2.5 py-0.5 text-xs font-medium text-soft;
+  }
+  .num {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -4rem;
+  z-index: 100;
+  @apply rounded-full bg-accent px-4 py-2 text-sm font-semibold text-surface;
+}
+.skip-link:focus {
+  top: 1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* An option inside a transcript: underlined in its seat's colour, softer on the dark theme. */
+.hl {
+  box-shadow: inset 0 -0.45em 0 var(--hl);
+}
+.dark .hl {
+  box-shadow: inset 0 -0.45em 0 color-mix(in srgb, var(--hl) 30%, transparent);
+}
+
+/* Results table cells whose 95% interval covers 50% or 0: grey and italic, as in the paper's tables. */
+:root {
+  --cell-grey: 90 84 83;
+}
+.dark {
+  --cell-grey: 190 174 171;
+}

@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WhoWins: Position, Role or Label?</title>
+    <meta name="description" content="WhoWins is a benchmark of instruction conflicts in LLM agents: 1,080 code-scored scenarios, five seats and seven controlled experiments that change only how an instruction is delivered." />
+    <link rel="icon" type="image/svg+xml" href="/src/assets/logo.svg" />
+    <link rel="canonical" href="https://anishh15.github.io/WhoWins/" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#FFFCFB" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#181112" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="WhoWins" />
+    <meta property="og:title" content="WhoWins: Position, Role or Label?" />
+    <meta property="og:description" content="A controlled study of instruction conflicts in LLM agents. Five seats send conflicting instructions; code scores which one the model followed." />
+    <meta property="og:url" content="https://anishh15.github.io/WhoWins/" />
+    <meta property="og:image" content="https://anishh15.github.io/WhoWins/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="WhoWins: five seats send conflicting instructions to an LLM agent, and one wins." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="WhoWins: Position, Role or Label?" />
+    <meta name="twitter:description" content="A controlled study of instruction conflicts in LLM agents." />
+    <meta name="twitter:image" content="https://anishh15.github.io/WhoWins/og.png" />
+    <script>
+      // Apply the saved theme before the first paint, so a dark-mode reader never sees a light flash.
+      try {
+        if (localStorage.getItem('whowins-theme') === 'dark') document.documentElement.classList.add('dark')
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
