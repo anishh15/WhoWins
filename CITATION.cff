@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use WhoWins, please cite it as below."
+title: "Position, Role or Label? A Controlled Study of Instruction Conflicts in LLM Agents"
+type: software
+authors:
+  - given-names: Anish
+    family-names: Laddha
+    affiliation: "LNMIIT, India"
+  - given-names: Nitesh
+    family-names: Pradhan
+    affiliation: "LNMIIT, India"
+  - given-names: Gaurav
+    family-names: Srivastava
+    affiliation: "Virginia Tech, USA"
+version: 0.1.0
+license: Apache-2.0
+repository-code: "https://github.com/anishh15/WhoWins"
+url: "https://anishh15.github.io/WhoWins/"
+keywords:
+  - instruction hierarchy
+  - instruction conflicts
+  - LLM agents
+  - benchmark

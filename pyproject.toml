@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "whowins"
+version = "0.1.0"
+description = "Position, Role or Label? A Controlled Study of Instruction Conflicts in LLM Agents"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+authors = [
+    {name = "Anish Laddha"},
+    {name = "Nitesh Pradhan"},
+    {name = "Gaurav Srivastava"},
+]
+keywords = ["llm", "agents", "instruction hierarchy", "instruction conflicts", "benchmark"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = []  # the standard library only, the statistics included
+
+[project.optional-dependencies]
+dev = ["pytest"]
+download = ["huggingface_hub"]  # scripts/download_models.sh: fetch the pinned weights
+tokenizers = ["tokenizers"]  # whowins.validation.check_load: token lengths of the load bundles
+
+[project.urls]
+Homepage = "https://anishh15.github.io/WhoWins/"
+Repository = "https://github.com/anishh15/WhoWins"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
