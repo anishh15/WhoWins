@@ -1,0 +1,9 @@
+# The sdist carries the files setup.py copies into whowins/_bundle, so a wheel built from it has them.
+recursive-include data/scenarios *.json
+include data/trials/*.json data/load/*.json data/realism/*.json data/splits/*.json
+include configs/*.json configs/runs/*.json configs/vllm/*.yaml configs/chat-templates/*.jinja
+include CITATION.cff
+# The tests stay in the repository, with the fixtures and tools they need.
+prune tests
+exclude README.md
+global-exclude __pycache__ *.py[cod] .DS_Store

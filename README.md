@@ -7,6 +7,7 @@
 
 ![Paper: coming soon](https://img.shields.io/badge/Paper-coming_soon-C9786E?style=for-the-badge&labelColor=7A3B34)
 [![Website](https://img.shields.io/badge/Website-WhoWins-6F87A6?style=for-the-badge&labelColor=7A3B34)](https://anishh15.github.io/WhoWins/)
+[![PyPI](https://img.shields.io/pypi/v/whowins?style=for-the-badge&logo=pypi&logoColor=white&labelColor=7A3B34&color=C9786E)](https://pypi.org/project/whowins/)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-6F87A6?style=for-the-badge&logo=python&logoColor=white&labelColor=7A3B34)](https://www.python.org/downloads/)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-EDB9B1?style=for-the-badge&labelColor=7A3B34)](LICENSE)
 [![Tests](https://img.shields.io/github/actions/workflow/status/anishh15/WhoWins/tests.yml?branch=main&style=for-the-badge&label=tests&labelColor=7A3B34&color=C9786E)](https://github.com/anishh15/WhoWins/actions/workflows/tests.yml)
@@ -65,9 +66,13 @@ The winner depends on position and message boundaries as well as on the role.
 
 ## Install
 
-Python 3.10 or newer; the package needs nothing outside the standard library. There is no PyPI
-release, so install from source, and keep the install editable because the data is read from the
-checkout:
+```bash
+pip install whowins
+```
+
+Python 3.10 or newer; the package needs nothing outside the standard library, and it carries the
+scenarios and run configs, so the quick start below works without a checkout (the tests need one).
+Until the first release is on PyPI, or to run the tests and the GPU scripts, install from source:
 
 ```bash
 git clone https://github.com/anishh15/WhoWins.git
@@ -89,8 +94,8 @@ python3 -m whowins.validation.check_batch            # screens over every scenar
 python3 -m whowins.checkers.coverage                 # every scenario has a working checker
 python3 -m whowins.splits.check                      # the frozen held-out lists still match the data
 python3 -m whowins.runner.design main-ladder-qwen3-8b-nothink   # what a Ladder run sends
-python3 -m pytest -q                                 # the test suite, a few minutes
-scripts/phase1.sh                                    # two worlds that agree on every pair, not on a triple
+python3 -m whowins.stats.phase1                      # two worlds that agree on every pair, not on a triple
+python3 -m pytest -q                                 # the test suite, in a checkout, a few minutes
 ```
 
 **Build Box 1, the trial in the banner, and score a reply** with the Python API:

@@ -21,7 +21,7 @@ from concurrent.futures import FIRST_COMPLETED, Future, ThreadPoolExecutor, wait
 from typing import Any, Callable, Collection, Iterator, Mapping, Optional, Sequence
 
 from ..checkers import fingerprint as checkers_fingerprint
-from ..data import ROOT
+from ..data import WORK
 from ..logs import add_arguments, from_arguments, get_logger
 from ..progress import Progress, humanise
 from .design import trials_for_run
@@ -43,7 +43,7 @@ from .spec import TrialSpec
 from .tools import stub_result, weak_scoring
 from .trials import load_scenarios
 
-RESULTS = os.path.join(ROOT, "results")
+RESULTS = os.path.join(WORK, "results")
 
 _NOTHING = object()
 

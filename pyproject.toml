@@ -6,19 +6,31 @@ build-backend = "setuptools.build_meta"
 name = "whowins"
 version = "0.1.0"
 description = "Position, Role or Label? A Controlled Study of Instruction Conflicts in LLM Agents"
-readme = "README.md"
+readme = "README_PYPI.md"
 requires-python = ">=3.10"
 license = "Apache-2.0"
 license-files = ["LICENSE"]
 authors = [
-    {name = "Anish Laddha"},
-    {name = "Nitesh Pradhan"},
-    {name = "Gaurav Srivastava"},
+    {name = "Anish Laddha", email = "anshladdha15@gmail.com"},
+    {name = "Nitesh Pradhan", email = "nitesh.pradhan@lnmiit.ac.in"},
+    {name = "Gaurav Srivastava", email = "gks@vt.edu"},
+]
+maintainers = [
+    {name = "Anish Laddha", email = "anshladdha15@gmail.com"},
 ]
 keywords = ["llm", "agents", "instruction hierarchy", "instruction conflicts", "benchmark"]
 classifiers = [
-    "Programming Language :: Python :: 3",
+    "Development Status :: 3 - Alpha",
     "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
 dependencies = []  # the standard library only, the statistics included
@@ -31,6 +43,7 @@ tokenizers = ["tokenizers"]  # whowins.validation.check_load: token lengths of t
 [project.urls]
 Homepage = "https://anishh15.github.io/WhoWins/"
 Repository = "https://github.com/anishh15/WhoWins"
+Issues = "https://github.com/anishh15/WhoWins/issues"
 
 [tool.setuptools.packages.find]
 where = ["src"]

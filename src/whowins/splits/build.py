@@ -12,9 +12,10 @@ import hashlib
 import json
 import os
 import random
+import sys
 from typing import Sequence
 
-from ..data import ROOT
+from ..data import IN_CHECKOUT, ROOT
 from .axes import WEAK_AXES, axis_level, axis_of
 from .sources import (
     COMPOSITION_TRIALS,
@@ -555,6 +556,8 @@ def main() -> None:
         log.info("--dry-run: nothing written")
         print("\n--dry-run: nothing written")
         return
+    if not IN_CHECKOUT:
+        sys.exit("the frozen split lists are rewritten only in a checkout of the repository")
 
     log.warning("rewriting the five frozen split lists in %s; if data collection "
                 "has begun this moves the goalposts and belongs in changes.md",

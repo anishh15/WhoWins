@@ -11,10 +11,10 @@ import sys
 import time
 from typing import Optional
 
-from .data import ROOT
+from .data import WORK
 from .progress import clear_active, redraw_active
 
-LOG_DIR = os.path.join(ROOT, "logs")
+LOG_DIR = os.path.join(WORK, "logs")
 
 PACKAGE = "whowins"
 

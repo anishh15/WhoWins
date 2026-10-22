@@ -4,8 +4,12 @@ generator: it never invents a scenario, it only lists ids already written."""
 
 import glob, json, os
 
-ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-OUT = os.path.join(ROOT, "data/REGISTRY.md")
+try:
+    from ..data import IN_CHECKOUT, ROOT, WORK  # the checkout, or the data an installed package carries
+except ImportError:  # run as a script, from a checkout
+    ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+    IN_CHECKOUT, WORK = True, ROOT
+OUT = os.path.join(ROOT, "data/REGISTRY.md") if IN_CHECKOUT else os.path.join(WORK, "REGISTRY.md")
 
 
 def main():

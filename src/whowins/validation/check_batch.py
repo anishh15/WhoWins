@@ -4,7 +4,10 @@ no FAIL. It always screens duplication against everything, even when given one b
 
 import glob, itertools, json, os, re, sys
 
-ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+try:
+    from ..data import ROOT  # the checkout, or the data an installed package carries
+except ImportError:  # run as a script, from a checkout
+    ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 fails, warns = [], []
 
 

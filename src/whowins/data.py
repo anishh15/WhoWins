@@ -10,12 +10,19 @@ import json
 import os
 from typing import Any, Iterator
 
-ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-"""The repository root: this file is src/whowins/data.py.
+CHECKOUT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+"""The repository root when this file is src/whowins/data.py of a checkout."""
 
-Found from the file's own location, so the package works from a checkout, which
-is how it is used. The collection is not package data and is not installed with
-the code."""
+IN_CHECKOUT = (os.path.isdir(os.path.join(CHECKOUT, "data", "scenarios"))
+               and os.path.isfile(os.path.join(CHECKOUT, "configs", "models.json")))
+
+ROOT = CHECKOUT if IN_CHECKOUT else os.path.join(os.path.dirname(os.path.abspath(__file__)), "_bundle")
+"""Where data/ and configs/ are read: the checkout, or else the copy an installed package
+carries in whowins/_bundle (setup.py puts it there at build time)."""
+
+WORK = CHECKOUT if IN_CHECKOUT else os.getcwd()
+"""Where logs/ and results/ are written: the checkout, or else the working directory, so an
+installed package never writes into site-packages."""
 
 
 class DataFileError(ValueError):
@@ -45,7 +52,8 @@ def _data(*parts: str) -> str:
     if not os.path.isdir(folder):
         raise FileNotFoundError(
             f"{folder} does not exist. The collection is read from a checkout of the "
-            f"repository, not from an installed copy: use `pip install -e .` or PYTHONPATH=src")
+            f"repository (`pip install -e .` or PYTHONPATH=src) or from the copy a built "
+            f"package carries")
     return os.path.join(folder, *parts)
 
 

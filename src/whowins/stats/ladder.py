@@ -13,14 +13,14 @@ import os
 from fractions import Fraction
 from typing import Any, Iterable, Mapping, Optional, Sequence
 
+from ..data import ROOT
 from .choice import Choice, Dataset, Option
 from . import models, regularity, score
 from .rankings import WORLDS, RankingWorld
 
 TIE = 1e-9      # closer than this is a tie, not a winner
 
-SPLIT = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(
-    os.path.dirname(os.path.abspath(__file__))))), "data", "splits", "set.json")
+SPLIT = os.path.join(ROOT, "data", "splits", "set.json")
 
 # The models the ladder runs; `saturated` is here to decline rather than to win.
 LADDER_MODELS = ("uniform", "position", "luce", "luce_position",

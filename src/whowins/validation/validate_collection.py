@@ -4,7 +4,10 @@ each family, plus what a batch author could get wrong without breaking the schem
 
 import glob, itertools, json, os, re, sys, collections
 
-ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+try:
+    from ..data import ROOT  # the checkout, or the data an installed package carries
+except ImportError:  # run as a script, from a checkout
+    ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 fails, warns = [], []
 def fail(m): fails.append(m)
 def warn(m): warns.append(m)
