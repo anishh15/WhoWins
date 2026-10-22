@@ -6,7 +6,7 @@ import ScenarioBrowser from '../components/ScenarioBrowser'
 import SeatChip from '../components/SeatChip'
 import TrialViewer from '../components/TrialViewer'
 import { EXPERIMENT_INFO, OUTCOMES, SEAT_INFO, TASK_TYPES } from '../content/benchmark'
-import { site } from '../lib/data'
+import { fill, site } from '../lib/data'
 import { useTitle } from '../lib/hooks'
 
 const TRIAL_SCENARIOS = new Set(site.trialScenarios)
@@ -92,8 +92,8 @@ function Experiments() {
             {site.experiments.map((e) => (
               <tr key={e.key}>
                 <th scope="row" className="px-4 py-3 text-left font-serif text-base font-semibold text-ink">{e.name}</th>
-                <td className="px-4 py-3 text-soft">{EXPERIMENT_INFO[e.key].moves}</td>
-                <td className="px-4 py-3 text-soft">{EXPERIMENT_INFO[e.key].fixed}</td>
+                <td className="px-4 py-3 text-soft">{fill(EXPERIMENT_INFO[e.key].moves)}</td>
+                <td className="px-4 py-3 text-soft">{fill(EXPERIMENT_INFO[e.key].fixed)}</td>
                 <td className="num px-4 py-3 text-right text-ink">{e.trials}{e.trialsQwen35 && <span className="block text-xs text-muted">({e.trialsQwen35})</span>}</td>
                 <td className="num px-4 py-3 text-right text-ink">{e.replies}{e.repliesQwen35 && <span className="block text-xs text-muted">({e.repliesQwen35})</span>}</td>
               </tr>

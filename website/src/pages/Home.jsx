@@ -51,7 +51,7 @@ function Kpis() {
             <dt className="sr-only">{k.label}</dt>
             <dd className="text-[1.65rem] font-semibold leading-none tracking-tight text-ink sm:text-3xl">{fill(k.value)}</dd>
             <dd className="mt-2 text-sm font-medium text-soft">{k.label}</dd>
-            <dd className="mt-0.5 text-xs text-muted">{k.note}</dd>
+            <dd className="mt-0.5 text-xs text-muted">{fill(k.note)}</dd>
           </div>
         ))}
       </dl>
@@ -118,7 +118,7 @@ function HowItWorks() {
           <li key={s.title} className="card flex min-w-0 flex-col p-6">
             <span className="grid h-8 w-8 place-items-center rounded-full bg-tint font-serif text-sm font-bold text-accent">{i + 1}</span>
             <h3 className="mt-4 text-xl font-semibold">{s.title}</h3>
-            <p className="mt-2 text-sm leading-relaxed text-soft">{s.text}</p>
+            <p className="mt-2 text-sm leading-relaxed text-soft">{fill(s.text)}</p>
             <div className="mt-5 flex-1">{visuals[i]}</div>
           </li>
         ))}
