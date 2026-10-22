@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import Logo from './Logo'
-import { NAV, REPO } from './links'
+import { NAV, PYPI, REPO } from './links'
 import { AFFILIATIONS, AUTHORS } from '../content/people'
 
 export default function Footer() {
@@ -45,6 +45,7 @@ export default function Footer() {
           <h2 className="eyebrow mb-3 font-sans">Project</h2>
           <ul className="space-y-2 text-sm text-soft">
             <li><a href={REPO} className="hover:text-accent">Code and scenarios on GitHub</a></li>
+            <li><a href={PYPI} className="hover:text-accent">pip install whowins</a></li>
             <li><a href={`${REPO}/issues`} className="hover:text-accent">Report an issue</a></li>
             <li><span className="text-muted">Paper: coming soon</span></li>
             <li><a href={`${REPO}/blob/main/LICENSE`} className="hover:text-accent">Apache License 2.0</a></li>

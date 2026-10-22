@@ -5,12 +5,15 @@ export const STEPS = [
   {
     id: 'install',
     title: 'Install',
-    text: 'WhoWins needs Python 3.10 or newer and nothing outside the standard library. Install it from source; the data is read from the checkout, so keep the install editable.',
-    code: `git clone https://github.com/anishh15/WhoWins.git
+    text: 'WhoWins needs Python 3.10 or newer and nothing outside the standard library. The package on PyPI carries the scenarios and every run config. To run the tests or the GPU scripts, install from source instead, and keep the install editable.',
+    code: `pip install whowins
+
+# or, for the tests and the GPU scripts, from source:
+git clone https://github.com/anishh15/WhoWins.git
 cd WhoWins
 python3 -m venv .venv && source .venv/bin/activate
-pip install -e ".[dev]"            # dev adds pytest`,
-    note: 'Two optional extras exist: `download` (huggingface_hub, to fetch the pinned weights) and `tokenizers` (token lengths of the load bundles). Tests that need PyYAML, Jinja2 or tokenizers skip when those are not installed.',
+pip install -e ".[dev]"            # dev adds pytest, PyYAML and Jinja2`,
+    note: 'Two optional extras exist: `download` (huggingface_hub, to fetch the pinned weights) and `tokenizers` (token lengths of the load bundles).',
   },
   {
     id: 'validate',
@@ -22,7 +25,7 @@ python3 -m whowins.checkers.coverage                 # every scenario has a work
 python3 -m whowins.splits.check                      # the frozen held-out lists still match the data
 python3 -m whowins.runner.serving check              # models, machines, policies and runs agree
 python3 -m whowins.runner.design main-ladder-qwen3-8b-nothink   # what a Ladder run sends
-python3 -m pytest -q                                 # the test suite, a few minutes`,
+python3 -m pytest -q                                 # the test suite, in a clone of the repository`,
   },
   {
     id: 'score',

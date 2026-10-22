@@ -8,3 +8,4 @@ export const NAV = [
 ]
 
 export const REPO = 'https://github.com/anishh15/WhoWins'
+export const PYPI = 'https://pypi.org/project/whowins/'

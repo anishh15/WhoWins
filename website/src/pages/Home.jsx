@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ArrowRight, BookOpen, Github, LayoutGrid, Search, Terminal } from 'lucide-react'
+import { ArrowRight, BookOpen, Github, LayoutGrid, Package, Search, Terminal } from 'lucide-react'
 import HeroDuel from '../components/HeroDuel'
 import SeatChip from '../components/SeatChip'
-import { REPO } from '../components/links'
+import { PYPI, REPO } from '../components/links'
 import { HEADLINES } from '../content/findings'
 import { HERO, KPIS, STEPS, STUDY } from '../content/home'
 import { SEAT_INFO } from '../content/benchmark'
@@ -28,6 +28,7 @@ function Hero() {
             <Link to="/benchmark?at=scenarios" className="btn-quiet"><Search size={15} aria-hidden="true" /> Browse scenarios</Link>
             <Link to="/docs" className="btn-quiet"><Terminal size={15} aria-hidden="true" /> Get started</Link>
             <a href={REPO} className="btn-quiet"><Github size={15} aria-hidden="true" /> GitHub</a>
+            <a href={PYPI} className="btn-quiet"><Package size={15} aria-hidden="true" /> PyPI</a>
             <span className="btn cursor-default border border-dashed border-rule text-muted" title="The paper will be linked here once it is public">
               <BookOpen size={15} aria-hidden="true" /> Paper: coming soon
             </span>

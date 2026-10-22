@@ -72,7 +72,7 @@ pip install whowins
 
 Python 3.10 or newer; the package needs nothing outside the standard library, and it carries the
 scenarios and run configs, so the quick start below works without a checkout (the tests need one).
-Until the first release is on PyPI, or to run the tests and the GPU scripts, install from source:
+To run the tests and the GPU scripts, install from source:
 
 ```bash
 git clone https://github.com/anishh15/WhoWins.git
