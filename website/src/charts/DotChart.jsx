@@ -1,24 +1,13 @@
 import { familyOf, modeName } from '../lib/data'
-import { FamilyAxis, Hit, Marker, Plot, RefLine, YAxis, linear, slots, useTip } from './core'
+import { FamilyAxis, Hit, Marker, Plot, RefLine, YAxis, checkDomain, linear, niceDomain, niceTicks, slots, useTip } from './core'
 
-/** Tick values for a domain: about five round steps. */
-export function niceTicks([lo, hi], count = 5) {
-  const raw = (hi - lo) / count
-  const mag = 10 ** Math.floor(Math.log10(raw))
-  const step = [1, 2, 2.5, 5, 10].map((s) => s * mag).find((s) => s >= raw)
-  const out = []
-  for (let v = Math.ceil(lo / step) * step; v <= hi + step * 1e-6; v += step) out.push(+v.toFixed(10))
-  return out
-}
-
-/** A domain that holds every interval, padded and widened to round ticks. */
+/** A domain that holds every value and zero, padded and widened to round ticks at both ends. */
 function domainOf(values, unit) {
   if (unit === 'rate') return [0, 1]
   const lo = Math.min(0, ...values)
   const hi = Math.max(0, ...values)
   const pad = (hi - lo) * 0.08 || 0.05
-  const ticks = niceTicks([lo - pad, hi + pad])
-  return [Math.min(ticks[0], lo - pad), Math.max(ticks[ticks.length - 1], hi + pad)]
+  return niceDomain([lo - pad, hi + pad])
 }
 
 /** Tick labels for a measure's unit: percent for rates and differences, nats as numbers. */
@@ -56,6 +45,7 @@ export default function DotChart({ rows, unit, refAt, yLabel, label, height = 28
   const values = rows.flatMap((r) => [r.v, r.D, r.H, r.tick].filter(Boolean).flatMap((v) => [v.l ?? v.e, v.h ?? v.e]))
   const dom = domain || domainOf(values, unit)
   const yTicks = ticks || niceTicks(dom)
+  checkDomain(label, values, dom)
   const margin = { t: 12, r: 10, b: compact ? 12 : 42, l: 54 }
   return (
     <Plot height={height} margin={margin} label={label} tip={tip}>

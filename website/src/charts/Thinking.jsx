@@ -1,5 +1,5 @@
 import { familyOf } from '../lib/data'
-import { FamilyAxis, Hit, Marker, Plot, YAxis, linear, pctTicks, slots, useTip } from './core'
+import { FamilyAxis, Hit, Marker, Plot, YAxis, checkDomain, linear, pctTicks, slots, useTip } from './core'
 
 const SIDE = 0.17
 
@@ -8,6 +8,7 @@ export default function Thinking({ rows, domain, ticks, label, yLabel }) {
   const [tip, show, hide] = useTip()
   const sizes = rows.map((r) => ({ mm: r.model, model: r.model, family: r.family, size: r.size, mode: 'off' }))
   const { xs, ticks: sizeTicks, groups, extent } = slots(sizes)
+  checkDomain(label, rows.flatMap((r) => [r.off, r.on]), domain)
   return (
     <Plot height={250} margin={{ t: 12, r: 10, b: 42, l: 54 }} tip={tip} label={label}>
       {({ w, h }) => {

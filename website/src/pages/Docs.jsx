@@ -4,6 +4,7 @@ import PageHeader from '../components/PageHeader'
 import Rich from '../components/Rich'
 import { REPO } from '../components/links'
 import { STEPS, TREE } from '../content/docs'
+import { fill } from '../lib/data'
 import { useTitle } from '../lib/hooks'
 
 export default function Docs() {
@@ -40,7 +41,7 @@ export default function Docs() {
           ))}
           <section id="layout" className="scroll-mt-24">
             <h2 className="text-2xl font-semibold tracking-tight">Repository layout</h2>
-            <div className="mt-4"><CodeBlock code={TREE} lang="text" title="WhoWins" /></div>
+            <div className="mt-4"><CodeBlock code={fill(TREE)} lang="text" title="WhoWins" /></div>
             <p className="mt-4 text-sm text-soft">
               Every command and flag is in <a className="link" href={`${REPO}/blob/main/runbook.md`}>runbook.md</a>, and{' '}
               <a className="link" href={`${REPO}/tree/main/docs/codebase`}>docs/codebase</a> explains the code file by file.

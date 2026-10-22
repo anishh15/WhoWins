@@ -1,8 +1,15 @@
 // The paper's insights (Section 4), word for word where the paper allows, with every number named as a
 // numbers.tex macro in double braces. [[S1]] marks a seat chip, **x** bold and *x* italic.
 
+export const SCOPE =
+  'Scope: {{NModels}} open-weight models from {{NFamilies}} families, served with fixed weights, chat templates and sampling settings; most instructions are one short synthetic English line (the Context set places {{design:context_scenarios}} scenarios in realistic text), each seat has one label wording, and thinking off and on each use their own sampling setting.'
+
+// A note beside Figure 3 on the paper page; the paper's own caption stays as it is.
+export const FIGURE3_NOTE =
+  'Rates are shares of decided replies, so gpt-oss’s operator rates count the replies in which it acts. Counting every usable reply, gpt-oss-120b keeps its operator line {{OpPinnedAllDrawsGptOssOneTwentyBOn}} of the time and gpt-oss-20b {{OpPinnedAllDrawsGptOssTwentyBOn}}.'
+
 export const DEFINITIONS =
-  'A reply is **usable** when it was not cut off and carries no recorded fault, and a usable reply is **decided** when it chose an option that a seat asked for. Rates are shares of decided replies. A difference between two rates is absolute and written with a percent sign. Intervals are 95% bootstrap intervals over scenarios.'
+  'A reply is **usable** when it was not cut off and carries no recorded fault, and a usable reply is **decided** when it chose an option that a seat asked for. Rates are shares of decided replies. A difference between two rates is absolute and written with a percent sign. Intervals are {{IntervalLevel}} bootstrap intervals over scenarios. A count of model-modes that go one way includes those whose {{IntervalLevel}} interval excludes {{ShareNull}} or zero, uncorrected.'
 
 export const INSIGHTS = [
   {
@@ -23,7 +30,7 @@ export const INSIGHTS = [
     claim: 'Whether order or the operator line wins depends on the family.',
     bold: 'Qwen 3 follows the later message, gpt-oss follows the developer message, and Qwen 3.5 is in between.',
     evidence:
-      'When the user, tool and memory seats meet in both orders, the later line wins {{LaterWinsQwenThreeRange}} on Qwen 3, {{LaterWinsQwenThreeFiveRange}} on Qwen 3.5 and {{LaterWinsGptOssRange}} on gpt-oss. The operator line, always first in the Ladder, wins {{OpPinnedQwenThreeRange}} of its conflicts on Qwen 3, {{OpPinnedQwenThreeFiveRange}} on Qwen 3.5, and {{OpPinnedGptOssTwentyBOn}} and {{OpPinnedGptOssOneTwentyBOn}} on gpt-oss.',
+      'When the user, tool and memory seats meet in both orders, the later line wins {{LaterWinsQwenThreeRange}} on Qwen 3, {{LaterWinsQwenThreeFiveRange}} on Qwen 3.5 and {{LaterWinsGptOssRange}} on gpt-oss. The operator line, always first in the Ladder, wins {{OpPinnedQwenThreeRange}} of its conflicts on Qwen 3, {{OpPinnedQwenThreeFiveRange}} on Qwen 3.5, and {{OpPinnedGptOssTwentyBOn}} and {{OpPinnedGptOssOneTwentyBOn}} on gpt-oss when it acts.',
     details:
       'Every Qwen 3 point lies below the dashed line, so on Qwen 3 the operator line wins less often than an early user, tool or memory line does against a later one. At a similar total size with the same serving software, gpt-oss-120b keeps its operator line {{OpPinnedGptOssOneTwentyBOn}} of the time, against {{OpPinnedQwenThreeFiveOneTwentyTwoBATenBOff}} and {{OpPinnedQwenThreeFiveOneTwentyTwoBATenBOn}} for Qwen3.5-122B-A10B. Counting every usable reply, including those in which gpt-oss takes no action, gpt-oss-120b is still higher, at {{OpPinnedAllDrawsGptOssOneTwentyBOn}} against {{OpPinnedAllDrawsQwenThreeFiveOneTwentyTwoBATenBOff}} and {{OpPinnedAllDrawsQwenThreeFiveOneTwentyTwoBATenBOn}}, while gpt-oss-20b falls to {{OpPinnedAllDrawsGptOssTwentyBOn}}. This matches how gpt-oss was trained, to rank system over developer over user messages, although its chat format and serving release also differ, and the family has only two models.',
     chart: 'order',
@@ -69,7 +76,7 @@ export const INSIGHTS = [
     claim: 'Thinking helps follow declared tiers.',
     bold: 'With thinking on, Qwen models follow an explicit priority rule more often, at every Qwen 3 size from 4B up and every Qwen 3.5 size from 2B up.',
     evidence:
-      'When each line carries a tier from 1 to 6, thinking raises the share of decided replies that follow the rule by up to {{ThinkTierQwenThreeFiveMax}} on Qwen 3.5, and Qwen3.5-122B-A10B goes from {{TierRuleQwenThreeFiveOneTwentyTwoBATenBOff}} to {{TierRuleQwenThreeFiveOneTwentyTwoBATenBOn}}. However, in all {{TierCapacityUpperAllN}} model-modes the data rule out that even two declared tiers are followed in 95% of usable replies.',
+      'When each line carries a tier from {{design:tiers:range}}, thinking raises the share of decided replies that follow the rule by up to {{ThinkTierQwenThreeFiveMax}} on Qwen 3.5, and Qwen3.5-122B-A10B goes from {{TierRuleQwenThreeFiveOneTwentyTwoBATenBOff}} to {{TierRuleQwenThreeFiveOneTwentyTwoBATenBOn}}. However, in all {{TierCapacityUpperAllN}} model-modes the data rule out that even two declared tiers are followed in {{TierReliability}} of usable replies.',
     details:
       'Here a reply that acts on neither option counts as a failure, so Qwen3.5-27B with thinking on follows the rule in {{TierRuleQwenThreeFiveTwentySevenBOn}} of decided replies but {{TierRuleAllDrawsQwenThreeFiveTwentySevenBOn}} of usable ones.',
     chart: 'thinkTier',
@@ -99,7 +106,7 @@ export const IMPLICATIONS = [
   'Test conflicts across messages as well as inside one, because the first line’s advantage shrinks across messages.',
   'Before ranking seats, model where the task line is, since doing so improves the forecast of larger conflicts in all {{TaskGainAllN}} model-modes.',
   'Test each conflict on several scenarios and replies, since even the empirical reference names the winner in only {{CeilTopOneAllRange}} of replies.',
-  'Do not count on declared tiers or on a warning, since no model keeps even two tiers in order in 95% of usable replies and few replies mention the conflict.',
+  'Do not count on declared tiers or on a warning, since no model keeps even two tiers in order in {{TierReliability}} of usable replies and few replies mention the conflict.',
 ]
 
 // The Conclusion's three results, with one generated number each for the home page.
@@ -112,9 +119,9 @@ export const HEADLINES = [
   },
   {
     to: 'role',
-    text: 'A policy sent first in the system message wins most of its decided conflicts with later lines only on gpt-oss, and in tool and file-write tasks it wins less often than the same text sent first as a labelled user message, in every model-mode.',
+    text: 'A policy sent first in the system (or developer) message wins most of its decided conflicts with later lines only on gpt-oss, and in tool and file-write tasks it wins less often than the same text sent first as a labelled user message, in every model-mode.',
     stat: '{{RoleLabelToolPathAllRangeAbs}}',
-    statLabel: 'fewer operator wins in the real system message than as labelled user text, in tool and file-write tasks',
+    statLabel: 'fewer operator wins in the real system (or developer) message than as labelled user text, in tool and file-write tasks',
   },
   {
     to: 'task',

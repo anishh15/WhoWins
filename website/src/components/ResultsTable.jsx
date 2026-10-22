@@ -1,6 +1,7 @@
 import { Fragment, useMemo, useRef, useState } from 'react'
 import { ArrowDown, ArrowUp, ArrowUpDown } from 'lucide-react'
-import { FAMILIES, familyOf, modeName, table } from '../lib/data'
+import { FAMILIES, LEVEL, NULL_SHARE, familyOf, modeName, table } from '../lib/data'
+import ScrollBox from './ScrollBox'
 import { measures, modeOf } from '../lib/measures'
 
 /** The paper's cell shading: red k% or blue k% over the page, as xcolor mixes it over white. */
@@ -12,14 +13,14 @@ function Tip({ tip }) {
   const m = measures[col.key]
   const v = m.values[row.mm]
   return (
-    <div className="pointer-events-none absolute z-30 w-max max-w-[16rem] -translate-x-1/2 -translate-y-full rounded-lg border border-line bg-surface px-3 py-2 text-xs leading-snug shadow-lift" style={{ left: x, top: y - 8 }} role="status">
+    <div className="pointer-events-none absolute left-0 top-0 z-30 w-max max-w-[16rem] rounded-lg border border-line bg-surface px-3 py-2 text-xs leading-snug shadow-lift" style={{ transform: `translate(${x}px, ${y - 8}px) translate(-50%, -100%)` }} role="status">
       <p className="font-semibold text-ink">{modeName(modeOf[row.mm])}</p>
       <p className="text-muted">{m.label}</p>
       {v ? (
         <>
           <p className="mt-1 text-soft"><span className="num font-semibold text-ink">{v.t}</span>{v.c && <span className="num text-muted"> {v.c}</span>}</p>
           {v.D && <p className="text-soft">Discovery half <span className="num text-ink">{v.D.t}</span>, held-out half <span className="num text-ink">{v.H?.t}</span></p>}
-          {v.g && <p className="mt-1 italic text-muted">The 95% interval includes {m.null === 0 ? '0' : '50%'}.</p>}
+          {v.g && <p className="mt-1 italic text-muted">The {LEVEL} interval includes {m.null === 0 ? 'zero' : NULL_SHARE}.</p>}
         </>
       ) : (
         <p className="mt-1 text-soft">Not possible: the template rejects a late system message.</p>
@@ -41,10 +42,9 @@ function SortButton({ col, sort, onSort }) {
 
 /**
  * Table 3 of the paper: every value exactly as the paper prints it, with its shading and grey marks.
- * Hover a cell for its 95% interval and the two halves; sort by any column; filter by family and mode.
+ * Hover a cell for its interval and the two halves. sort is { key, dir } (key null: the paper's order).
  */
-export default function ResultsTable({ shown, showCi }) {
-  const [sort, setSort] = useState({ key: null, dir: 'desc' })
+export default function ResultsTable({ shown, showCi, sort, onSort }) {
   const [tip, setTip] = useState(null)
   const wrap = useRef(null)
   const cols = table.columns
@@ -69,11 +69,10 @@ export default function ResultsTable({ shown, showCi }) {
     })
   }, [shown, sort, cols])
 
-  const onSort = (key) => setSort((s) => (s.key !== key ? { key, dir: 'desc' } : s.dir === 'desc' ? { key, dir: 'asc' } : { key: null, dir: 'desc' }))
   const hover = (row, col, e) => {
     const cell = e.currentTarget.getBoundingClientRect()
     const box = wrap.current.getBoundingClientRect()
-    setTip({ row, col, x: cell.left - box.left + cell.width / 2 + wrap.current.scrollLeft, y: cell.top - box.top })
+    setTip({ row, col, x: cell.left - box.left + cell.width / 2, y: cell.top - box.top })
   }
 
   const body = (row, prev, banded) => {
@@ -105,7 +104,8 @@ export default function ResultsTable({ shown, showCi }) {
   }
 
   return (
-    <div ref={wrap} tabIndex={0} role="region" aria-label="Main results table, scrolls sideways" className="relative overflow-x-auto rounded-2xl border border-line bg-surface shadow-card">
+    <div ref={wrap} className="relative">
+      <ScrollBox label="Main results table" className="rounded-2xl border border-line bg-surface shadow-card">
       <table className="w-full min-w-[60rem] border-collapse text-[0.82rem]" aria-label="Who wins, per model-mode (Table 3 of the paper)">
         <thead>
           <tr className="bg-tint/70 text-[0.72rem] font-semibold uppercase tracking-wide text-accent">
@@ -143,6 +143,7 @@ export default function ResultsTable({ shown, showCi }) {
             })}
         </tbody>
       </table>
+      </ScrollBox>
       {tip && <Tip tip={tip} />}
     </div>
   )

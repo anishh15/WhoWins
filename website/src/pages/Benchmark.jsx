@@ -1,5 +1,7 @@
+import Contents, { BackToTop } from '../components/Contents'
 import PageHeader from '../components/PageHeader'
 import Rich from '../components/Rich'
+import ScrollBox from '../components/ScrollBox'
 import ScenarioBrowser from '../components/ScenarioBrowser'
 import SeatChip from '../components/SeatChip'
 import TrialViewer from '../components/TrialViewer'
@@ -22,8 +24,8 @@ function Heading({ id, eyebrow, title, lead }) {
 function TaskTypes() {
   return (
     <section className="page mt-12" aria-labelledby="types">
-      <Heading id="types" eyebrow="Scenarios" title="Five task types"
-        lead="A scenario is a task and up to five options that set one property to different values, so a reply’s scored choice matches at most one option." />
+      <Heading id="types" eyebrow="Scenarios" title="Task types"
+        lead="A scenario is a task and up to {{design:options.1:word}} options that set one property to different values, so a reply’s scored choice matches at most one option." />
       <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
         {site.taskTypes.map((t) => (
           <div key={t.key} className="card flex flex-col p-5">
@@ -42,9 +44,9 @@ function TaskTypes() {
 function Seats() {
   return (
     <section className="page mt-16" aria-labelledby="seats">
-      <Heading id="seats" eyebrow="Seats" title="Five seats"
-        lead="Each instruction arrives from one of five sources, called seats. The task itself arrives as a user message that starts with `Task:`." />
-      <div tabIndex={0} role="region" aria-label="The five seats" className="mt-6 overflow-x-auto rounded-2xl border border-line bg-surface shadow-card">
+      <Heading id="seats" eyebrow="Seats" title="Seats"
+        lead="Each instruction arrives from one of {{design:seats:word}} sources, called seats. The task itself arrives as a user message that starts with `Task:`." />
+      <div className="mt-6"><ScrollBox label="The seats" className="rounded-2xl border border-line bg-surface shadow-card">
         <table className="w-full min-w-[40rem] text-left text-sm">
           <thead className="bg-tint/50 text-xs font-semibold uppercase tracking-wide text-accent">
             <tr>
@@ -65,7 +67,7 @@ function Seats() {
             ))}
           </tbody>
         </table>
-      </div>
+      </ScrollBox></div>
     </section>
   )
 }
@@ -73,9 +75,9 @@ function Seats() {
 function Experiments() {
   return (
     <section className="page mt-16" aria-labelledby="experiments">
-      <Heading id="experiments" eyebrow="Design" title="Seven experiments"
+      <Heading id="experiments" eyebrow="Design" title="Experiments"
         lead="Each experiment varies one aspect of how the text is delivered and keeps the text fixed." />
-      <div tabIndex={0} role="region" aria-label="The seven experiments" className="mt-6 overflow-x-auto rounded-2xl border border-line bg-surface shadow-card">
+      <div className="mt-6"><ScrollBox label="The experiments" className="rounded-2xl border border-line bg-surface shadow-card">
         <table className="w-full min-w-[52rem] text-left text-sm">
           <thead className="bg-tint/50 text-xs font-semibold uppercase tracking-wide text-accent">
             <tr>
@@ -98,8 +100,8 @@ function Experiments() {
             ))}
           </tbody>
         </table>
-      </div>
-      <Rich as="p" className="mt-3 text-xs leading-relaxed text-muted" text="Per model-mode; each trial is sent three times (Tiers: once). In parentheses: Qwen 3.5, whose chat template rejects a late system message. The operator line is [[S1]] or [[S2]]." />
+      </ScrollBox></div>
+      <Rich as="p" className="mt-3 text-xs leading-relaxed text-muted" text="Per model-mode; each trial is sent {{design:draws_per_trial:times}} (Tiers: {{design:tier_draws_per_trial:times}}). In parentheses: Qwen 3.5, whose chat template rejects a late system message. The operator line is [[S1]] or [[S2]]." />
       <div className="mt-8 rounded-2xl border border-line bg-raised/70 p-5">
         <h3 className="font-sans text-sm font-semibold text-ink">What a reply can be</h3>
         <dl className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
@@ -145,20 +147,27 @@ export default function Benchmark() {
     <>
       <PageHeader eyebrow="Benchmark" title="The benchmark"
         lead="The scenarios, seats and experiments, with a browser for every scenario and real trials." />
+      <div className="page mt-8">
+        <Contents route="benchmark" items={[['types', 'Task types'], ['seats', 'Seats'], ['experiments', 'Experiments'], ['scenarios', 'Scenarios'], ['trials', 'Trials'], ['models', 'Models']]} />
+      </div>
       <TaskTypes />
       <Seats />
       <Experiments />
+      <div className="page"><BackToTop /></div>
       <section id="scenarios" className="page mt-16 scroll-mt-20" aria-labelledby="browser">
         <Heading id="browser" eyebrow="Browse" title="Scenario browser"
           lead="Every scenario in the data, as written. Search, filter, and open one to see its options and checkers." />
         <div className="mt-6"><ScenarioBrowser trialScenarios={TRIAL_SCENARIOS} /></div>
+        <BackToTop />
       </section>
       <section id="trials" className="page mt-16 scroll-mt-20" aria-labelledby="viewer">
         <Heading id="viewer" eyebrow="Trials" title="Trial viewer"
-          lead="Real trials from all seven experiments, rendered by the study’s own code." />
+          lead="Real trials from every experiment, rendered by the study’s own code." />
         <div className="mt-6"><TrialViewer /></div>
+        <BackToTop />
       </section>
       <Models />
+      <div className="page"><BackToTop /></div>
     </>
   )
 }

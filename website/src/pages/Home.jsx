@@ -139,13 +139,13 @@ function Explore() {
   const links = [
     { to: '/results', icon: LayoutGrid, title: 'Results dashboard', text: 'Every measure of the main table for every model-mode, with intervals.' },
     { to: '/seats', icon: ArrowRight, title: 'Seat matchups', text: 'Which seat beats which, for one model-mode at a time.' },
-    { to: '/benchmark?at=trials', icon: Search, title: 'Trial viewer', text: 'Real trials of all seven experiments, as the model receives them.' },
+    { to: '/benchmark?at=trials', icon: Search, title: 'Trial viewer', text: 'Real trials of every experiment, as the model receives them.' },
   ]
   return (
     <section className="page mt-20 sm:mt-24">
       <div className="grid gap-4 md:grid-cols-3">
         {links.map(({ to, icon: Icon, title, text }) => (
-          <Link key={to} to={to} className="group card flex items-start gap-4 p-5 transition hover:-translate-y-0.5 hover:shadow-lift">
+          <Link key={to} to={to} className="group card flex items-start gap-4 p-5 transition-transform duration-200 hover:-translate-y-0.5">
             <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-tint text-accent"><Icon size={18} aria-hidden="true" /></span>
             <span>
               <span className="block font-semibold text-ink group-hover:text-accent">{title}</span>

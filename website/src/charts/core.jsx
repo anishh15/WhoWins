@@ -1,9 +1,37 @@
 import { useState } from 'react'
+import { useReducedMotion } from 'framer-motion'
 import { FAMILIES, familyOf } from '../lib/data'
-import { useWidth } from '../lib/hooks'
+import { useSeenOnce, useWidth } from '../lib/hooks'
 
 /** A linear scale from [d0, d1] to [r0, r1]. */
 export const linear = ([d0, d1], [r0, r1]) => (v) => r0 + ((v - d0) / (d1 - d0)) * (r1 - r0)
+
+/** The round step that splits a span into about count parts. */
+function niceStep(span, count) {
+  const raw = span / count
+  const mag = 10 ** Math.floor(Math.log10(raw))
+  return [1, 2, 2.5, 5, 10].map((s) => s * mag).find((s) => s >= raw)
+}
+
+/** Tick values for a domain: about count round steps. */
+export function niceTicks([lo, hi], count = 5) {
+  const step = niceStep(hi - lo, count)
+  const out = []
+  for (let v = Math.ceil(lo / step - 1e-9) * step; v <= hi + step * 1e-6; v += step) out.push(+v.toFixed(10))
+  return out
+}
+
+/** The domain widened outwards to round steps, so its ends are ticks and every value stays inside. */
+export function niceDomain([lo, hi], count = 5) {
+  const step = niceStep(hi - lo, count)
+  return [+(Math.floor(lo / step + 1e-9) * step).toFixed(10), +(Math.ceil(hi / step - 1e-9) * step).toFixed(10)]
+}
+
+/** Report, as a console error, any value a chart would draw outside its axis. */
+export function checkDomain(label, values, [lo, hi]) {
+  const out = values.filter((v) => v != null && (v < lo - 1e-9 || v > hi + 1e-9))
+  if (out.length) console.error(`Chart "${label}": ${out.length} value(s) outside the axis [${lo}, ${hi}]`)
+}
 
 /** Percent tick labels from a list of shares. */
 export const pctTicks = (ticks, signed = false) =>
@@ -43,22 +71,28 @@ export function useTip() {
   return [tip, (x, y, content) => setTip({ x, y, content }), () => setTip(null)]
 }
 
-/** A responsive SVG plot with margins and an HTML tooltip layer. children({ w, h }) draws inside the margins. */
+/**
+ * A responsive SVG plot with margins and an HTML tooltip layer; children({ w, h }) draws inside the margins.
+ * It fades and rises in once, the first time it scrolls into view (not with reduced motion).
+ */
 export function Plot({ height, margin, label, tip, minWidth = 300, children }) {
   const [ref, width] = useWidth()
+  const [seenRef, seen] = useSeenOnce(useReducedMotion())
   const full = Math.max(width, minWidth)
   const w = full - margin.l - margin.r
   const h = height - margin.t - margin.b
   const left = tip ? Math.min(Math.max(tip.x + margin.l, 90), full - 90) : 0
   return (
     <div ref={ref} className="relative w-full min-w-0">
-      <svg width={full} height={height} role="img" aria-label={label} className="block overflow-visible font-sans">
-        <g transform={`translate(${margin.l},${margin.t})`}>{children({ w, h })}</g>
-      </svg>
+      <div ref={seenRef} className={`transition-[opacity,transform] duration-700 ease-out ${seen ? 'opacity-100' : 'translate-y-2 opacity-0'}`}>
+        <svg width={full} height={height} role="img" aria-label={label} className="block overflow-visible font-sans">
+          <g transform={`translate(${margin.l},${margin.t})`}>{children({ w, h })}</g>
+        </svg>
+      </div>
       {tip && (
         <div
-          className="pointer-events-none absolute z-20 w-max max-w-[15rem] -translate-x-1/2 -translate-y-full rounded-lg border border-line bg-surface px-3 py-2 text-xs leading-snug text-ink shadow-lift"
-          style={{ left, top: tip.y + margin.t - 12 }}
+          className="pointer-events-none absolute left-0 top-0 z-20 w-max max-w-[15rem] rounded-lg border border-line bg-surface px-3 py-2 text-xs leading-snug text-ink shadow-lift"
+          style={{ transform: `translate(${left}px, ${tip.y + margin.t - 12}px) translate(-50%, -100%)` }}
           role="status"
         >
           {tip.content}

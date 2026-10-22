@@ -1,7 +1,9 @@
 import { BookOpen } from 'lucide-react'
 import CodeBlock from '../components/CodeBlock'
+import Contents, { BackToTop } from '../components/Contents'
 import PageHeader from '../components/PageHeader'
 import Rich from '../components/Rich'
+import { FIGURE3_NOTE } from '../content/findings'
 import { AFFILIATIONS, AUTHORS, BIBTEX } from '../content/people'
 import { site } from '../lib/data'
 import { useFigure } from '../lib/figures'
@@ -17,6 +19,9 @@ function Figure({ fig, number }) {
       <figcaption className="border-t border-line px-4 py-3 text-sm leading-relaxed text-soft">
         <span className="font-semibold text-ink">Figure {number}. </span>
         <Rich text={fig.caption} />
+        {fig.key === '3_order_vs_authority' && (
+          <Rich as="span" text={FIGURE3_NOTE} className="mt-3 block rounded-lg border border-line bg-raised px-3 py-2 text-xs text-muted" />
+        )}
       </figcaption>
     </figure>
   )
@@ -43,7 +48,10 @@ export default function Paper() {
           <BookOpen size={15} className="text-accent" aria-hidden="true" /> The paper is coming soon. Until then, please cite the repository.
         </p>
       </PageHeader>
-      <div className="page mt-12 grid gap-12 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)]">
+      <div className="page mt-8">
+        <Contents route="paper" items={[['abstract', 'Abstract'], ['cite', 'Citation'], ['figures', 'Figures']]} />
+      </div>
+      <div className="page mt-10 grid gap-12 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)]">
         <section aria-labelledby="abstract">
           <h2 id="abstract" className="text-2xl font-semibold tracking-tight">Abstract</h2>
           <Rich as="p" text={site.abstract} className="mt-4 font-serif text-[1.12rem] leading-[1.7] text-ink" />
@@ -60,10 +68,11 @@ export default function Paper() {
       </div>
       <section className="page mt-16" aria-labelledby="figures">
         <h2 id="figures" className="text-2xl font-semibold tracking-tight">Figures</h2>
-        <p className="mt-1 text-sm text-soft">The paper’s eight figures, with their captions.</p>
+        <p className="mt-1 text-sm text-soft">The paper’s figures, with their captions.</p>
         <div className="mt-6 grid gap-6 md:grid-cols-2">
           {site.figures.map((f, i) => <Figure key={f.key} fig={f} number={i + 1} />)}
         </div>
+        <BackToTop />
       </section>
     </>
   )

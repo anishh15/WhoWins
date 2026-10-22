@@ -16,7 +16,7 @@ export default function Navbar() {
   useEffect(() => setOpen(false), [pathname])
 
   return (
-    <header className="sticky top-0 z-40 border-b border-line/80 bg-bg/85 backdrop-blur-md supports-[backdrop-filter]:bg-bg/70">
+    <header className="sticky top-0 z-40 border-b border-line/80 bg-bg/95">
       <nav className="page flex h-16 items-center justify-between gap-4" aria-label="Main">
         <Link to="/" className="rounded-lg" aria-label="WhoWins home">
           <Logo />

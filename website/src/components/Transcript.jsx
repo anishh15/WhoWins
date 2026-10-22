@@ -10,7 +10,7 @@ function Part({ part }) {
     return (
       <>
         {part.chip && <><SeatChip seat={part.seat} /> </>}
-        <span className="hl rounded-[3px] px-0.5 text-ink" style={{ '--hl': seat ? seat.fill : 'rgb(var(--tint))' }} title={`option ${part.o}`}>
+        <span className="hl text-ink" style={{ '--hl': seat ? seat.line : 'rgb(var(--rose))' }} title={`option ${part.o}`}>
           {part.s}
         </span>
       </>
@@ -50,7 +50,7 @@ export default function Transcript({ trial, shown = Infinity, winner, animate = 
                   return (
                     <div
                       key={j}
-                      className={`min-h-[1em] rounded-md transition-all duration-500 ${state === 'lose' ? 'opacity-75 grayscale' : ''} ${state === 'win' ? '-mx-1.5 bg-tint/80 px-1.5 ring-1 ring-rose/60' : ''}`}
+                      className={`min-h-[1em] rounded-md transition-opacity duration-500 ${state === 'lose' ? 'opacity-75' : ''} ${state === 'win' ? '-mx-1.5 bg-tint/80 px-1.5 ring-1 ring-rose/60' : ''}`}
                     >
                       {line.map((p, k) => <Part key={k} part={p} />)}
                     </div>

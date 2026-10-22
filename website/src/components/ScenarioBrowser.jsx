@@ -1,10 +1,12 @@
-import { useDeferredValue, useMemo, useState } from 'react'
+import { useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Search } from 'lucide-react'
 import scenariosUrl from '../data/scenarios.json?url'
-import { useJson } from '../lib/hooks'
+import { useDebounced, useJson } from '../lib/hooks'
+import { useQuery } from '../lib/url'
 import { TASK_TYPES } from '../content/benchmark'
 import Segmented from './Segmented'
+import { Bone } from './Skeleton'
 
 const TYPE_OPTIONS = [{ value: 'all', label: 'All types' }, ...Object.entries(TASK_TYPES).map(([k, t]) => ({ value: k, label: t.title }))]
 
@@ -52,15 +54,49 @@ function Detail({ s, withTrials }) {
   )
 }
 
-/** Search and filter the 1,080 scenarios, and open one to read its options and checkers. */
+const ROW = 60 // px: one list row, its task on one line
+
+/** A long list that renders only the rows in view, so scrolling and filtering stay light. */
+function VirtualList({ items, label, children }) {
+  const ref = useRef(null)
+  const [row, setRow] = useState(0) // first row in view; changes every row's height of scroll, not every pixel
+  const [height, setHeight] = useState(640)
+  useLayoutEffect(() => {
+    const el = ref.current
+    const observer = new ResizeObserver(() => setHeight(el.clientHeight))
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+  useLayoutEffect(() => {
+    ref.current.scrollTop = 0
+    setRow(0)
+  }, [items])
+  const first = Math.max(0, row - 6)
+  const last = Math.min(items.length, row + Math.ceil(height / ROW) + 6)
+  return (
+    <div ref={ref} onScroll={(e) => setRow(Math.floor(e.currentTarget.scrollTop / ROW))}
+      className="h-[26rem] overflow-y-auto rounded-2xl border border-line bg-surface lg:order-1 lg:h-[40rem]">
+      <ul aria-label={label} className="relative" style={{ height: items.length * ROW }}>
+        {items.slice(first, last).map((item, i) => (
+          <li key={item.id} aria-setsize={items.length} aria-posinset={first + i + 1}
+            className="absolute inset-x-0 border-b border-line" style={{ top: (first + i) * ROW, height: ROW }}>
+            {children(item)}
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+/** Search and filter every scenario, and open one (kept in the link as ?sid=) to read its options and checkers. */
 export default function ScenarioBrowser({ trialScenarios }) {
   const { data, error } = useJson(scenariosUrl)
   const [query, setQuery] = useState('')
   const [type, setType] = useState('all')
   const [domain, setDomain] = useState('all')
   const [difficulty, setDifficulty] = useState('all')
-  const [open, setOpen] = useState('fmt-0002') // Box 1's scenario
-  const q = useDeferredValue(query.trim().toLowerCase())
+  const [{ sid: open }, set] = useQuery({ sid: [(data || []).map((s) => s.id), 'fmt-0002'] }) // Box 1's scenario by default
+  const q = useDebounced(query.trim().toLowerCase())
 
   const domains = useMemo(() => {
     const count = {}
@@ -73,7 +109,15 @@ export default function ScenarioBrowser({ trialScenarios }) {
     (!q || [s.id, s.task, s.seed, s.domain, ...s.options.map((o) => o[1])].some((t) => t.toLowerCase().includes(q)))), [data, type, domain, difficulty, q])
 
   if (error) return <p className="text-sm text-muted">The scenarios could not be loaded ({error.message}).</p>
-  if (!data) return <p className="min-h-[46rem] py-10 text-center text-sm text-muted" role="status">Loading the scenarios…</p>
+  if (!data) {
+    return (
+      <div role="status" aria-label="Loading the scenarios" className="space-y-3">
+        <Bone className="h-11" />
+        <Bone className="h-8 w-3/4" />
+        <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)]"><Bone className="h-[40rem]" /><Bone className="h-[40rem]" /></div>
+      </div>
+    )
+  }
 
   const current = hits.find((s) => s.id === open) || hits[0]
   return (
@@ -104,20 +148,20 @@ export default function ScenarioBrowser({ trialScenarios }) {
             <p className="card px-5 py-16 text-center text-sm text-muted">No scenario matches. Try fewer words or another filter.</p>
           )}
         </div>
-        <ul className="max-h-[26rem] divide-y divide-line overflow-y-auto rounded-2xl border border-line bg-surface lg:order-1 lg:max-h-[40rem]" aria-label="Scenarios">
-          {hits.map((s) => (
-            <li key={s.id}>
-              <button type="button" onClick={() => setOpen(s.id)} aria-pressed={current === s}
-                className={`flex w-full items-start gap-3 px-4 py-2.5 text-left transition hover:bg-wash ${current === s ? 'bg-tint/60' : ''}`}>
+        {hits.length ? (
+          <VirtualList items={hits} label="Scenarios">
+            {(s) => (
+              <button type="button" onClick={() => set({ sid: s.id })} aria-pressed={current === s} title={s.task}
+                className={`flex h-full w-full items-start gap-3 px-4 py-2.5 text-left transition-colors hover:bg-wash ${current === s ? 'bg-tint/60' : ''}`}>
                 <span className="w-[4.6rem] shrink-0 pt-0.5 font-mono text-xs font-semibold text-accent">{s.id}</span>
                 <span className="min-w-0 flex-1">
-                  <span className="block text-sm text-ink">{s.task}</span>
-                  <span className="mt-0.5 block text-xs text-muted">{TASK_TYPES[s.type].title} · {s.domain} · {s.difficulty}</span>
+                  <span className="block truncate text-sm text-ink">{s.task}</span>
+                  <span className="mt-0.5 block truncate text-xs text-muted">{TASK_TYPES[s.type].title} · {s.domain} · {s.difficulty}</span>
                 </span>
               </button>
-            </li>
-          ))}
-        </ul>
+            )}
+          </VirtualList>
+        ) : <div className="lg:order-1" />}
       </div>
     </div>
   )

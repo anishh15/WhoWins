@@ -23,9 +23,12 @@
     <meta name="twitter:description" content="A controlled study of instruction conflicts in LLM agents." />
     <meta name="twitter:image" content="https://anishh15.github.io/WhoWins/og.png" />
     <script>
-      // Apply the saved theme before the first paint, so a dark-mode reader never sees a light flash.
+      // Apply the theme before the first paint: the reader's saved choice, or else the system setting.
       try {
-        if (localStorage.getItem('whowins-theme') === 'dark') document.documentElement.classList.add('dark')
+        var saved = localStorage.getItem('whowins-theme')
+        if (saved === 'dark' || (!saved && matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.classList.add('dark')
+        }
       } catch (e) {}
     </script>
   </head>

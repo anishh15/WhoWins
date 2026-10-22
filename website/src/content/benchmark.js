@@ -1,5 +1,5 @@
-// What the benchmark is made of, as the paper and the README describe it. Counts that come from the data
-// (scenarios per task type, trials and replies per experiment) are in site.json, not here.
+// What the benchmark is made of, as the paper and the README describe it. Numbers are generated values
+// named in double braces; scenario, trial and reply counts are in site.json.
 
 export const TASK_TYPES = {
   tool: { title: 'Tool', scores: 'which tool is called first', detail: 'Five stub tools; the code reads which one the model calls first.' },
@@ -18,13 +18,13 @@ export const SEAT_INFO = {
 }
 
 export const EXPERIMENT_INFO = {
-  ladder: { moves: 'which seats compete (two, three and five at a time) and their order', fixed: 'the text; the system seats come first; each option is also asked alone' },
+  ladder: { moves: 'which seats compete ({{design:ladder_sizes:words}} at a time) and their order', fixed: 'the text; the system seats come first; each option is also asked alone' },
   operator: { moves: 'the operator line in the real system message or as the same labelled text in a user message; first or last', fixed: 'the text; the opposing seat (user, tool or memory)' },
   message: { moves: 'the user line and the memory note in separate messages or inside the task’s message; their order', fixed: 'the text; the roles' },
-  realism: { moves: 'instructions bare or placed inside realistic text, such as an operator prompt; their order', fixed: 'the text; 50 tool and file-write scenarios' },
-  free: { moves: 'two or more seats ask for the same option (3 to 5 seats)', fixed: 'the text; seats dealt as in the Ladder' },
-  load: { moves: 'the number of instructions (2 to 12) and, at a fixed length, the number of conflicts', fixed: 'the length at each number; one operator message' },
-  tier: { moves: 'each instruction carries a declared priority from 1 to 6, and the lower number wins', fixed: 'the text; one draw per trial' },
+  realism: { moves: 'instructions bare or placed inside realistic text, such as an operator prompt; their order', fixed: 'the text; {{design:context_scenarios}} tool and file-write scenarios' },
+  free: { moves: 'two or more seats ask for the same option ({{design:agreement_seats:range}} seats)', fixed: 'the text; seats dealt as in the Ladder' },
+  load: { moves: 'the number of instructions ({{design:load_instructions:range}}) and, at a fixed length, the number of conflicts', fixed: 'the length at each number; one operator message' },
+  tier: { moves: 'each instruction carries a declared priority from {{design:tiers:range}}, and the lower number wins', fixed: 'the text; one draw per trial' },
 }
 
 export const OUTCOMES = [
@@ -36,4 +36,4 @@ export const OUTCOMES = [
 ]
 
 export const TRIAL_NOTE =
-  'Each trial is shown exactly as the code builds it for Qwen3-8B with thinking off. Highlighted text is an option; the chip names the seat that carries it. On gpt-oss the system message is sent as the developer message.'
+  'Each trial is shown exactly as the code builds it for Qwen3-8B with thinking off. Underlined text is an option; the chip names the seat that carries it. On gpt-oss the system message is sent as the developer message.'

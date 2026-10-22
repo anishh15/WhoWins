@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Segmented from './Segmented'
 import Rich from './Rich'
+import { Downloads } from './Share'
 import { site } from '../lib/data'
 import { useFigure } from '../lib/figures'
 
@@ -17,10 +18,10 @@ function PaperFigure({ fig, title }) {
 }
 
 /**
- * A chart with two alternate views: its data as a table, and the paper's own figure.
- * figure is a figure key such as "2_message_boundary"; legend sits under the chart.
+ * A chart with two alternate views, its data as a table and the paper's own figure, and downloads of
+ * its data. figure is a figure key such as "2_message_boundary"; rows() gives the download rows.
  */
-export default function ChartCard({ title, chart, table, legend, figure }) {
+export default function ChartCard({ title, chart, table, legend, figure, rows, name }) {
   const [view, setView] = useState('chart')
   const fig = figure && figureOf(figure)
   const options = [{ value: 'chart', label: 'Chart' }, { value: 'table', label: 'Table' }, ...(fig ? [{ value: 'paper', label: 'Paper figure' }] : [])]
@@ -40,6 +41,7 @@ export default function ChartCard({ title, chart, table, legend, figure }) {
         {view === 'table' && table}
         {view === 'paper' && <PaperFigure fig={fig} title={title} />}
       </div>
+      {rows && <div className="border-t border-line px-4 py-2.5"><Downloads rows={rows} name={name} /></div>}
     </figure>
   )
 }

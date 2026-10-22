@@ -1,6 +1,6 @@
 import { familyOf, modeName } from '../lib/data'
 import { measures, modes } from '../lib/measures'
-import { FamilyAxis, Hit, Marker, Plot, RefLine, YAxis, linear, pctTicks, slots, useTip } from './core'
+import { FamilyAxis, Hit, Marker, Plot, RefLine, YAxis, checkDomain, linear, pctTicks, slots, useTip } from './core'
 import { TipBody } from './DotChart'
 
 /** Figure 2: the first-listed line inside one message (upper point) and across two (lower point). */
@@ -10,9 +10,10 @@ export default function Boundary({ shown }) {
   const separate = measures.first_separate.values
   const rows = modes.filter((m) => merged[m.mm] && separate[m.mm] && shown(m))
   const { xs, ticks, groups, extent } = slots(rows)
+  const LABEL = 'Share of decided replies that follow the first-listed of two lines, inside one message and in two messages, per model-mode'
+  checkDomain(LABEL, rows.flatMap((m) => [merged[m.mm], separate[m.mm]].flatMap((v) => [v.e, v.l, v.h])), [0, 1])
   return (
-    <Plot height={300} margin={{ t: 14, r: 10, b: 42, l: 54 }} tip={tip}
-      label="Share of decided replies that follow the first-listed of two lines, inside one message and in two messages, per model-mode">
+    <Plot height={300} margin={{ t: 14, r: 10, b: 42, l: 54 }} tip={tip} label={LABEL}>
       {({ w, h }) => {
         const x = linear(extent, [0, w])
         const y = linear([0, 1], [h, 0])

@@ -38,3 +38,31 @@ export function useJson(url) {
   }, [url])
   return { data, error }
 }
+
+/** The value once it has stopped changing for ms milliseconds (for search boxes). */
+export function useDebounced(value, ms = 150) {
+  const [settled, setSettled] = useState(value)
+  useEffect(() => {
+    const timer = setTimeout(() => setSettled(value), ms)
+    return () => clearTimeout(timer)
+  }, [value, ms])
+  return settled
+}
+
+/** True once the element has come into view (and stays true), for one-time entrance animations. */
+export function useSeenOnce(skip = false) {
+  const ref = useRef(null)
+  const [seen, setSeen] = useState(skip)
+  useEffect(() => {
+    if (seen || !ref.current) return undefined
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setSeen(true)
+        observer.disconnect()
+      }
+    }, { rootMargin: '0px 0px -10% 0px' })
+    observer.observe(ref.current)
+    return () => observer.disconnect()
+  }, [seen])
+  return [ref, seen]
+}

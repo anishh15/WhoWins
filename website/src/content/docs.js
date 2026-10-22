@@ -84,7 +84,7 @@ scripts/capacity.sh main-tier-qwen3-8b-think             # declared tiers`,
 
 export const TREE = `WhoWins/
 ├── src/whowins/
-│   ├── checkers/       a reply to one label: 4 trace checkers and 240 format classifiers
+│   ├── checkers/       a reply to one label: {{design:trace_checkers}} trace checkers and {{design:format_classifiers}} format classifiers
 │   ├── runner/         build a run's trials, render the messages, send them, score the replies
 │   ├── stats/          the choice models, the forecast of larger sets, capacity, the simulation gate
 │   ├── splits/         the frozen held-out lists and their checks
