@@ -408,15 +408,14 @@ the composition test on real data is `scripts/strengths.sh <run>`." At the end t
  - a pre-registration -- there is none, by the owner's decision, so every result is exploratory
  - a harness effect on real data -- every model is served on one machine, so a harness cannot be
    told from its models until one model is served on both
- - capacity on real data -- no run design sends declared-tier pairs, so `capacity.py` is
-   checked on simulated tiers only
+ - capacity on real data -- this gate checks capacity on simulated tiers only;
+   `scripts/capacity.sh RUN` reads an observed tier run
  - any real composition above a pair -- the gate is simulated; `scripts/strengths.sh <run>`
    runs the composition test on a real run
- Phase 2 is not released by this alone.
 ```
 
 The list is `phase1.SILENT_ABOUT`, and
 `tests/test_stats.py::test_the_gate_says_what_it_is_silent_about` checks that it still names
 the pre-registration, the harness, capacity on real data and compositions above a pair, and that
-it no longer calls the probit deferred. Capacity on real data stays on the list until a
-tier run comes back: the design exists, the data do not.
+it no longer calls the probit deferred. The capacity item says what the gate covers, simulated tiers,
+and where an observed tier run is read: `scripts/capacity.sh RUN`.

@@ -24,7 +24,7 @@ classifiers = [
 dependencies = []  # the standard library only, the statistics included
 
 [project.optional-dependencies]
-dev = ["pytest"]
+dev = ["pytest", "PyYAML", "Jinja2"]  # the tests; PyYAML and Jinja2 check the serve files and chat templates
 download = ["huggingface_hub"]  # scripts/download_models.sh: fetch the pinned weights
 tokenizers = ["tokenizers"]  # whowins.validation.check_load: token lengths of the load bundles
 

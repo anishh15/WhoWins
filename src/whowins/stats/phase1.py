@@ -46,8 +46,8 @@ SILENT_ABOUT = (
     "exploratory",
     "a harness effect on real data -- every model is served on one machine, so a harness "
     "cannot be told from its models until one model is served on both",
-    "capacity on real data -- no run design sends declared-tier pairs, so "
-    "`capacity.py` is checked on simulated tiers only",
+    "capacity on real data -- this gate checks capacity on simulated tiers only; "
+    "`scripts/capacity.sh RUN` reads an observed tier run",
     "any real composition above a pair -- the gate is simulated; "
     "`scripts/strengths.sh <run>` runs the composition test on a real run",
 )
@@ -480,7 +480,6 @@ def render(out: Mapping[str, Any]) -> None:
     print("\n  AND SILENT ABOUT, WHICH IS PART OF THE ANSWER:")
     for item in out["silent_about"]:
         print(f"    - {item}")
-    print("  Phase 2 is not released by this alone.")
 
 
 def _main(argv: Optional[Sequence[str]] = None) -> int:

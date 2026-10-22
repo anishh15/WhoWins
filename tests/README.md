@@ -1,15 +1,23 @@
 # Tests
 
 ```bash
-python3 -m pytest tests/          # 2,387 tests: 2,383 pass, 4 skipped
+pip install -e ".[dev]"           # pytest, PyYAML and Jinja2
+python3 -m pytest tests/          # 2,387 tests: 2,379 pass, 8 skipped
 ```
 
-`conftest.py` puts `src/` on the path, so no install or `PYTHONPATH` is needed.
+`conftest.py` puts `src/` on the path, so no install or `PYTHONPATH` is needed to run them.
 
-The four skips read the test runs' records, which are not part of this repository. With those
-records under `results/`, they run. On a machine with
-vLLM installed, one more skips: serve.sh then reads vLLM's version from its package metadata, so
-the path that imports vllm cannot be reached.
+What skips depends on the machine:
+
+| Environment | Result |
+|---|---|
+| A fresh clone with `.[dev]` | 2,379 pass, 8 skipped: four read the test runs' records, and four need the `tokenizers` package and the pinned Qwen tokenizers in the local Hugging Face cache |
+| `.[dev,tokenizers]` with those tokenizers cached | 2,383 pass, 4 skipped (the records) |
+| The test runs' records under `results/` as well | the four record tests run too; the records are not part of this repository |
+| pytest alone, without PyYAML and Jinja2 | 28 more skip: the checks of the serve files and the chat templates |
+
+On a machine with vLLM installed, one more skips: serve.sh then reads vLLM's version from its package
+metadata, so the path that imports vllm cannot be reached.
 
 ## What is here
 
