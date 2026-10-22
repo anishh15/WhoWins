@@ -15,7 +15,6 @@ const [QUESTION, REST] = site.title.split(/(?<=\?) /)
 function Hero() {
   return (
     <section className="relative overflow-hidden">
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(60rem_30rem_at_85%_-10%,rgb(var(--tint)/0.9),transparent_70%),radial-gradient(40rem_24rem_at_-10%_10%,rgb(var(--wash)),transparent_70%)]" />
       <div className="page relative grid items-center gap-10 py-12 sm:py-16 lg:grid-cols-[1.05fr_1fr] lg:gap-14 lg:py-20">
         <div>
           <p className="eyebrow">{HERO.eyebrow}</p>

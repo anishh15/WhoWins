@@ -6,13 +6,13 @@
    dark is a deep wine with the paper's mid red as its accent. */
 :root {
   color-scheme: light;
-  --bg: 255 252 251;
+  --bg: 255 255 255;
   --surface: 255 255 255;
-  --raised: 253 247 245;
+  --raised: 249 249 250;
   --tint: 248 226 221;
-  --wash: 253 240 238;
-  --line: 241 228 226;
-  --rule: 229 196 190;
+  --wash: 246 246 248;
+  --line: 232 232 236;
+  --rule: 212 212 218;
   --ink: 38 38 38;
   --soft: 74 64 62;
   --muted: 104 98 97;
@@ -39,7 +39,7 @@
   --fam-tint-qwen35: #F6D8D3;
   --fam-tint-gptoss: #F4E5C4;
   --chart-ref: #A9746D;
-  --chart-grid: #F1E4E2;
+  --chart-grid: #ECECEF;
   --chart-faded: #8F8F8F;
   --chart-bar: #F7DCD7;
   --chart-bar-edge: #B9675D;
@@ -47,13 +47,13 @@
 
 .dark {
   color-scheme: dark;
-  --bg: 24 17 18;
-  --surface: 34 25 26;
-  --raised: 42 30 31;
-  --tint: 64 39 40;
-  --wash: 46 32 33;
-  --line: 61 44 45;
-  --rule: 98 66 63;
+  --bg: 14 16 20;
+  --surface: 22 25 30;
+  --raised: 28 31 37;
+  --tint: 46 36 38;
+  --wash: 20 23 28;
+  --line: 40 44 51;
+  --rule: 62 67 76;
   --ink: 244 235 233;
   --soft: 222 207 204;
   --muted: 186 167 164;
@@ -65,7 +65,7 @@
 
   --heat-red: 214 120 110;
   --heat-blue: 120 150 196;
-  --heat-base: 34 25 26;
+  --heat-base: 22 25 30;
 
   --fam-qwen3: #6F96D6;
   --fam-qwen35: #E2716A;
@@ -78,7 +78,7 @@
   --fam-tint-qwen35: rgba(226, 113, 106, 0.16);
   --fam-tint-gptoss: rgba(201, 162, 67, 0.16);
   --chart-ref: #B38780;
-  --chart-grid: #3A2A2B;
+  --chart-grid: #2C3038;
   --chart-faded: #8E8280;
   --chart-bar: #5A3A38;
   --chart-bar-edge: #C9786E;
